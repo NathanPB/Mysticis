@@ -63,7 +63,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 }
 
 jar {
-    from "LICENSE"
+    from "COPYING"
 }
 
 // configure the maven publication
