@@ -8,11 +8,11 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-enum class ManaColor(val hex: String) {
-    AIR("FFFF55"),
-    FIRE("AA0000"),
-    WATER("0000AA"),
-    NATURE("00AA00"),
-    MAGIC("AA00AA"),
-    DARK("460860")
+enum class ManaColor(val rgb: Int) {
+    AIR(16777045),
+    FIRE(11141120),
+    WATER(170),
+    NATURE(43520),
+    MAGIC(11141290),
+    DARK(4589664)
 }
