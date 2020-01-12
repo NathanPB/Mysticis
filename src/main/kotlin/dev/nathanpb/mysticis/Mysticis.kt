@@ -1,5 +1,8 @@
 package dev.nathanpb.mysticis
 
+import dev.nathanpb.mysticis.event.entity.PlayerTickCallback
+import dev.nathanpb.mysticis.listener.AffinityListener
+
 /*
 Copyright (C) 2019 Nathan P. Bombana
 
@@ -10,6 +13,6 @@ You should have received a copy of the GNU General Public License along with thi
 
 @Suppress("unused")
 fun init() {
-    println("Hello Fabric world!")
+    PlayerTickCallback.EVENT.register(AffinityListener())
 }
 

@@ -1,6 +1,5 @@
 package dev.nathanpb.mysticis.data
 
-import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.nbt.CompoundTag
 import kotlin.math.max
@@ -103,5 +102,31 @@ data class ManaData (
     )
 }
 
-fun PlayerEntity.getManaAffinity() = this.javaClass.getField("mysticisMana").get(this) as ManaData
-fun PlayerEntity.getMana() = this.javaClass.getField("mysticisAffinity").get(this) as ManaData
+var PlayerEntity.manaAffinity: ManaData
+    get() {
+        return CompoundTag().also {
+            this.writeCustomDataToTag(it)
+        }.getCompound("mysticis.affinity")
+        .let { ManaData.loadFromTag(it) }
+    }
+    set(value) {
+        CompoundTag().also {
+            this.writeCustomDataToTag(it)
+            it.put("mysticis.affinity", value.mkCompoundTag())
+        }.let { this.readCustomDataFromTag(it) }
+    }
+
+var PlayerEntity.mana: ManaData
+    get() {
+        return CompoundTag().also {
+            this.writeCustomDataToTag(it)
+        }.getCompound("mysticis.mana")
+            .let { ManaData.loadFromTag(it) }
+    }
+    set(value) {
+        CompoundTag().also {
+            this.writeCustomDataToTag(it)
+            it.put("mysticis.mana", value.mkCompoundTag())
+        }.let { this.readCustomDataFromTag(it) }
+    }
+
