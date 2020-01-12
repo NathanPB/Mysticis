@@ -6,6 +6,9 @@
     "PlayerEntityMixins",
     "ManaPersistenceMixin"
   ],
+  "client": [
+    "InGameHudMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
