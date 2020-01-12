@@ -22,26 +22,26 @@ class AffinityListener : PlayerTickCallback {
             player.manaAffinity.let { affinity ->
                 var modifiedAffinity = affinity
 
-                if(Random.nextInt(0, 2499) == 0) {
+                if(Random.nextInt(0, 999) == 0) {
                     modifiedAffinity = when (player.world.getBiome(BlockPos(player)).category) {
-                        Biome.Category.EXTREME_HILLS -> affinity + ManaData(air = 2, nature = -1)
+                        Biome.Category.EXTREME_HILLS -> affinity + ManaData(air = 1F, nature = -.5F)
 
                         Biome.Category.MESA,
                         Biome.Category.DESERT,
                         Biome.Category.SAVANNA,
-                        Biome.Category.NETHER -> affinity + ManaData(fire = 2, water = -1)
+                        Biome.Category.NETHER -> affinity + ManaData(fire = 1F, water = -.5F)
 
                         Biome.Category.BEACH,
                         Biome.Category.OCEAN,
                         Biome.Category.ICY,
-                        Biome.Category.RIVER -> affinity + ManaData(water = 2, fire = -1)
+                        Biome.Category.RIVER -> affinity + ManaData(water = 1F, fire = -.5F)
 
                         Biome.Category.FOREST,
                         Biome.Category.JUNGLE,
                         Biome.Category.SWAMP,
-                        Biome.Category.MUSHROOM -> affinity + ManaData(nature = 2, air = -1)
+                        Biome.Category.MUSHROOM -> affinity + ManaData(nature = 1F, air = -.5F)
 
-                        else -> affinity + if (Random.nextInt(0, 15) == 1)  ManaData(1, 1, 1, 1) else ManaData()
+                        else -> affinity + ManaData(.2F, .2F, .2F, .2F)
                     }
                 }
 

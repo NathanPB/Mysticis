@@ -18,12 +18,12 @@ You should have received a copy of the GNU General Public License along with thi
  */
 @Suppress("unused")
 data class ManaData (
-    val air: Int = 0,
-    val fire: Int = 0,
-    val water: Int = 0,
-    val nature: Int = 0,
-    val magic: Int = 0,
-    val dark: Int = 0
+    val air: Float = 0F,
+    val fire: Float = 0F,
+    val water: Float = 0F,
+    val nature: Float = 0F,
+    val magic: Float = 0F,
+    val dark: Float = 0F
 ) {
     companion object {
 
@@ -38,12 +38,12 @@ data class ManaData (
          */
         fun loadFromTag(nbt: CompoundTag) = nbt.run {
             ManaData(
-                getInt("air"),
-                getInt("fire"),
-                getInt("water"),
-                getInt("nature"),
-                getInt("magic"),
-                getInt("dark")
+                getFloat("air"),
+                getFloat("fire"),
+                getFloat("water"),
+                getFloat("nature"),
+                getFloat("magic"),
+                getFloat("dark")
             )
         }
     }
@@ -56,12 +56,12 @@ data class ManaData (
      * @return the data written into a [CompoundTag].
      */
     fun mkCompoundTag() = CompoundTag().apply {
-        putInt("air", air)
-        putInt("fire", fire)
-        putInt("water", water)
-        putInt("nature", nature)
-        putInt("magic", magic)
-        putInt("dark", dark)
+        putFloat("air", air)
+        putFloat("fire", fire)
+        putFloat("water", water)
+        putFloat("nature", nature)
+        putFloat("magic", magic)
+        putFloat("dark", dark)
     }
 
     /*
@@ -70,7 +70,7 @@ data class ManaData (
 
     operator fun minus(addend: ManaData) = this + !addend
 
-    operator fun not() = this * ManaData(-1, -1, -1, -1, -1 , -1)
+    operator fun not() = this * ManaData(-1F, -1F, -1F, -1F, -1F, -1F)
 
     operator fun times(factor: ManaData) = mapValues { manaValue, type ->
         manaValue * type.get(factor)
@@ -84,15 +84,15 @@ data class ManaData (
         manaValue / type.get(divisor)
     }
 
-    fun limitMin(limit: Int) = mapValues { it, _ ->
+    fun limitMin(limit: Float) = mapValues { it, _ ->
         max(limit, it)
     }
 
-    fun limitMax(limit: Int) = mapValues { it, _ ->
+    fun limitMax(limit: Float) = mapValues { it, _ ->
         min(limit, it)
     }
 
-    inline fun mapValues(transformer: (Int, KProperty1<ManaData, Int>)->Int) = ManaData(
+    inline fun mapValues(transformer: (Float, KProperty1<ManaData, Float>)->Float) = ManaData(
         transformer(air, ManaData::air),
         transformer(fire, ManaData::fire),
         transformer(water, ManaData::water),
