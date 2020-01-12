@@ -2,7 +2,9 @@ package dev.nathanpb.mysticis.listener
 
 import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.data.manaAffinity
+import dev.nathanpb.mysticis.enums.ManaChangedCause
 import dev.nathanpb.mysticis.event.entity.PlayerTickCallback
+import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import net.minecraft.entity.player.PlayerEntity
 
 
@@ -16,9 +18,12 @@ You should have received a copy of the GNU General Public License along with thi
 class ManaRegenListener : PlayerTickCallback {
     override fun tick(player: PlayerEntity?) {
         if(player?.world?.isClient == false) {
-            player.mana += player.manaAffinity.mapValues { value, _ ->
+            val prevMana = player.mana
+            val newMana = prevMana + player.manaAffinity.mapValues { value, _ ->
                 value / 1000
             }
+            player.mana = newMana
+            ManaChangedCallback.EVENT.invoker().onManaChanged(newMana, prevMana, ManaChangedCause.PASSIVE_REGEN)
         }
     }
 }

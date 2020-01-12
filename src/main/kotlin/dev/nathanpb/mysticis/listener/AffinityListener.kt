@@ -2,7 +2,9 @@ package dev.nathanpb.mysticis.listener
 
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.manaAffinity
+import dev.nathanpb.mysticis.enums.ManaChangedCause
 import dev.nathanpb.mysticis.event.entity.PlayerTickCallback
+import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.biome.Biome
@@ -47,7 +49,7 @@ class AffinityListener : PlayerTickCallback {
 
                 if(affinity != modifiedAffinity) {
                     player.manaAffinity = modifiedAffinity
-                    println("Affinity of ${player.displayName.asString()} Changed: ${player.manaAffinity}")
+                    AffinityChangedCallback.EVENT.invoker().onAffinityChanged(affinity, modifiedAffinity, ManaChangedCause.PASSIVE_REGEN)
                 }
             }
         }
