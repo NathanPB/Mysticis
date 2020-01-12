@@ -19,7 +19,9 @@
       "dev.nathanpb.mysticis.MysticisKt::init"
     ]
   },
-  "mixins": [],
+  "mixins": [
+    "mixins.mysticis.json"
+  ],
   "depends": {
     "fabricloader": ">=0.7.1",
     "fabric": "*",

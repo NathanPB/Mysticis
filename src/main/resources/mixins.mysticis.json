@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "dev.nathanpb.mysticis.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "PlayerEntityMixins"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
