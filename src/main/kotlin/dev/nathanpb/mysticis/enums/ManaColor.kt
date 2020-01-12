@@ -1,4 +1,4 @@
-package dev.nathanpb.mysticis.enum
+package dev.nathanpb.mysticis.enums
 
 
 /*

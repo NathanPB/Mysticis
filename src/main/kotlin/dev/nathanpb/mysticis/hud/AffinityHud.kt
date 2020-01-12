@@ -3,7 +3,7 @@ package dev.nathanpb.mysticis.hud
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.data.manaAffinity
-import dev.nathanpb.mysticis.enum.ManaColor
+import dev.nathanpb.mysticis.enums.ManaColor
 import dev.nathanpb.mysticis.event.gui.CrosshairRenderedCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawableHelper
