@@ -1,5 +1,7 @@
 package dev.nathanpb.mysticis.data
 
+import net.minecraft.entity.Entity
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.nbt.CompoundTag
 import kotlin.math.max
 import kotlin.math.min
@@ -100,3 +102,6 @@ data class ManaData (
         transformer(dark, ManaData::dark)
     )
 }
+
+fun PlayerEntity.getManaAffinity() = this.javaClass.getField("mysticisMana").get(this) as ManaData
+fun PlayerEntity.getMana() = this.javaClass.getField("mysticisAffinity").get(this) as ManaData

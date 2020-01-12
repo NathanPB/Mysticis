@@ -3,7 +3,8 @@
   "package": "dev.nathanpb.mysticis.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "PlayerEntityMixins"
+    "PlayerEntityMixins",
+    "ManaPersistenceMixin"
   ],
   "injectors": {
     "defaultRequire": 1
