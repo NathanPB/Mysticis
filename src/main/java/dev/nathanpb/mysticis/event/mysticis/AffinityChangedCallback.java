@@ -4,6 +4,7 @@ import dev.nathanpb.mysticis.data.ManaData;
 import dev.nathanpb.mysticis.enums.ManaChangedCause;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.entity.LivingEntity;
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -14,11 +15,11 @@ You should have received a copy of the GNU General Public License along with thi
 */
 public interface AffinityChangedCallback {
     Event<AffinityChangedCallback> EVENT = EventFactory.createArrayBacked(AffinityChangedCallback.class,
-       listeners -> (newAffinity ,prevAffinity, cause) -> {
+       listeners -> (entity, newAffinity ,prevAffinity, cause) -> {
            for(AffinityChangedCallback listener : listeners) {
-               listener.onAffinityChanged(newAffinity, prevAffinity, cause);
+               listener.onAffinityChanged(entity, newAffinity, prevAffinity, cause);
            }
     });
 
-    void onAffinityChanged(ManaData newAffinity, ManaData prevAffinity, ManaChangedCause cause);
+    void onAffinityChanged(LivingEntity entity, ManaData newAffinity, ManaData prevAffinity, ManaChangedCause cause);
 }

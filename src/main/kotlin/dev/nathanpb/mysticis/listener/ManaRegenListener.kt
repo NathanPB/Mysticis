@@ -23,7 +23,7 @@ class ManaRegenListener : PlayerTickCallback {
                 value / 1000
             }
             player.mana = newMana
-            ManaChangedCallback.EVENT.invoker().onManaChanged(newMana, prevMana, ManaChangedCause.PASSIVE_REGEN)
+            ManaChangedCallback.EVENT.invoker().onManaChanged(player, newMana, prevMana, ManaChangedCause.PASSIVE_REGEN)
         }
     }
 }

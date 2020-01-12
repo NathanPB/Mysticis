@@ -49,7 +49,7 @@ class AffinityListener : PlayerTickCallback {
 
                 if(affinity != modifiedAffinity) {
                     player.manaAffinity = modifiedAffinity
-                    AffinityChangedCallback.EVENT.invoker().onAffinityChanged(affinity, modifiedAffinity, ManaChangedCause.PASSIVE_REGEN)
+                    AffinityChangedCallback.EVENT.invoker().onAffinityChanged(player, affinity, modifiedAffinity, ManaChangedCause.PASSIVE_REGEN)
                 }
             }
         }
