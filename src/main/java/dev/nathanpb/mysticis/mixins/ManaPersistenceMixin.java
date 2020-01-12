@@ -19,12 +19,18 @@ You should have received a copy of the GNU General Public License along with thi
 public class ManaPersistenceMixin {
 
     public ManaData mysticisMana = new ManaData();
-    public ManaData mysticisAffinity = new ManaData(50, 50, 50, 50, 50, 50);
+    public ManaData mysticisAffinity = new ManaData();
 
     @Inject(at = @At("HEAD"), method = "readCustomDataFromTag")
     public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
-        mysticisMana = ManaData.Companion.loadFromTag(tag.getCompound("mysticis.mana"));
-        mysticisAffinity = ManaData.Companion.loadFromTag(tag.getCompound("mysticis.affinity"));
+        mysticisMana = ManaData.Companion
+                .loadFromTag(tag.getCompound("mysticis.mana"))
+                .limitMin(0)
+                .limitMax(100);
+        mysticisAffinity = ManaData.Companion
+                .loadFromTag(tag.getCompound("mysticis.affinity"))
+                .limitMin(-100)
+                .limitMax(100);
     }
 
     @Inject(at = @At("HEAD"), method = "writeCustomDataToTag")
