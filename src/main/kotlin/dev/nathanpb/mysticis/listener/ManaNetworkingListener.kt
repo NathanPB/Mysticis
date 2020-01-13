@@ -2,8 +2,11 @@ package dev.nathanpb.mysticis.listener
 
 import dev.nathanpb.mysticis.AFFINITY_CHANGED
 import dev.nathanpb.mysticis.MANA_CHANGED
+import dev.nathanpb.mysticis.data.mana
+import dev.nathanpb.mysticis.data.manaAffinity
 import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
+import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import io.netty.buffer.Unpooled
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry
 import net.minecraft.entity.player.PlayerEntity
@@ -30,4 +33,11 @@ val sendMana = ManaChangedCallback { entity, newMana, _, _ ->
        val packet = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(newMana.mkCompoundTag())
        ServerSidePacketRegistry.INSTANCE.sendToPlayer(entity, MANA_CHANGED, packet)
     }
+}
+
+val manaPlayerConnect = PlayerConnectCallback { _, player ->
+    val packetAffinity = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(player.manaAffinity.mkCompoundTag())
+    val packetMana = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(player.mana.mkCompoundTag())
+    ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AFFINITY_CHANGED, packetAffinity)
+    ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, MANA_CHANGED, packetMana)
 }

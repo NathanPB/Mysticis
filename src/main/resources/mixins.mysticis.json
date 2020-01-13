@@ -3,8 +3,9 @@
   "package": "dev.nathanpb.mysticis.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "ManaPersistenceMixin",
     "PlayerEntityMixins",
-    "ManaPersistenceMixin"
+    "PlayerManagerMixin"
   ],
   "client": [
     "InGameHudMixin"

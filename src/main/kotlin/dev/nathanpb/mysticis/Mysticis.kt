@@ -7,11 +7,9 @@ import dev.nathanpb.mysticis.event.entity.PlayerTickCallback
 import dev.nathanpb.mysticis.event.gui.CrosshairRenderedCallback
 import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
+import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.hud.AffinityHud
-import dev.nathanpb.mysticis.listener.AffinityListener
-import dev.nathanpb.mysticis.listener.ManaRegenListener
-import dev.nathanpb.mysticis.listener.sendAffinity
-import dev.nathanpb.mysticis.listener.sendMana
+import dev.nathanpb.mysticis.listener.*
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
 import net.minecraft.client.MinecraftClient
 
@@ -30,6 +28,7 @@ fun init() {
     CrosshairRenderedCallback.EVENT.register(AffinityHud())
     AffinityChangedCallback.EVENT.register(sendAffinity)
     ManaChangedCallback.EVENT.register(sendMana)
+    PlayerConnectCallback.EVENT.register(manaPlayerConnect)
 }
 
 @Suppress("unused")
