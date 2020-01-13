@@ -8,7 +8,8 @@
     "PlayerManagerMixin"
   ],
   "client": [
-    "InGameHudMixin"
+    "InGameHudMixin",
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,8 @@
-package dev.nathanpb.mysticis
+package dev.nathanpb.mysticis.event.mysticis;
 
-import net.minecraft.util.Identifier
+import net.fabricmc.fabric.api.event.Event;
+import net.fabricmc.fabric.api.event.EventFactory;
+import net.minecraft.entity.LivingEntity;
 
 
 /*
@@ -10,11 +12,15 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
+public interface StaffSelfTriggeredCallback {
 
-private fun identifier(id: String) = Identifier("mysticis", id)
+    Event<StaffSelfTriggeredCallback> EVENT = EventFactory.createArrayBacked(StaffSelfTriggeredCallback.class,
+        listeners -> entity -> {
+            for(StaffSelfTriggeredCallback listener : listeners) {
+                listener.onTriggered(entity);
+            }
+        }
+    );
 
-val PACKET_MANA_CHANGED = identifier("manachanged")
-val PACKET_AFFINITY_CHANGED = identifier("affinitychanged")
-val PACKET_STAFF_PROJECTILE_TRIGGERED = identifier("staff_self_triggered")
-
-val ITEM_MYSTICIS = identifier("mysticis")
+    void onTriggered(LivingEntity entity);
+}

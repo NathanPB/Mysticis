@@ -7,14 +7,18 @@ import dev.nathanpb.mysticis.event.entity.PlayerTickCallback
 import dev.nathanpb.mysticis.event.gui.CrosshairRenderedCallback
 import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
+import dev.nathanpb.mysticis.event.mysticis.StaffSelfTriggeredCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.hud.AffinityHud
+import dev.nathanpb.mysticis.items.StaffBase
 import dev.nathanpb.mysticis.items.registerItems
 import dev.nathanpb.mysticis.listener.*
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
+import net.fabricmc.fabric.api.network.ServerSidePacketRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
+import net.minecraft.util.Hand
 import net.minecraft.util.Identifier
 
 /*
@@ -33,6 +37,16 @@ fun init() {
     AffinityChangedCallback.EVENT.register(sendAffinity)
     ManaChangedCallback.EVENT.register(sendMana)
     PlayerConnectCallback.EVENT.register(manaPlayerConnect)
+    StaffSelfTriggeredCallback.EVENT.register(StaffBase.projectileTriggeredListener)
+
+    ServerSidePacketRegistry.INSTANCE.register(PACKET_STAFF_PROJECTILE_TRIGGERED) { context, _ ->
+        context.taskQueue.execute {
+            val item = context.player.getStackInHand(Hand.MAIN_HAND).item
+            if (context.player.isSneaking && item is StaffBase) {
+                StaffSelfTriggeredCallback.EVENT.invoker().onTriggered(context.player)
+            }
+        }
+    }
 
     registerItems()
 }
