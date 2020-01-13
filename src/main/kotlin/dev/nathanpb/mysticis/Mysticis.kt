@@ -33,7 +33,7 @@ fun init() {
 
 @Suppress("unused")
 fun initClient() {
-    ClientSidePacketRegistry.INSTANCE.register(AFFINITY_CHANGED) { context, buf ->
+    ClientSidePacketRegistry.INSTANCE.register(PACKET_AFFINITY_CHANGED) { context, buf ->
         buf.readCompoundTag()?.let { tag ->
             if (ManaData.isValidTag(tag)) {
                 context.taskQueue.execute {
@@ -43,7 +43,7 @@ fun initClient() {
         }
     }
 
-    ClientSidePacketRegistry.INSTANCE.register(MANA_CHANGED) { context, buf ->
+    ClientSidePacketRegistry.INSTANCE.register(PACKET_MANA_CHANGED) { context, buf ->
         buf.readCompoundTag()?.let { tag ->
             if (ManaData.isValidTag(tag)) {
                 context.taskQueue.execute {

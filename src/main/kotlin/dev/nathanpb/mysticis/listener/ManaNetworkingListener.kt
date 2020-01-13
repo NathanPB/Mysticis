@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.listener
 
-import dev.nathanpb.mysticis.AFFINITY_CHANGED
-import dev.nathanpb.mysticis.MANA_CHANGED
+import dev.nathanpb.mysticis.PACKET_AFFINITY_CHANGED
+import dev.nathanpb.mysticis.PACKET_MANA_CHANGED
 import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.data.manaAffinity
 import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
@@ -24,20 +24,20 @@ You should have received a copy of the GNU General Public License along with thi
 val sendAffinity = AffinityChangedCallback { entity, newMana, _, _ ->
     if (entity is PlayerEntity) {
         val packet = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(newMana.mkCompoundTag())
-        ServerSidePacketRegistry.INSTANCE.sendToPlayer(entity, AFFINITY_CHANGED, packet)
+        ServerSidePacketRegistry.INSTANCE.sendToPlayer(entity, PACKET_AFFINITY_CHANGED, packet)
     }
 }
 
 val sendMana = ManaChangedCallback { entity, newMana, _, _ ->
     if (entity is PlayerEntity) {
        val packet = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(newMana.mkCompoundTag())
-       ServerSidePacketRegistry.INSTANCE.sendToPlayer(entity, MANA_CHANGED, packet)
+       ServerSidePacketRegistry.INSTANCE.sendToPlayer(entity, PACKET_MANA_CHANGED, packet)
     }
 }
 
 val manaPlayerConnect = PlayerConnectCallback { _, player ->
     val packetAffinity = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(player.manaAffinity.mkCompoundTag())
     val packetMana = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(player.mana.mkCompoundTag())
-    ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, AFFINITY_CHANGED, packetAffinity)
-    ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, MANA_CHANGED, packetMana)
+    ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, PACKET_AFFINITY_CHANGED, packetAffinity)
+    ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, PACKET_MANA_CHANGED, packetMana)
 }

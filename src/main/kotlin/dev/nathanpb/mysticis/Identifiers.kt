@@ -13,6 +13,6 @@ You should have received a copy of the GNU General Public License along with thi
 
 private fun identifier(id: String) = Identifier("mysticis", id)
 
-val MANA_CHANGED = identifier("manachanged")
-val AFFINITY_CHANGED = identifier("affinitychanged")
+val PACKET_MANA_CHANGED = identifier("manachanged")
+val PACKET_AFFINITY_CHANGED = identifier("affinitychanged")
 
