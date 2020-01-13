@@ -26,12 +26,12 @@ class AffinityListener : PlayerTickCallback {
 
                 if(Random.nextInt(0, 999) == 0) {
                     modifiedAffinity = when (player.world.getBiome(BlockPos(player)).category) {
-                        Biome.Category.EXTREME_HILLS -> affinity + ManaData(air = 1F, nature = -.5F)
+                        Biome.Category.EXTREME_HILLS -> affinity + ManaData(air = 1F, water = -.5F)
 
                         Biome.Category.MESA,
                         Biome.Category.DESERT,
                         Biome.Category.SAVANNA,
-                        Biome.Category.NETHER -> affinity + ManaData(fire = 1F, water = -.5F)
+                        Biome.Category.NETHER -> affinity + ManaData(fire = 1F, nature = -.5F)
 
                         Biome.Category.BEACH,
                         Biome.Category.OCEAN,
