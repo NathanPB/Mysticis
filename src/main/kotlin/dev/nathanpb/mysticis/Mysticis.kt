@@ -9,9 +9,13 @@ import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.hud.AffinityHud
+import dev.nathanpb.mysticis.items.registerItems
 import dev.nathanpb.mysticis.listener.*
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
 import net.minecraft.client.MinecraftClient
+import net.minecraft.item.ItemStack
+import net.minecraft.util.Identifier
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -29,6 +33,8 @@ fun init() {
     AffinityChangedCallback.EVENT.register(sendAffinity)
     ManaChangedCallback.EVENT.register(sendMana)
     PlayerConnectCallback.EVENT.register(manaPlayerConnect)
+
+    registerItems()
 }
 
 @Suppress("unused")
@@ -52,4 +58,8 @@ fun initClient() {
             }
         }
     }
+}
+
+val CREATIVE_TAB = FabricItemGroupBuilder.build(Identifier("mysticis", "tab_mysticis")) {
+    ItemStack(dev.nathanpb.mysticis.items.ITEM_MYSTICIS)
 }

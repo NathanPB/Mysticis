@@ -1,6 +1,8 @@
-package dev.nathanpb.mysticis
+package dev.nathanpb.mysticis.items
 
-import net.minecraft.util.Identifier
+import net.minecraft.item.Item
+import net.minecraft.util.Rarity
+import net.minecraft.util.registry.Registry
 
 
 /*
@@ -10,10 +12,12 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
+val ITEM_MYSTICIS = Item(Item.Settings().maxCount(1).rarity(Rarity.EPIC))
 
-private fun identifier(id: String) = Identifier("mysticis", id)
-
-val PACKET_MANA_CHANGED = identifier("manachanged")
-val PACKET_AFFINITY_CHANGED = identifier("affinitychanged")
-
-val ITEM_MYSTICIS = identifier("mysticis")
+fun registerItems() {
+    mapOf(
+        Pair(dev.nathanpb.mysticis.ITEM_MYSTICIS, ITEM_MYSTICIS)
+    ).forEach { (identifier, item) ->
+        Registry.register(Registry.ITEM, identifier, item)
+    }
+}
