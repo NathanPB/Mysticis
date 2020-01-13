@@ -46,6 +46,16 @@ data class ManaData (
                 getFloat("dark")
             )
         }
+
+        /**
+         * Checks if a [CompoundTag] has all the necessary keys and values to make a [ManaData] object
+         *
+         * @param tag The tag to perform the checks
+         * @return True if valid, false otherwise
+         */
+        fun isValidTag(tag: CompoundTag) = listOf("air", "fire", "water", "nature", "dark", "magic").all {
+            tag.contains(it, 5)
+        }
     }
 
     /**

@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "dev.nathanpb.mysticis.MysticisKt::init"
+    ],
+    "client": [
+      "dev.nathanpb.mysticis.MysticisKt::initClient"
     ]
   },
   "mixins": [

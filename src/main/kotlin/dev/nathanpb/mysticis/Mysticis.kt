@@ -1,10 +1,19 @@
 package dev.nathanpb.mysticis
 
+import dev.nathanpb.mysticis.data.ManaData
+import dev.nathanpb.mysticis.data.mana
+import dev.nathanpb.mysticis.data.manaAffinity
 import dev.nathanpb.mysticis.event.entity.PlayerTickCallback
 import dev.nathanpb.mysticis.event.gui.CrosshairRenderedCallback
+import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
+import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.hud.AffinityHud
 import dev.nathanpb.mysticis.listener.AffinityListener
 import dev.nathanpb.mysticis.listener.ManaRegenListener
+import dev.nathanpb.mysticis.listener.sendAffinity
+import dev.nathanpb.mysticis.listener.sendMana
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
+import net.minecraft.client.MinecraftClient
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -19,5 +28,29 @@ fun init() {
     PlayerTickCallback.EVENT.register(AffinityListener())
     PlayerTickCallback.EVENT.register(ManaRegenListener())
     CrosshairRenderedCallback.EVENT.register(AffinityHud())
+    AffinityChangedCallback.EVENT.register(sendAffinity)
+    ManaChangedCallback.EVENT.register(sendMana)
 }
 
+@Suppress("unused")
+fun initClient() {
+    ClientSidePacketRegistry.INSTANCE.register(AFFINITY_CHANGED) { context, buf ->
+        buf.readCompoundTag()?.let { tag ->
+            if (ManaData.isValidTag(tag)) {
+                context.taskQueue.execute {
+                    MinecraftClient.getInstance().player?.manaAffinity = ManaData.loadFromTag(tag)
+                }
+            }
+        }
+    }
+
+    ClientSidePacketRegistry.INSTANCE.register(MANA_CHANGED) { context, buf ->
+        buf.readCompoundTag()?.let { tag ->
+            if (ManaData.isValidTag(tag)) {
+                context.taskQueue.execute {
+                    MinecraftClient.getInstance().player?.mana = ManaData.loadFromTag(tag)
+                }
+            }
+        }
+    }
+}
