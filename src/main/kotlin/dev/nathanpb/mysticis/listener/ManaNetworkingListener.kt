@@ -22,14 +22,14 @@ You should have received a copy of the GNU General Public License along with thi
 */
 
 val sendAffinity = AffinityChangedCallback { entity, newMana, _, _ ->
-    if (entity is PlayerEntity) {
+    if (entity is PlayerEntity && !entity.world.isClient) {
         val packet = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(newMana.mkCompoundTag())
         ServerSidePacketRegistry.INSTANCE.sendToPlayer(entity, PACKET_AFFINITY_CHANGED, packet)
     }
 }
 
 val sendMana = ManaChangedCallback { entity, newMana, _, _ ->
-    if (entity is PlayerEntity) {
+    if (entity is PlayerEntity && !entity.world.isClient) {
        val packet = PacketByteBuf(Unpooled.buffer()).writeCompoundTag(newMana.mkCompoundTag())
        ServerSidePacketRegistry.INSTANCE.sendToPlayer(entity, PACKET_MANA_CHANGED, packet)
     }
