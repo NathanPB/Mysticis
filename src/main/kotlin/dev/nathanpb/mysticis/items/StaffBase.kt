@@ -59,7 +59,7 @@ abstract class StaffBase : RangedWeaponItem(Settings().maxCount(1).group(CREATIV
     abstract val manaConsumeArea: ManaData
 
     override fun getMaxUseTime(stack: ItemStack?): Int {
-        return 20
+        return 5
     }
 
     override fun getProjectiles(): Predicate<ItemStack> {
@@ -75,6 +75,7 @@ abstract class StaffBase : RangedWeaponItem(Settings().maxCount(1).group(CREATIV
     abstract fun onTriggeredProjectile(user: LivingEntity, hand: Hand) : TypedActionResult<ItemStack>
 
     override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> {
+        println("used")
         user?.let {
             val stack = user.getStackInHand(hand)
 

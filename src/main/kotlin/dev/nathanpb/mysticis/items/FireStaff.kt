@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License along with thi
 */
 class FireStaff : StaffBase() {
 
-    override val manaConsumeProjectile = ManaData(fire = 6F)
+    override val manaConsumeProjectile = ManaData(fire = 2F)
     override val manaConsumeSelf = ManaData()
     override val manaConsumeArea= ManaData()
 
