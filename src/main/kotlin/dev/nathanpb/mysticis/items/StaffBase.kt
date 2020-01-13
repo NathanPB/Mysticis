@@ -4,11 +4,13 @@ import dev.nathanpb.mysticis.CREATIVE_TAB
 import dev.nathanpb.mysticis.event.mysticis.StaffSelfTriggeredCallback
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.item.RangedWeaponItem
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
+import net.minecraft.util.UseAction
 import net.minecraft.world.World
+import java.util.function.Predicate
 
 
 /*
@@ -18,7 +20,7 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-abstract class StaffBase : Item(Settings().maxCount(1).group(CREATIVE_TAB)) {
+abstract class StaffBase : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
 
     companion object {
         val projectileTriggeredListener =
@@ -30,6 +32,18 @@ abstract class StaffBase : Item(Settings().maxCount(1).group(CREATIVE_TAB)) {
             }
     }
 
+    override fun getMaxUseTime(stack: ItemStack?): Int {
+        return 20
+    }
+
+    override fun getProjectiles(): Predicate<ItemStack> {
+        return Predicate { true }
+    }
+
+    override fun getUseAction(stack: ItemStack?): UseAction {
+        return UseAction.BOW
+    }
+
     abstract fun onTriggeredProjectile(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack>
     abstract fun onTriggeredSelf(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack>
     abstract fun onTriggeredArea(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack>
@@ -39,6 +53,7 @@ abstract class StaffBase : Item(Settings().maxCount(1).group(CREATIVE_TAB)) {
             return if (user.isSneaking) {
                 onTriggeredArea(user, hand ?: Hand.MAIN_HAND)
             } else {
+                user.setCurrentHand(hand)
                 onTriggeredProjectile(user, hand ?: Hand.MAIN_HAND)
             }
         }

@@ -9,5 +9,6 @@ You should have received a copy of the GNU General Public License along with thi
 */
 enum class ManaChangedCause {
     PASSIVE_REGEN,
-    BIOME_PASSIVE_REGEN
+    BIOME_PASSIVE_REGEN,
+    USED_BY_STAFF
 }
