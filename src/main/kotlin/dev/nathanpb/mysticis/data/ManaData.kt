@@ -102,6 +102,8 @@ data class ManaData (
         min(limit, it)
     }
 
+    fun hasNegatives() = arrayOf(air, fire, water, nature, magic, dark).any { it < 0 }
+
     inline fun mapValues(transformer: (Float, KProperty1<ManaData, Float>)->Float) = ManaData(
         transformer(air, ManaData::air),
         transformer(fire, ManaData::fire),

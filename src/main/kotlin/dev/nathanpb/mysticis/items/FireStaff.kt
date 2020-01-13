@@ -1,11 +1,7 @@
 package dev.nathanpb.mysticis.items
 
 import dev.nathanpb.mysticis.data.ManaData
-import dev.nathanpb.mysticis.data.mana
-import dev.nathanpb.mysticis.enums.ManaChangedCause
-import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
@@ -19,32 +15,20 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 class FireStaff : StaffBase() {
+
+    override val manaConsumeProjectile = ManaData(fire = 6F)
+    override val manaConsumeSelf = ManaData()
+    override val manaConsumeArea= ManaData()
+
     override fun onTriggeredArea(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
-       return TypedActionResult.pass(user.getStackInHand(hand));
+       return TypedActionResult.pass(user.getStackInHand(hand))
     }
 
     override fun onTriggeredProjectile(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
-        val stack = user.getStackInHand(hand)
-        return if (user is PlayerEntity) {
-            val currentMana = user.mana
-            if (currentMana.fire >= 6) {
-                val newMana = currentMana - ManaData(fire = 6F)
-                user.mana = newMana
-                ManaChangedCallback.EVENT.invoker().onManaChanged(
-                    user,
-                    newMana,
-                    currentMana,
-                    ManaChangedCause.USED_BY_STAFF
-                )
-                TypedActionResult.consume(stack)
-            } else {
-                TypedActionResult.fail(stack)
-            }
-
-        } else TypedActionResult.consume(stack)
+        return TypedActionResult.consume(user.getStackInHand(hand))
     }
 
     override fun onTriggeredSelf(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
-        return TypedActionResult.pass(user.getStackInHand(hand));
+        return TypedActionResult.pass(user.getStackInHand(hand))
     }
 }

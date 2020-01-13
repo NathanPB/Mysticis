@@ -1,11 +1,16 @@
 package dev.nathanpb.mysticis.items
 
 import dev.nathanpb.mysticis.CREATIVE_TAB
+import dev.nathanpb.mysticis.data.ManaData
+import dev.nathanpb.mysticis.data.mana
+import dev.nathanpb.mysticis.enums.ManaChangedCause
+import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.StaffSelfTriggeredCallback
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.item.RangedWeaponItem
+import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.UseAction
@@ -27,10 +32,31 @@ abstract class StaffBase : RangedWeaponItem(Settings().maxCount(1).group(CREATIV
             StaffSelfTriggeredCallback {
                 val item = it.getStackInHand(Hand.MAIN_HAND).item
                 if (item is StaffBase) {
-                    item.onTriggeredSelf(it, Hand.MAIN_HAND)
+                    if(it is PlayerEntity) {
+                        val oldMana = it.mana
+                        val newMana = it.mana - item.manaConsumeSelf
+
+                        if(newMana.hasNegatives()) {
+                            return@StaffSelfTriggeredCallback
+                        } else {
+                            val tryCall = item.onTriggeredSelf(it, Hand.MAIN_HAND)
+                            if(tryCall.result != ActionResult.FAIL) {
+                                it.mana = newMana
+                                ManaChangedCallback.EVENT
+                                    .invoker()
+                                    .onManaChanged(it, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
+                            }
+                        }
+                    } else {
+                        item.onTriggeredSelf(it, Hand.MAIN_HAND)
+                    }
                 }
             }
     }
+
+    abstract val manaConsumeProjectile: ManaData
+    abstract val manaConsumeSelf: ManaData
+    abstract val manaConsumeArea: ManaData
 
     override fun getMaxUseTime(stack: ItemStack?): Int {
         return 20
@@ -44,20 +70,40 @@ abstract class StaffBase : RangedWeaponItem(Settings().maxCount(1).group(CREATIV
         return UseAction.BOW
     }
 
-    abstract fun onTriggeredProjectile(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack>
     abstract fun onTriggeredSelf(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack>
     abstract fun onTriggeredArea(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack>
+    abstract fun onTriggeredProjectile(user: LivingEntity, hand: Hand) : TypedActionResult<ItemStack>
 
     override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> {
         user?.let {
-            return if (user.isSneaking) {
-                onTriggeredArea(user, hand ?: Hand.MAIN_HAND)
+            val stack = user.getStackInHand(hand)
+
+            val cost = if (user.isSneaking) manaConsumeArea else manaConsumeProjectile
+
+            val oldMana = user.mana
+            val newMana = user.mana - cost
+            return if(!newMana.hasNegatives()) {
+
+                val result = if(user.isSneaking) {
+                    onTriggeredArea(user, hand ?: Hand.MAIN_HAND)
+                } else {
+                    user.setCurrentHand(hand)
+                    onTriggeredProjectile(user, hand ?: Hand.MAIN_HAND)
+                }
+
+                if(oldMana != newMana && result.result != ActionResult.FAIL) {
+                    user.mana = newMana
+                    ManaChangedCallback.EVENT
+                        .invoker()
+                        .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
+                }
+
+                result
             } else {
-                user.setCurrentHand(hand)
-                onTriggeredProjectile(user, hand ?: Hand.MAIN_HAND)
+                TypedActionResult.fail(stack)
             }
         }
 
-        return super.use(world, user, hand);
+        return super.use(world, user, hand)
     }
 }
