@@ -22,7 +22,7 @@ class AffinityHud : DrawableHelper(), CrosshairRenderedCallback {
     override fun render() {
         MinecraftClient.getInstance().player?.let {
             renderManaData(4, 4, it.mana)
-            renderManaData(32, 4, it.manaAffinity)
+            renderManaData(48, 4, it.manaAffinity)
         }
     }
 
