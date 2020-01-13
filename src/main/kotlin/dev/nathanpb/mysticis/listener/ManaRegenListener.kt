@@ -19,11 +19,14 @@ class ManaRegenListener : PlayerTickCallback {
     override fun tick(player: PlayerEntity?) {
         if(player?.world?.isClient == false) {
             val prevMana = player.mana
-            val newMana = prevMana + player.manaAffinity.mapValues { value, _ ->
+            val newMana = (prevMana + player.manaAffinity.mapValues { value, _ ->
                 value / 1000
+            }).limitMin(0F).limitMax(100F)
+
+            if(newMana != prevMana) {
+                player.mana = newMana
+                ManaChangedCallback.EVENT.invoker().onManaChanged(player, newMana, prevMana, ManaChangedCause.PASSIVE_REGEN)
             }
-            player.mana = newMana
-            ManaChangedCallback.EVENT.invoker().onManaChanged(player, newMana, prevMana, ManaChangedCause.PASSIVE_REGEN)
         }
     }
 }
