@@ -18,3 +18,4 @@ val PACKET_AFFINITY_CHANGED = identifier("affinitychanged")
 val PACKET_STAFF_PROJECTILE_TRIGGERED = identifier("staff_self_triggered")
 
 val ITEM_MYSTICIS = identifier("mysticis")
+val ITEM_FIRE_STAFF = identifier("fire_staff")

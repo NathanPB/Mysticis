@@ -1,8 +1,9 @@
 package dev.nathanpb.mysticis.items
 
-import net.minecraft.item.Item
-import net.minecraft.util.Rarity
-import net.minecraft.util.registry.Registry
+import net.minecraft.entity.LivingEntity
+import net.minecraft.item.ItemStack
+import net.minecraft.util.Hand
+import net.minecraft.util.TypedActionResult
 
 
 /*
@@ -12,14 +13,16 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-val ITEM_MYSTICIS = Item(Item.Settings().maxCount(1).rarity(Rarity.EPIC))
-val ITEM_FIRE_STAFF = FireStaff()
+class FireStaff : StaffBase() {
+    override fun onTriggeredArea(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
+       return TypedActionResult.pass(user.getStackInHand(hand));
+    }
 
-fun registerItems() {
-    mapOf(
-        Pair(dev.nathanpb.mysticis.ITEM_MYSTICIS, ITEM_MYSTICIS),
-        Pair(dev.nathanpb.mysticis.ITEM_FIRE_STAFF, ITEM_FIRE_STAFF)
-    ).forEach { (identifier, item) ->
-        Registry.register(Registry.ITEM, identifier, item)
+    override fun onTriggeredProjectile(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
+        return TypedActionResult.pass(user.getStackInHand(hand));
+    }
+
+    override fun onTriggeredSelf(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
+        return TypedActionResult.pass(user.getStackInHand(hand));
     }
 }
