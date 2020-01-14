@@ -1,5 +1,6 @@
 package dev.nathanpb.mysticis.mixins;
 
+import dev.nathanpb.mysticis.acessors.IMysticisLivingEntity;
 import dev.nathanpb.mysticis.data.ManaData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -16,26 +17,44 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 @Mixin(LivingEntity.class)
-public class ManaPersistenceMixin {
+public class ManaPersistenceMixin implements IMysticisLivingEntity {
 
     public ManaData mysticisMana = new ManaData();
     public ManaData mysticisAffinity = new ManaData();
 
     @Inject(at = @At("HEAD"), method = "readCustomDataFromTag")
     public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
-        mysticisMana = ManaData.Companion
-                .loadFromTag(tag.getCompound("mysticis.mana"))
-                .limitMin(0)
-                .limitMax(100);
-        mysticisAffinity = ManaData.Companion
-                .loadFromTag(tag.getCompound("mysticis.affinity"))
-                .limitMin(-100)
-                .limitMax(100);
+        setMysticisMana(
+            ManaData.Companion.loadFromTag(tag.getCompound("mysticis.mana"))
+        );
+        setMysticisAffinity(
+            ManaData.Companion.loadFromTag(tag.getCompound("mysticis.affinity"))
+        );
     }
 
     @Inject(at = @At("HEAD"), method = "writeCustomDataToTag")
     public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
-        tag.put("mysticis.mana", mysticisMana.mkCompoundTag());
-        tag.put("mysticis.affinity", mysticisAffinity.mkCompoundTag());
+        tag.put("mysticis.mana", getMysticisAffinity().mkCompoundTag());
+        tag.put("mysticis.affinity", getMysticisAffinity().mkCompoundTag());
+    }
+
+    @Override
+    public ManaData getMysticisMana() {
+        return mysticisMana;
+    }
+
+    @Override
+    public ManaData getMysticisAffinity() {
+        return mysticisAffinity;
+    }
+
+    @Override
+    public void setMysticisAffinity(ManaData data) {
+        this.mysticisAffinity = data.limitMin(-100).limitMax(100);
+    }
+
+    @Override
+    public void setMysticisMana(ManaData data) {
+        this.mysticisMana = data.limitMin(0).limitMax(100);
     }
 }

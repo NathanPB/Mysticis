@@ -1,5 +1,6 @@
 package dev.nathanpb.mysticis.data
 
+import dev.nathanpb.mysticis.acessors.IMysticisLivingEntity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.nbt.CompoundTag
 import kotlin.math.max
@@ -112,14 +113,15 @@ data class ManaData (
     )
 }
 
-private val manaField = LivingEntity::class.java.getDeclaredField("mysticisMana")
-private val affinityField = LivingEntity::class.java.getDeclaredField("mysticisMana")
-
 var LivingEntity.manaAffinity: ManaData
-    get() = affinityField.get(this) as ManaData
-    set(value) = affinityField.set(this, value)
+    get() = (this as IMysticisLivingEntity).mysticisAffinity
+    set(value) {
+        (this as IMysticisLivingEntity).mysticisAffinity = value
+    }
 
 var LivingEntity.mana: ManaData
-    get() = manaField.get(this) as ManaData
-    set(value) = manaField.set(this, value)
+    get() = (this as IMysticisLivingEntity).mysticisMana
+    set(value) {
+        (this as IMysticisLivingEntity).mysticisMana = value
+    }
 
