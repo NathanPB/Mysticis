@@ -3,8 +3,10 @@ package dev.nathanpb.mysticis.items
 import dev.nathanpb.mysticis.data.ManaData
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
+import kotlin.random.Random
 
 
 /*
@@ -16,7 +18,7 @@ You should have received a copy of the GNU General Public License along with thi
 */
 class FireStaff : StaffBase() {
 
-    override val manaConsumeProjectile = ManaData(fire = 2F)
+    override val manaConsumeProjectile = ManaData()
     override val manaConsumeSelf = ManaData()
     override val manaConsumeArea= ManaData()
 
@@ -25,6 +27,19 @@ class FireStaff : StaffBase() {
     }
 
     override fun onTriggeredProjectile(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
+        (0..200).forEach { _ ->
+            user.world.addParticle(
+                ParticleTypes.FLAME,
+                user.x,
+                user.y + 1.5,
+                user.z,
+                user.rotationVector.x + ((Random.nextFloat() - .5) / 1.5),
+                user.rotationVector.y + ((Random.nextFloat() - .5) / 1.5),
+                user.rotationVector.z + ((Random.nextFloat() - .5) / 1.5)
+            )
+        }
+
+
         return TypedActionResult.consume(user.getStackInHand(hand))
     }
 
