@@ -23,6 +23,18 @@ class FireStaff : StaffBase() {
     override val manaConsumeArea= ManaData()
 
     override fun onTriggeredArea(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
+        (0..100).forEach { _ ->
+            user.world.addParticle(
+                ParticleTypes.FLAME,
+                user.x + Random.nextInt(-2, 3) + (Random.nextFloat() - 0.5),
+                user.y + Random.nextInt(-3, 3)  + (Random.nextFloat() - 0.5),
+                user.z + Random.nextInt(-2, 3)  + (Random.nextFloat() - 0.5),
+                (Random.nextDouble() / 5) - .1,
+                (Random.nextDouble() / 5) - .1,
+                (Random.nextDouble() / 5) - .1
+            )
+        }
+
        return TypedActionResult.pass(user.getStackInHand(hand))
     }
 
