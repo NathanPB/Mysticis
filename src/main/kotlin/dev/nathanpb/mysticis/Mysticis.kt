@@ -9,9 +9,11 @@ import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.hud.AffinityHud
+import dev.nathanpb.mysticis.items.CrystalBase
 import dev.nathanpb.mysticis.items.registerItems
 import dev.nathanpb.mysticis.listener.*
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
+import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
@@ -33,6 +35,7 @@ fun init() {
     AffinityChangedCallback.EVENT.register(sendAffinity)
     ManaChangedCallback.EVENT.register(sendMana)
     PlayerConnectCallback.EVENT.register(manaPlayerConnect)
+    LootTableLoadingCallback.EVENT.register(CrystalBase.registerLootTables)
 
     registerItems()
 }

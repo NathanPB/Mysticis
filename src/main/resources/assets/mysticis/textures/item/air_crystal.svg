@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+        xmlns:dc="http://purl.org/dc/elements/1.1/"
+        xmlns:cc="http://creativecommons.org/ns#"
+        xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        width="1024px"
+        height="1024px"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        id="SVGRoot"
+        inkscape:version="0.92.4 5da689c313, 2019-01-14"
+        sodipodi:docname="air_crystal.svg"
+        inkscape:export-filename="/home/nathan/Desktop/air_crystal.png"
+        inkscape:export-xdpi="12"
+        inkscape:export-ydpi="12">
+  <defs
+     id="defs1018" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-2.0972491"
+     inkscape:cy="373.32154"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="725"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata1021">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#ffe680;stroke:none;stroke-width:1.33289039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 115.80204,863.02937 388.03211,852.77195 875.62653,350.29181 759.76086,53.542052 382.78783,166.01497 Z"
+       id="path996"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc" />
+    <path
+       style="fill:#ffdd55;stroke:none;stroke-width:1.33289039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0"
+       d="M 759.76086,53.542052 495.86755,205.35913 402.3977,172.25508 Z"
+       id="path998"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#ffdd55;stroke:none;stroke-width:1.33289039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 759.76086,53.542052 875.62653,350.29181 733.68934,286.26933 Z"
+       id="path1000"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#ffd42a;stroke:none;stroke-width:1.33289039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 759.76086,53.542052 515.93763,212.14063 699.3623,272.75522 Z"
+       id="path1002"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:#ffdd55;stroke:none;stroke-width:1.33289039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 402.39768,172.25508 73.87768,42.52824 -297.77663,645.88894 -62.69669,2.35711 z"
+       id="path1004"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#ffd42a;stroke:none;stroke-width:1.33289039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 510.802,231.55529 188.5603,41.19993 -450.62956,585.31107 -70.23401,2.60597 z"
+       id="path1006"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#ffdd55;stroke:none;stroke-width:1.33289039px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 875.62653,350.29181 388.03208,852.77195 248.73274,858.06629 721.34239,305.61366"
+       id="path1008"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+  </g>
+</svg>

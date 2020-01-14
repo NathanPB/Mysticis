@@ -17,3 +17,7 @@ val PACKET_MANA_CHANGED = identifier("manachanged")
 val PACKET_AFFINITY_CHANGED = identifier("affinitychanged")
 
 val ITEM_MYSTICIS = identifier("mysticis")
+val ITEM_AIR_CRYSTAL = identifier("air_crystal")
+val ITEM_FIRE_CRYSTAL = identifier("fire_crystal")
+val ITEM_WATER_CRYSTAL = identifier("water_crystal")
+val ITEM_NATURE_CRYSTAL = identifier("nature_crystal")
