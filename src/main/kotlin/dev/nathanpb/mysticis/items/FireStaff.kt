@@ -1,11 +1,14 @@
 package dev.nathanpb.mysticis.items
 
 import dev.nathanpb.mysticis.data.ManaData
+import net.minecraft.entity.EntityCategory
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.damage.DamageSource
 import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
+import net.minecraft.util.math.Box
 import kotlin.random.Random
 
 
@@ -33,6 +36,20 @@ class FireStaff : StaffBase() {
                 (Random.nextDouble() / 5) - .1,
                 (Random.nextDouble() / 5) - .1
             )
+        }
+        if(!user.world.isClient) {
+            user.world.getEntities(user, Box(user.blockPos).expand(4.0)) {
+                it is LivingEntity
+            }.forEach {
+                val damage = if(it.type.category == EntityCategory.MONSTER) {
+                    4F * ((3 - (user.world.server?.defaultDifficulty?.id ?: 0)) + 1)
+                } else {
+                    (1F + (user.world.server?.defaultDifficulty?.id ?: 0)) * 3
+                }
+
+                it.damage(DamageSource.IN_FIRE, damage)
+                it.fireTicks = 5 * 20
+            }
         }
 
        return TypedActionResult.pass(user.getStackInHand(hand))
