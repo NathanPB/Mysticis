@@ -59,7 +59,7 @@ abstract class StaffBase : RangedWeaponItem(Settings().maxCount(1).group(CREATIV
     abstract val manaConsumeArea: ManaData
 
     override fun getMaxUseTime(stack: ItemStack?): Int {
-        return 5
+        return 72000
     }
 
     override fun getProjectiles(): Predicate<ItemStack> {
@@ -75,35 +75,40 @@ abstract class StaffBase : RangedWeaponItem(Settings().maxCount(1).group(CREATIV
     abstract fun onTriggeredProjectile(user: LivingEntity, hand: Hand) : TypedActionResult<ItemStack>
 
     override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> {
-        user?.let {
-            val stack = user.getStackInHand(hand)
+        user?.setCurrentHand(Hand.MAIN_HAND)
+        return super.use(world, user, hand)
+    }
 
+    override fun usageTick(world: World?, user: LivingEntity?, stack: ItemStack?, remainingUseTicks: Int) {
+        if (user != null) {
             val cost = if (user.isSneaking) manaConsumeArea else manaConsumeProjectile
 
-            val oldMana = user.mana
-            val newMana = user.mana - cost
-            return if(!newMana.hasNegatives()) {
+            if(user is PlayerEntity) {
+                val oldMana = user.mana
+                val newMana = user.mana - cost
 
-                val result = if(user.isSneaking) {
-                    onTriggeredArea(user, hand ?: Hand.MAIN_HAND)
-                } else {
-                    user.setCurrentHand(hand)
-                    onTriggeredProjectile(user, hand ?: Hand.MAIN_HAND)
+                if(!newMana.hasNegatives()) {
+                    val result = if(user.isSneaking) {
+                        onTriggeredArea(user, Hand.MAIN_HAND)
+                    } else {
+                        onTriggeredProjectile(user, Hand.MAIN_HAND)
+                    }
+
+                    if (oldMana != newMana && result.result != ActionResult.FAIL) {
+                        user.mana = newMana
+                        ManaChangedCallback.EVENT
+                            .invoker()
+                            .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
+                    }
                 }
-
-                if(oldMana != newMana && result.result != ActionResult.FAIL) {
-                    user.mana = newMana
-                    ManaChangedCallback.EVENT
-                        .invoker()
-                        .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
-                }
-
-                result
             } else {
-                TypedActionResult.fail(stack)
+                if (user.isSneaking) {
+                    onTriggeredArea(user, Hand.MAIN_HAND)
+                } else {
+                    user.setCurrentHand(Hand.MAIN_HAND)
+                    onTriggeredProjectile(user, Hand.MAIN_HAND)
+                }
             }
         }
-
-        return super.use(world, user, hand)
     }
 }
