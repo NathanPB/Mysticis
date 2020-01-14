@@ -20,7 +20,7 @@ class FireStaff : StaffBase() {
 
     override val manaConsumeProjectile = ManaData(fire = 1F)
     override val manaConsumeSelf = ManaData()
-    override val manaConsumeArea= ManaData()
+    override val manaConsumeArea = ManaData(fire = 1.5F)
 
     override fun onTriggeredArea(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
         (0..100).forEach { _ ->
