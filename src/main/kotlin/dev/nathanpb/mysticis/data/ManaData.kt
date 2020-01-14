@@ -1,6 +1,6 @@
 package dev.nathanpb.mysticis.data
 
-import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.LivingEntity
 import net.minecraft.nbt.CompoundTag
 import kotlin.math.max
 import kotlin.math.min
@@ -112,31 +112,14 @@ data class ManaData (
     )
 }
 
-var PlayerEntity.manaAffinity: ManaData
-    get() {
-        return CompoundTag().also {
-            this.writeCustomDataToTag(it)
-        }.getCompound("mysticis.affinity")
-        .let { ManaData.loadFromTag(it) }
-    }
-    set(value) {
-        CompoundTag().also {
-            this.writeCustomDataToTag(it)
-            it.put("mysticis.affinity", value.mkCompoundTag())
-        }.let { this.readCustomDataFromTag(it) }
-    }
+private val manaField = LivingEntity::class.java.getDeclaredField("mysticisMana")
+private val affinityField = LivingEntity::class.java.getDeclaredField("mysticisMana")
 
-var PlayerEntity.mana: ManaData
-    get() {
-        return CompoundTag().also {
-            this.writeCustomDataToTag(it)
-        }.getCompound("mysticis.mana")
-            .let { ManaData.loadFromTag(it) }
-    }
-    set(value) {
-        CompoundTag().also {
-            this.writeCustomDataToTag(it)
-            it.put("mysticis.mana", value.mkCompoundTag())
-        }.let { this.readCustomDataFromTag(it) }
-    }
+var LivingEntity.manaAffinity: ManaData
+    get() = affinityField.get(this) as ManaData
+    set(value) = affinityField.set(this, value)
+
+var LivingEntity.mana: ManaData
+    get() = manaField.get(this) as ManaData
+    set(value) = manaField.set(this, value)
 
