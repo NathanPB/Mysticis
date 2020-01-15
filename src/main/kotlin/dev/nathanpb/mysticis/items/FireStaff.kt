@@ -62,6 +62,18 @@ class FireStaff : RangedStaffBase(), IContinueUsageStaff {
                     user.rotationVector.z + ((Random.nextFloat() - .5) / 1.5)
                 )
             }
+            if(!user.world.isClient) {
+                user.world.getEntities(user, Box(user.blockPos).expand(9.0).offset(user.rotationVector)) {
+                    it is LivingEntity &&
+                    it.posVector
+                        .subtract(user.posVector)
+                        .normalize()
+                        .dotProduct(user.rotationVector) >= 0.85
+                }.forEach {
+                    it.damage(DamageSource.IN_FIRE, 7F)
+                    it.fireTicks = 5 * 20
+                }
+            }
         }
         return TypedActionResult.consume(stack)
     }
