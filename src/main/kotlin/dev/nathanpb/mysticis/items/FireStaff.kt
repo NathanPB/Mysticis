@@ -52,7 +52,7 @@ class FireStaff : RangedStaffBase(), IContinueUsageStaff {
                     SoundCategory.PLAYERS,
                     1F, 1F
                 )
-                user.world.getEntities(user, Box(user.blockPos)) {
+                user.world.getEntities(user, Box(user.blockPos).expand(4.0)) {
                     it is LivingEntity
                 }.forEach {
                     it.damage(DamageSource.IN_FIRE, 7F)
