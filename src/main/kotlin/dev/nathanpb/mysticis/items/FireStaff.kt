@@ -3,14 +3,18 @@ package dev.nathanpb.mysticis.items
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaff
 import dev.nathanpb.mysticis.items.staff.RangedStaffBase
+import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.damage.DamageSource
 import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
+import net.minecraft.text.LiteralText
+import net.minecraft.text.Text
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
+import net.minecraft.world.World
 import kotlin.random.Random
 
 
@@ -22,6 +26,17 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 class FireStaff : RangedStaffBase(), IContinueUsageStaff {
+
+    override fun appendTooltip(
+        stack: ItemStack?,
+        world: World?,
+        tooltip: MutableList<Text>?,
+        context: TooltipContext?
+    ) {
+        super.appendTooltip(stack, world, tooltip, context)
+        tooltip?.add(LiteralText("§1Do you have the keys to the hotel?"))
+        tooltip?.add(LiteralText("§1Cause I'm gonna string this motherfucker on §4fire"))
+    }
 
     override fun continueUseCost(user: LivingEntity, stack: ItemStack): ManaData {
         return if(user.isSneaking) {
