@@ -7,7 +7,7 @@ import dev.nathanpb.mysticis.event.entity.PlayerTickCallback
 import dev.nathanpb.mysticis.event.gui.CrosshairRenderedCallback
 import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
-import dev.nathanpb.mysticis.event.mysticis.StaffSelfTriggeredCallback
+import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.hud.AffinityHud
 import dev.nathanpb.mysticis.items.CrystalBase
@@ -40,13 +40,13 @@ fun init() {
     ManaChangedCallback.EVENT.register(sendMana)
     PlayerConnectCallback.EVENT.register(manaPlayerConnect)
     LootTableLoadingCallback.EVENT.register(CrystalBase.registerLootTables)
-    StaffSelfTriggeredCallback.EVENT.register(StaffBase.projectileTriggeredListener)
+    StaffHitCallback.EVENT.register(StaffBase.staffHit)
 
     ServerSidePacketRegistry.INSTANCE.register(PACKET_STAFF_PROJECTILE_TRIGGERED) { context, _ ->
         context.taskQueue.execute {
             val item = context.player.getStackInHand(Hand.MAIN_HAND).item
             if (context.player.isSneaking && item is StaffBase) {
-                StaffSelfTriggeredCallback.EVENT.invoker().onTriggered(context.player)
+                StaffHitCallback.EVENT.invoker().onTriggered(context.player)
             }
         }
     }

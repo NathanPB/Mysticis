@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.mixins;
 
 import dev.nathanpb.mysticis.IdentifiersKt;
-import dev.nathanpb.mysticis.event.mysticis.StaffSelfTriggeredCallback;
+import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback;
 import dev.nathanpb.mysticis.items.StaffBase;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
@@ -30,7 +30,7 @@ public class MinecraftClientMixin {
 
     @Inject(at = @At("RETURN"), method = "doAttack")
     public void doAttack(CallbackInfo ci) {
-        StaffSelfTriggeredCallback.EVENT.invoker().onTriggered(player);
+        StaffHitCallback.EVENT.invoker().onTriggered(player);
         if (
                 player.isSneaking() &&
                 player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof StaffBase

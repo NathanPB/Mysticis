@@ -1,12 +1,13 @@
 package dev.nathanpb.mysticis.items
 
 import dev.nathanpb.mysticis.data.ManaData
+import dev.nathanpb.mysticis.items.staff.IContinueUsageStaff
+import dev.nathanpb.mysticis.items.staff.RangedStaffBase
 import net.minecraft.entity.EntityCategory
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.damage.DamageSource
 import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
-import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
 import kotlin.random.Random
@@ -19,60 +20,56 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class FireStaff : StaffBase() {
+class FireStaff : RangedStaffBase(), IContinueUsageStaff {
 
-    override val manaConsumeProjectile = ManaData(fire = 1F)
-    override val manaConsumeSelf = ManaData()
-    override val manaConsumeArea = ManaData(fire = 1.5F)
-
-    override fun onTriggeredArea(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
-        (0..100).forEach { _ ->
-            user.world.addParticle(
-                ParticleTypes.FLAME,
-                user.x + Random.nextInt(-2, 3) + (Random.nextFloat() - 0.5),
-                user.y + Random.nextInt(-3, 3)  + (Random.nextFloat() - 0.5),
-                user.z + Random.nextInt(-2, 3)  + (Random.nextFloat() - 0.5),
-                (Random.nextDouble() / 5) - .1,
-                (Random.nextDouble() / 5) - .1,
-                (Random.nextDouble() / 5) - .1
-            )
+    override fun continueUseCost(user: LivingEntity, stack: ItemStack): ManaData {
+        return if(user.isSneaking) {
+            ManaData(fire = 1.5F)
+        } else {
+            ManaData(fire = 1F)
         }
-        if(!user.world.isClient) {
-            user.world.getEntities(user, Box(user.blockPos).expand(4.0)) {
-                it is LivingEntity
-            }.forEach {
-                val damage = if(it.type.category == EntityCategory.MONSTER) {
-                    4F * ((3 - (user.world.server?.defaultDifficulty?.id ?: 0)) + 1)
-                } else {
-                    (1F + (user.world.server?.defaultDifficulty?.id ?: 0)) * 3
-                }
+    }
 
-                it.damage(DamageSource.IN_FIRE, damage)
-                it.fireTicks = 5 * 20
+    override fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
+        if(user.isSneaking) {
+            (0..100).forEach { _ ->
+                user.world.addParticle(
+                    ParticleTypes.FLAME,
+                    user.x + Random.nextInt(-2, 3) + (Random.nextFloat() - 0.5),
+                    user.y + Random.nextInt(-3, 3)  + (Random.nextFloat() - 0.5),
+                    user.z + Random.nextInt(-2, 3)  + (Random.nextFloat() - 0.5),
+                    (Random.nextDouble() / 5) - .1,
+                    (Random.nextDouble() / 5) - .1,
+                    (Random.nextDouble() / 5) - .1
+                )
+            }
+            if(!user.world.isClient) {
+                user.world.getEntities(user, Box(user.blockPos).expand(4.0)) {
+                    it is LivingEntity
+                }.forEach {
+                    val damage = if(it.type.category == EntityCategory.MONSTER) {
+                        4F * ((3 - (user.world.server?.defaultDifficulty?.id ?: 0)) + 1)
+                    } else {
+                        (1F + (user.world.server?.defaultDifficulty?.id ?: 0)) * 3
+                    }
+
+                    it.damage(DamageSource.IN_FIRE, damage)
+                    it.fireTicks = 5 * 20
+                }
+            }
+        } else {
+            (0..200).forEach { _ ->
+                user.world.addParticle(
+                    ParticleTypes.FLAME,
+                    user.x,
+                    user.y + 1.5,
+                    user.z,
+                    user.rotationVector.x + ((Random.nextFloat() - .5) / 1.5),
+                    user.rotationVector.y + ((Random.nextFloat() - .5) / 1.5),
+                    user.rotationVector.z + ((Random.nextFloat() - .5) / 1.5)
+                )
             }
         }
-
-       return TypedActionResult.pass(user.getStackInHand(hand))
-    }
-
-    override fun onTriggeredProjectile(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
-        (0..200).forEach { _ ->
-            user.world.addParticle(
-                ParticleTypes.FLAME,
-                user.x,
-                user.y + 1.5,
-                user.z,
-                user.rotationVector.x + ((Random.nextFloat() - .5) / 1.5),
-                user.rotationVector.y + ((Random.nextFloat() - .5) / 1.5),
-                user.rotationVector.z + ((Random.nextFloat() - .5) / 1.5)
-            )
-        }
-
-
-        return TypedActionResult.consume(user.getStackInHand(hand))
-    }
-
-    override fun onTriggeredSelf(user: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
-        return TypedActionResult.pass(user.getStackInHand(hand))
+        return TypedActionResult.consume(stack)
     }
 }

@@ -12,11 +12,11 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-public interface StaffSelfTriggeredCallback {
+public interface StaffHitCallback {
 
-    Event<StaffSelfTriggeredCallback> EVENT = EventFactory.createArrayBacked(StaffSelfTriggeredCallback.class,
+    Event<StaffHitCallback> EVENT = EventFactory.createArrayBacked(StaffHitCallback.class,
         listeners -> entity -> {
-            for(StaffSelfTriggeredCallback listener : listeners) {
+            for(StaffHitCallback listener : listeners) {
                 listener.onTriggered(entity);
             }
         }
