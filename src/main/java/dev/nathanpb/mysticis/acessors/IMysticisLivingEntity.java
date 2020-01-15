@@ -1,7 +1,6 @@
-package dev.nathanpb.mysticis
+package dev.nathanpb.mysticis.acessors;
 
-import net.minecraft.util.Identifier
-
+import dev.nathanpb.mysticis.data.ManaData;
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -11,15 +10,10 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-private fun identifier(id: String) = Identifier("mysticis", id)
+public interface IMysticisLivingEntity {
+    ManaData getMysticisMana();
+    void setMysticisMana(ManaData data);
 
-val PACKET_MANA_CHANGED = identifier("manachanged")
-val PACKET_AFFINITY_CHANGED = identifier("affinitychanged")
-val PACKET_STAFF_PROJECTILE_TRIGGERED = identifier("staff_self_triggered")
-
-val ITEM_MYSTICIS = identifier("mysticis")
-val ITEM_AIR_CRYSTAL = identifier("air_crystal")
-val ITEM_FIRE_CRYSTAL = identifier("fire_crystal")
-val ITEM_WATER_CRYSTAL = identifier("water_crystal")
-val ITEM_NATURE_CRYSTAL = identifier("nature_crystal")
-val ITEM_FIRE_STAFF = identifier("fire_staff")
+    ManaData getMysticisAffinity();
+    void setMysticisAffinity(ManaData data);
+}

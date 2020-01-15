@@ -13,10 +13,19 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 val ITEM_MYSTICIS = Item(Item.Settings().maxCount(1).rarity(Rarity.EPIC))
+val ITEM_AIR_CRYSTAL = CrystalBase()
+val ITEM_FIRE_CRYSTAL = CrystalBase()
+val ITEM_WATER_CRYSTAL = CrystalBase()
+val ITEM_NATURE_CRYSTAL = CrystalBase()
 val ITEM_FIRE_STAFF = FireStaff()
 
 fun registerItems() {
     mapOf(
+        Pair(dev.nathanpb.mysticis.ITEM_MYSTICIS, ITEM_MYSTICIS),
+        Pair(dev.nathanpb.mysticis.ITEM_AIR_CRYSTAL, ITEM_AIR_CRYSTAL),
+        Pair(dev.nathanpb.mysticis.ITEM_FIRE_CRYSTAL, ITEM_FIRE_CRYSTAL),
+        Pair(dev.nathanpb.mysticis.ITEM_WATER_CRYSTAL, ITEM_WATER_CRYSTAL),
+        Pair(dev.nathanpb.mysticis.ITEM_NATURE_CRYSTAL, ITEM_NATURE_CRYSTAL),
         Pair(dev.nathanpb.mysticis.ITEM_MYSTICIS, ITEM_MYSTICIS),
         Pair(dev.nathanpb.mysticis.ITEM_FIRE_STAFF, ITEM_FIRE_STAFF)
     ).forEach { (identifier, item) ->

@@ -1,5 +1,9 @@
 {
   "itemGroup.mysticis.tab_mysticis": "Mysticis",
   "item.mysticis.mysticis": "Mysticis",
+  "item.mysticis.air_crystal": "Air Crystal Shard",
+  "item.mysticis.fire_crystal": "Fire Crystal Shard",
+  "item.mysticis.water_crystal": "Water Crystal Shard",
+  "item.mysticis.nature_crystal": "Nature Crystal Shard"
   "item.mysticis.fire_staff": "Fire Staff"
 }
