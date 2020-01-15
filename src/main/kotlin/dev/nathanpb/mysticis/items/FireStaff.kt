@@ -3,7 +3,6 @@ package dev.nathanpb.mysticis.items
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaff
 import dev.nathanpb.mysticis.items.staff.RangedStaffBase
-import net.minecraft.entity.EntityCategory
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.damage.DamageSource
 import net.minecraft.item.ItemStack
@@ -47,13 +46,7 @@ class FireStaff : RangedStaffBase(), IContinueUsageStaff {
                 user.world.getEntities(user, Box(user.blockPos).expand(4.0)) {
                     it is LivingEntity
                 }.forEach {
-                    val damage = if(it.type.category == EntityCategory.MONSTER) {
-                        4F * ((3 - (user.world.server?.defaultDifficulty?.id ?: 0)) + 1)
-                    } else {
-                        (1F + (user.world.server?.defaultDifficulty?.id ?: 0)) * 3
-                    }
-
-                    it.damage(DamageSource.IN_FIRE, damage)
+                    it.damage(DamageSource.IN_FIRE, 7F)
                     it.fireTicks = 5 * 20
                 }
             }
