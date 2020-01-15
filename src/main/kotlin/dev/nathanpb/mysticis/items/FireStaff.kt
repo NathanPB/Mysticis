@@ -7,6 +7,8 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.damage.DamageSource
 import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
+import net.minecraft.sound.SoundCategory
+import net.minecraft.sound.SoundEvents
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
 import kotlin.random.Random
@@ -43,6 +45,13 @@ class FireStaff : RangedStaffBase(), IContinueUsageStaff {
                 )
             }
             if(!user.world.isClient) {
+                user.world.playSound(
+                    null,
+                    user.x, user.y, user.z,
+                    SoundEvents.BLOCK_FIRE_AMBIENT,
+                    SoundCategory.PLAYERS,
+                    1F, 1F
+                )
                 user.world.getEntities(user, Box(user.blockPos).expand(4.0)) {
                     it is LivingEntity
                 }.forEach {
@@ -63,6 +72,13 @@ class FireStaff : RangedStaffBase(), IContinueUsageStaff {
                 )
             }
             if(!user.world.isClient) {
+                user.world.playSound(
+                    null,
+                    user.x, user.y, user.z,
+                    SoundEvents.BLOCK_FIRE_AMBIENT,
+                    SoundCategory.PLAYERS,
+                    1F, 1F
+                )
                 user.world.getEntities(user, Box(user.blockPos).expand(9.0).offset(user.rotationVector)) {
                     it is LivingEntity &&
                     it.posVector
