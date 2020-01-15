@@ -60,7 +60,7 @@ class FireStaff : RangedStaffBase(), IContinueUsageStaff {
                 }
             }
         } else {
-            (0..200).forEach { _ ->
+            (0..100).forEach { _ ->
                 user.world.addParticle(
                     ParticleTypes.FLAME,
                     user.x,
