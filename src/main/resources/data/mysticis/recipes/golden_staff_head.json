@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "GCG",
+    "   "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_nugget"
+    },
+    "C": {
+      "tag": "mysticis:primary_crystals"
+    }
+  },
+  "result": {
+    "item": "mysticis:golden_staff_head",
+    "count": 1
+  }
+}

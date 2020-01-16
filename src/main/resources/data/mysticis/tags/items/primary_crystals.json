@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "mysticis:air_crystal",
+    "mysticis:fire_crystal",
+    "mysticis:water_crystal",
+    "mysticis:nature_crystal"
+  ]
+}
