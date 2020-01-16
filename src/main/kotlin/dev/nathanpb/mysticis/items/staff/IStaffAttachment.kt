@@ -1,7 +1,5 @@
 package dev.nathanpb.mysticis.items.staff
 
-import dev.nathanpb.mysticis.items.ItemBase
-
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -10,10 +8,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class GoldenStaffHead : ItemBase(), IStaffAttachment {
-    override val color = 0xFFD700
-}
-
-class IronStaffHead : ItemBase(), IStaffAttachment {
-    override val color = 0x808080
+interface IStaffAttachment {
+    val color: Int
 }
