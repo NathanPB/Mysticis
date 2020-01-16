@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "CBC",
+    " C "
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "C": {
+      "tag": "mysticis:primary_crystals"
+    }
+  },
+  "result": {
+    "item": "mysticis:bone_staff_rod",
+    "count": 1
+  }
+}

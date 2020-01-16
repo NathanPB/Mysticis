@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mysticis:item/staff/bone_staff_rod"
+  }
+}

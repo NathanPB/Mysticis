@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "ICI",
+    "   "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_nugget"
+    },
+    "C": {
+      "tag": "mysticis:primary_crystals"
+    }
+  },
+  "result": {
+    "item": "mysticis:iron_staff_head",
+    "count": 1
+  }
+}
