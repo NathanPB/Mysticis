@@ -1,6 +1,8 @@
 package dev.nathanpb.mysticis.items
 
+import dev.nathanpb.mysticis.items.staff.WoodenStaffRod
 import net.minecraft.item.Item
+import net.minecraft.util.Identifier
 import net.minecraft.util.Rarity
 import net.minecraft.util.registry.Registry
 
@@ -17,6 +19,7 @@ val ITEM_AIR_CRYSTAL = CrystalBase()
 val ITEM_FIRE_CRYSTAL = CrystalBase()
 val ITEM_WATER_CRYSTAL = CrystalBase()
 val ITEM_NATURE_CRYSTAL = CrystalBase()
+val ITEM_WOODEN_STAFF_ROD = WoodenStaffRod()
 val ITEM_FIRE_STAFF = FireStaff()
 
 fun registerItems() {
@@ -27,7 +30,8 @@ fun registerItems() {
         Pair(dev.nathanpb.mysticis.ITEM_WATER_CRYSTAL, ITEM_WATER_CRYSTAL),
         Pair(dev.nathanpb.mysticis.ITEM_NATURE_CRYSTAL, ITEM_NATURE_CRYSTAL),
         Pair(dev.nathanpb.mysticis.ITEM_MYSTICIS, ITEM_MYSTICIS),
-        Pair(dev.nathanpb.mysticis.ITEM_FIRE_STAFF, ITEM_FIRE_STAFF)
+        Pair(dev.nathanpb.mysticis.ITEM_FIRE_STAFF, ITEM_FIRE_STAFF),
+        Pair(Identifier("mysticis", "wooden_staff_rod"), ITEM_WOODEN_STAFF_ROD)
     ).forEach { (identifier, item) ->
         Registry.register(Registry.ITEM, identifier, item)
     }
