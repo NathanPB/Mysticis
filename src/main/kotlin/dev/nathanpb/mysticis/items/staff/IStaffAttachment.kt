@@ -11,3 +11,7 @@ You should have received a copy of the GNU General Public License along with thi
 interface IStaffAttachment {
     val color: Int
 }
+
+interface IStaffRod : IStaffAttachment
+interface IStaffHead : IStaffAttachment
+interface IStaffCrystal: IStaffAttachment

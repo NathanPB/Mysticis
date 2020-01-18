@@ -11,9 +11,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-class WoodenStaffRod : ItemBase(), IStaffAttachment {
+class WoodenStaffRod : ItemBase(), IStaffRod {
     override val color = 0xB1935D
 }
-class BoneStaffRod : ItemBase(), IStaffAttachment {
+class BoneStaffRod : ItemBase(), IStaffRod {
     override val color = 0x9F9C90
 }
