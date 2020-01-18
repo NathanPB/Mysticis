@@ -1,5 +1,6 @@
 package dev.nathanpb.mysticis
 
+import dev.nathanpb.mysticis.blocks.registerBlocks
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.data.manaAffinity
@@ -51,6 +52,7 @@ fun init() {
     }
 
     registerItems()
+    registerBlocks()
 }
 
 @Suppress("unused")

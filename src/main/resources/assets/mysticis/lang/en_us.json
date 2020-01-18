@@ -9,5 +9,6 @@
   "item.mysticis.wooden_staff_rod": "Wooden Staff Rod",
   "item.mysticis.bone_staff_rod": "Bone Staff Rod",
   "item.mysticis.golden_staff_head": "Golden Staff Head",
-  "item.mysticis.iron_staff_head": "Iron Staff Head"
+  "item.mysticis.iron_staff_head": "Iron Staff Head",
+  "block.mysticis.staff_assembler": "Staff Assembler Table"
 }
