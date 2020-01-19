@@ -1,0 +1,13 @@
+{
+  "type": "mysticis:staff_assembler",
+  "rod": {
+    "tag": "mysticis:staff_rods"
+  },
+  "head": {
+    "tag": "mysticis:staff_heads"
+  },
+  "crystal": {
+    "item": "minecraft:air"
+  },
+  "result": "mysticis:staff"
+}
