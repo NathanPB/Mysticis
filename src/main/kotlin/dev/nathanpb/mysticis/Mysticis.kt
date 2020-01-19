@@ -14,6 +14,8 @@ import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.hud.AffinityHud
 import dev.nathanpb.mysticis.items.*
 import dev.nathanpb.mysticis.listener.*
+import dev.nathanpb.mysticis.recipe.registerRecipeSerializers
+import dev.nathanpb.mysticis.recipe.registerRecipeTypes
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback
@@ -55,6 +57,8 @@ fun init() {
     registerItems()
     registerBlocks()
     registerBlockEntities()
+    registerRecipeSerializers()
+    registerRecipeTypes()
 }
 
 @Suppress("unused")
