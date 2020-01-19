@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License along with thi
 lateinit var WAND_ASSEMBLER_BLOCK_ENTITY: BlockEntityType<WandAssemblerEntity>
 
 private fun <E: BlockEntity>mkSupplier(clazz: KClass<E>) = Supplier {
-    clazz.primaryConstructor!!.call(null)
+    clazz.primaryConstructor!!.call()
 }
 
 private fun <E: BlockEntity, B: Block>register(block: B, entityClass: KClass<E>) = Registry.register(
