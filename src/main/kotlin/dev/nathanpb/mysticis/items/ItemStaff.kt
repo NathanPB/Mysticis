@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.items
 
 import dev.nathanpb.mysticis.items.staff.IStaffAttachment
-import dev.nathanpb.mysticis.staff.getStaffData
+import dev.nathanpb.mysticis.staff.staffData
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.nbt.CompoundTag
 
@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License along with thi
 class ItemStaff : ItemBase() {
     companion object {
         val COLOR_PROVIDER = ItemColorProvider { stack, tintIndex ->
-            val staffData = stack.getStaffData()
+            val staffData = stack.staffData
             when(tintIndex) {
                 0 -> (staffData.rod.item as IStaffAttachment).color
                 1 -> (staffData.head.item as IStaffAttachment).color
