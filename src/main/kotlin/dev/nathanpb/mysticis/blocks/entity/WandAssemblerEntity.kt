@@ -5,10 +5,15 @@ import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffHead
 import dev.nathanpb.mysticis.items.staff.IStaffRod
 import dev.nathanpb.mysticis.utils.ImplementedInventory
-import net.minecraft.block.entity.BlockEntity
+import net.minecraft.block.entity.LockableContainerBlockEntity
+import net.minecraft.container.Container
+import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventories
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.recipe.RecipeFinder
+import net.minecraft.recipe.RecipeInputProvider
+import net.minecraft.text.TranslatableText
 import net.minecraft.util.DefaultedList
 
 
@@ -19,11 +24,15 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class WandAssemblerEntity : BlockEntity(WAND_ASSEMBLER_BLOCK_ENTITY), ImplementedInventory {
+class WandAssemblerEntity :
+    LockableContainerBlockEntity(WAND_ASSEMBLER_BLOCK_ENTITY),
+    ImplementedInventory,
+    RecipeInputProvider
+{
 
-    private val _items: DefaultedList<ItemStack> = DefaultedList.ofSize(3, ItemStack.EMPTY)
+    private val items: DefaultedList<ItemStack> = DefaultedList.ofSize(3, ItemStack.EMPTY)
 
-    override fun getItems() = _items
+    override fun getItems() = items
 
     override fun isValidInvStack(slot: Int, stack: ItemStack?): Boolean {
         return stack != null && when(slot) {
@@ -34,13 +43,19 @@ class WandAssemblerEntity : BlockEntity(WAND_ASSEMBLER_BLOCK_ENTITY), Implemente
         } && items[slot].count < invMaxStackAmount
     }
 
-    override fun getInvMaxStackAmount(): Int {
-        return 1
-    }
+    override fun getContainerName() = TranslatableText("container.wand_assembler")
+
+    override fun getInvMaxStackAmount() = 1
 
     override fun fromTag(tag: CompoundTag?) {
         super.fromTag(tag)
         Inventories.fromTag(tag, items)
+    }
+
+    override fun provideRecipeInputs(recipeFinder: RecipeFinder?) {
+        this.items.forEach {
+           recipeFinder?.addItem(it)
+        }
     }
 
     override fun toTag(tag: CompoundTag?): CompoundTag {
@@ -50,5 +65,9 @@ class WandAssemblerEntity : BlockEntity(WAND_ASSEMBLER_BLOCK_ENTITY), Implemente
 
     override fun markDirty() {
         super<ImplementedInventory>.markDirty()
+    }
+
+    override fun createContainer(i: Int, playerInventory: PlayerInventory?): Container {
+        TODO("Missing Implementation")
     }
 }
