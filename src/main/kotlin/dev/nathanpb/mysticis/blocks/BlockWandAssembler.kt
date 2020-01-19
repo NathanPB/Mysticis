@@ -1,14 +1,21 @@
 package dev.nathanpb.mysticis.blocks
 
+import dev.nathanpb.mysticis.blocks.entity.WandAssemblerEntity
 import net.fabricmc.fabric.api.block.FabricBlockSettings
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.HorizontalFacingBlock
-import net.minecraft.block.Material
+import net.minecraft.block.*
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.Properties
+import net.minecraft.util.ActionResult
+import net.minecraft.util.BlockMirror
+import net.minecraft.util.BlockRotation
+import net.minecraft.util.Hand
+import net.minecraft.util.hit.BlockHitResult
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.world.BlockView
+import net.minecraft.world.World
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -18,18 +25,48 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-class BlockWandAssembler : HorizontalFacingBlock(FabricBlockSettings.of(Material.WOOD).nonOpaque().dynamicBounds().build()) {
+class BlockWandAssembler :
+    HorizontalFacingBlock(FabricBlockSettings.of(Material.WOOD).nonOpaque().dynamicBounds().build()),
+    //BlockWithEntity(FabricBlockSettings.of(Material.WOOD).nonOpaque().dynamicBounds().build()),
+    BlockEntityProvider {
 
     init {
         defaultState = stateManager.defaultState.with(Properties.HORIZONTAL_FACING, Direction.NORTH)
     }
 
     override fun getPlacementState(ctx: ItemPlacementContext?): BlockState? {
-        return defaultState.with(FACING, ctx?.playerFacing?.opposite)
+        return defaultState.with(Properties.HORIZONTAL_FACING, ctx?.playerFacing?.opposite)
     }
 
     override fun appendProperties(builder: StateManager.Builder<Block, BlockState>?) {
         super.appendProperties(builder)
         builder?.add(Properties.HORIZONTAL_FACING)
     }
+
+    override fun rotate(state: BlockState, rotation: BlockRotation): BlockState {
+        return state.with(FACING, rotation.rotate(state.get(FACING) as Direction))
+    }
+
+    override fun mirror(state: BlockState, mirror: BlockMirror): BlockState {
+        return state.rotate(mirror.getRotation(state.get(FACING) as Direction))
+    }
+
+    override fun onUse(
+        state: BlockState?,
+        world: World?,
+        pos: BlockPos?,
+        player: PlayerEntity?,
+        hand: Hand?,
+        hit: BlockHitResult?
+    ): ActionResult {
+        world?.getBlockEntity(pos)?.let { blockEntity ->
+            return if (blockEntity is WandAssemblerEntity) {
+                //TODO gui
+                ActionResult.SUCCESS
+            } else ActionResult.FAIL
+        }
+        return ActionResult.PASS
+    }
+
+    override fun createBlockEntity(view: BlockView?) = WandAssemblerEntity()
 }
