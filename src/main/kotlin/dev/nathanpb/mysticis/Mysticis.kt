@@ -2,6 +2,7 @@ package dev.nathanpb.mysticis
 
 import dev.nathanpb.mysticis.blocks.registerBlockEntities
 import dev.nathanpb.mysticis.blocks.registerBlocks
+import dev.nathanpb.mysticis.containers.registerContainers
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.data.manaAffinity
@@ -59,6 +60,7 @@ fun init() {
     registerBlockEntities()
     registerRecipeSerializers()
     registerRecipeTypes()
+    registerContainers()
 }
 
 @Suppress("unused")

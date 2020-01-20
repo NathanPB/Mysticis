@@ -1,6 +1,7 @@
 package dev.nathanpb.mysticis.blocks.entity
 
 import dev.nathanpb.mysticis.blocks.WAND_ASSEMBLER_BLOCK_ENTITY
+import dev.nathanpb.mysticis.containers.WandAssemblerContainer
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffHead
 import dev.nathanpb.mysticis.items.staff.IStaffRod
@@ -67,7 +68,7 @@ class WandAssemblerEntity :
         super<ImplementedInventory>.markDirty()
     }
 
-    override fun createContainer(i: Int, playerInventory: PlayerInventory?): Container {
-        TODO("Missing Implementation")
+    override fun createContainer(syncId: Int, playerInventory: PlayerInventory?): Container {
+       return WandAssemblerContainer(syncId, playerInventory!!, this)
     }
 }

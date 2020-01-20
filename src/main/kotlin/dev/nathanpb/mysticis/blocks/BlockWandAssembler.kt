@@ -1,10 +1,13 @@
 package dev.nathanpb.mysticis.blocks
 
 import dev.nathanpb.mysticis.blocks.entity.WandAssemblerEntity
+import dev.nathanpb.mysticis.containers.WAND_ASSEMBLER_CONTAINER_IDENTIFIER
 import net.fabricmc.fabric.api.block.FabricBlockSettings
+import net.fabricmc.fabric.api.container.ContainerProviderRegistry
 import net.minecraft.block.*
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemPlacementContext
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.Properties
 import net.minecraft.util.ActionResult
@@ -61,7 +64,11 @@ class BlockWandAssembler :
     ): ActionResult {
         world?.getBlockEntity(pos)?.let { blockEntity ->
             return if (blockEntity is WandAssemblerEntity) {
-                //TODO gui
+                if(player is ServerPlayerEntity) {
+                    ContainerProviderRegistry.INSTANCE.openContainer(WAND_ASSEMBLER_CONTAINER_IDENTIFIER, player) {
+                        it.writeBlockPos(pos)
+                    }
+                }
                 ActionResult.SUCCESS
             } else ActionResult.FAIL
         }
