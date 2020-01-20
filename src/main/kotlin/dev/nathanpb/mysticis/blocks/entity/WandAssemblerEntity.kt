@@ -30,7 +30,7 @@ class WandAssemblerEntity :
     RecipeInputProvider
 {
 
-    private val items: DefaultedList<ItemStack> = DefaultedList.ofSize(3, ItemStack.EMPTY)
+    private val items: DefaultedList<ItemStack> = DefaultedList.ofSize(4, ItemStack.EMPTY)
 
     override fun getItems() = items
 

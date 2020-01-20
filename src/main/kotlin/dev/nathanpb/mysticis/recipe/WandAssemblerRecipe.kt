@@ -50,8 +50,8 @@ class WandAssemblerRecipe(
     override fun getPreviewInputs() = inputs
 
     override fun matches(inv: Inventory?, world: World?): Boolean {
-        return inv?.invSize == 3 && inputs.withIndex().all {
-            it.value.test(inv.getInvStack(it.index))
+        return (inv?.invSize ?: 0) >= 3 && inputs.withIndex().all {
+            it.value.test(inv?.getInvStack(it.index))
        }
     }
 }
