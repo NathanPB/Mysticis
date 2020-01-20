@@ -12,6 +12,7 @@ import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
+import dev.nathanpb.mysticis.gui.registerGuis
 import dev.nathanpb.mysticis.hud.AffinityHud
 import dev.nathanpb.mysticis.items.*
 import dev.nathanpb.mysticis.listener.*
@@ -86,6 +87,8 @@ fun initClient() {
     }
 
     ColorProviderRegistry.ITEM.register(ItemStaff.COLOR_PROVIDER, ITEM_STAFF)
+
+    registerGuis()
 }
 
 val CREATIVE_TAB = FabricItemGroupBuilder.build(Identifier("mysticis", "tab_mysticis")) {
