@@ -1,6 +1,10 @@
 package dev.nathanpb.mysticis.containers
 
 import dev.nathanpb.mysticis.blocks.entity.WandAssemblerEntity
+import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import dev.nathanpb.mysticis.items.staff.IStaffHead
+import dev.nathanpb.mysticis.items.staff.IStaffRod
+import dev.nathanpb.mysticis.utils.InputRestrictedSlot
 import dev.nathanpb.mysticis.utils.OutputSlot
 import net.minecraft.container.Container
 import net.minecraft.container.Slot
@@ -22,9 +26,15 @@ class WandAssemblerContainer(
 ) : Container(null, syncId) {
 
     init {
-        (0..2).forEach { y ->
-            addSlot(Slot(blockEntity, y, 56, 6 + (y * 20)))
-        }
+        addSlot(InputRestrictedSlot(blockEntity, 0, 56, 6) {
+            it?.item is IStaffRod
+        })
+        addSlot(InputRestrictedSlot(blockEntity, 1, 56, 26) {
+            it?.item is IStaffHead
+        })
+        addSlot(InputRestrictedSlot(blockEntity, 2, 56, 26) {
+            it?.item is IStaffCrystal
+        })
 
         addSlot(OutputSlot(blockEntity, 3, 116, 26))
 
