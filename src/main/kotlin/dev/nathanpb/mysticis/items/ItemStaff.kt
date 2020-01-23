@@ -38,8 +38,8 @@ class ItemStaff : RangedWeaponItem(Item.Settings().maxCount(1).group(CREATIVE_TA
             when(tintIndex) {
                 0 -> (staffData.rod.item as IStaffAttachment).color
                 1 -> (staffData.head.item as IStaffAttachment).color
-                2 -> if(staffData.crystal != null) {
-                    (staffData.crystal as IStaffAttachment).color
+                2 -> if(staffData.crystal?.item != null) {
+                    (staffData.crystal.item as IStaffAttachment).color
                 } else {
                     0xff00bb
                 }
