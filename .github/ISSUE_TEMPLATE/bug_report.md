@@ -11,11 +11,9 @@ assignees: ''
 <!-- A clear and concise description of what the bug is. -->
 
 ### Environment
-**Mod Version:** <!-- Paste the mod version you are running after the arrow -->
-**FabricMC Version:** <!-- Paste the FabricMC loader you are using after the arrow -->
-**Mod List:** <!-- Attach screenshots of the full mods directory or some other log that lists every mod you are using and its version -->
-
-### Reproducing
+- **Mod Version:** <!-- Paste the mod version you are running after the arrow -->
+- **FabricMC Version:** <!-- Paste the FabricMC loader you are using after the arrow -->
+- **Mod List:** <!-- Attach screenshots of the full mods directory or some other log that lists every mod you are using and its version -->
 
 ### How to reproduce?
 <!-- Describe all the steps to reproduce the bug -->
