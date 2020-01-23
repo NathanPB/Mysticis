@@ -42,7 +42,7 @@ class StaffAssemblerContainer(
         addSlot(InputRestrictedSlot(blockEntity, 1, 56, 26) {
             it?.item is IStaffHead
         })
-        addSlot(InputRestrictedSlot(blockEntity, 2, 56, 26) {
+        addSlot(InputRestrictedSlot(blockEntity, 2, 56, 46) {
             it?.item is IStaffCrystal
         })
 
