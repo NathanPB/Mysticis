@@ -5,6 +5,8 @@
 - Comment complex code blocks to explain what tf you're doign
 - Any kind of documentation is welcome
 - Use the Kotlin's features properly
+- Try to fix one problem per commit
+- Be clear in your commit messages and PR descriptions
 
 
 **Make the code readable at all, no mindfuckery**
