@@ -26,7 +26,6 @@ val ITEM_WOODEN_STAFF_ROD = WoodenStaffRod()
 val ITEM_BONE_STAFF_ROD = BoneStaffRod()
 val ITEM_GOLDEN_STAFF_HEAD = GoldenStaffHead()
 val ITEM_IRON_STAFF_HEAD = IronStaffHead()
-val ITEM_FIRE_STAFF = FireStaff()
 val ITEM_STAFF = ItemStaff()
 
 fun registerItems() {
@@ -37,7 +36,6 @@ fun registerItems() {
         Pair(dev.nathanpb.mysticis.ITEM_WATER_CRYSTAL, ITEM_WATER_CRYSTAL),
         Pair(dev.nathanpb.mysticis.ITEM_NATURE_CRYSTAL, ITEM_NATURE_CRYSTAL),
         Pair(dev.nathanpb.mysticis.ITEM_MYSTICIS, ITEM_MYSTICIS),
-        Pair(dev.nathanpb.mysticis.ITEM_FIRE_STAFF, ITEM_FIRE_STAFF),
         Pair(Identifier("mysticis", "staff"), ITEM_STAFF),
         Pair(Identifier("mysticis", "wooden_staff_rod"), ITEM_WOODEN_STAFF_ROD),
         Pair(Identifier("mysticis", "bone_staff_rod"), ITEM_BONE_STAFF_ROD),

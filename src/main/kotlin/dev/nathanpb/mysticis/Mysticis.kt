@@ -14,7 +14,10 @@ import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.gui.registerGuis
 import dev.nathanpb.mysticis.hud.AffinityHud
-import dev.nathanpb.mysticis.items.*
+import dev.nathanpb.mysticis.items.CrystalBase
+import dev.nathanpb.mysticis.items.ITEM_STAFF
+import dev.nathanpb.mysticis.items.ItemStaff
+import dev.nathanpb.mysticis.items.registerItems
 import dev.nathanpb.mysticis.listener.*
 import dev.nathanpb.mysticis.recipe.registerRecipeSerializers
 import dev.nathanpb.mysticis.recipe.registerRecipeTypes
@@ -45,12 +48,12 @@ fun init() {
     ManaChangedCallback.EVENT.register(sendMana)
     PlayerConnectCallback.EVENT.register(manaPlayerConnect)
     LootTableLoadingCallback.EVENT.register(CrystalBase.registerLootTables)
-    StaffHitCallback.EVENT.register(StaffBase.staffHit)
+    StaffHitCallback.EVENT.register(ItemStaff.staffHit)
 
     ServerSidePacketRegistry.INSTANCE.register(PACKET_STAFF_PROJECTILE_TRIGGERED) { context, _ ->
         context.taskQueue.execute {
             val item = context.player.getStackInHand(Hand.MAIN_HAND).item
-            if (context.player.isSneaking && item is StaffBase) {
+            if (context.player.isSneaking && item is ItemStaff) {
                 StaffHitCallback.EVENT.invoker().onTriggered(context.player)
             }
         }

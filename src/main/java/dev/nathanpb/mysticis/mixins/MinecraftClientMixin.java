@@ -2,7 +2,7 @@ package dev.nathanpb.mysticis.mixins;
 
 import dev.nathanpb.mysticis.IdentifiersKt;
 import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback;
-import dev.nathanpb.mysticis.items.StaffBase;
+import dev.nathanpb.mysticis.items.ItemStaff;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
@@ -33,7 +33,7 @@ public class MinecraftClientMixin {
         StaffHitCallback.EVENT.invoker().onTriggered(player);
         if (
                 player.isSneaking() &&
-                player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof StaffBase
+                player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof ItemStaff
         ) {
             PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
             ClientSidePacketRegistry.INSTANCE.sendToServer(IdentifiersKt.getPACKET_STAFF_PROJECTILE_TRIGGERED(), packet);

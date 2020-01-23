@@ -1,5 +1,10 @@
 package dev.nathanpb.mysticis.items.staff
 
+import net.minecraft.client.item.TooltipContext
+import net.minecraft.item.ItemStack
+import net.minecraft.text.Text
+import net.minecraft.world.World
+
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -10,6 +15,8 @@ You should have received a copy of the GNU General Public License along with thi
 */
 interface IStaffAttachment {
     val color: Int
+
+    fun appendStaffTooltip(stack: ItemStack?, world: World?, tooltip: MutableList<Text>?, context: TooltipContext?) {  }
 }
 
 interface IStaffRod : IStaffAttachment
