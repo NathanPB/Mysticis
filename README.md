@@ -14,7 +14,7 @@ Me, [NathanPB](https://github.com/NathanPB), am the only active maintainer of th
 If you are interested in helping the project any kind of contribution is valid. It counts code, art, documentation, shares, stars, bug reports, tutorials or even just playing. **Absolutely any kind of contribution is welcome.**
 
 ## Discord
-I'm setting up a Discord guild used to discuss about Mysticis. This guild was previously used by me and my friends in the very initial discussion of the mod. Thank they all for motivating me to continue the project.
+I'm setting up a Discord guild used to discuss about Mysticis. This guild was previously used by me and my friends in the very initial discussion of the mod. **Thank they all for motivating me to continue the project.**
 
 https://discord.gg/4x2gZFJ
 
