@@ -3,7 +3,6 @@ package dev.nathanpb.mysticis.items.staff.crystals
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
-import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.damage.DamageSource
@@ -26,7 +25,7 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class ItemFireStaffCrystal : ISingleUseStaffCrystal, IContinueUsageStaffCrystal, ItemBase() {
+class ItemFireStaffCrystal : IContinueUsageStaffCrystal, ItemBase() {
     override val color = 0xFF8000
 
     override fun appendTooltip(
