@@ -1,8 +1,8 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a bug report to help us improve
 title: ''
-labels: ''
+labels: needs-review
 assignees: ''
 
 ---
@@ -13,18 +13,20 @@ assignees: ''
 ### Environment
 **Mod Version:** <!-- Paste the mod version you are running after the arrow -->
 **FabricMC Version:** <!-- Paste the FabricMC loader you are using after the arrow -->
-**Mod List:** <!-- Attach screenshots of the mods directory or some other log that lists every mod you are using and its version -->
+**Mod List:** <!-- Attach screenshots of the full mods directory or some other log that lists every mod you are using and its version -->
 
 ### Reproducing
 
-#### Is the bug reproducible? <!-- Mark one of the boxes bellow with a x -->
-    [  ] - I couldn't manage to reproduce the bug properly
-    [  ] - I already have the clear steps to reproduce the bug
-
-#### How to reproduce?
+### How to reproduce?
 <!-- Describe all the steps to reproduce the bug -->
+<!-- If you couldn't manage to reproduce the bug your issue may not be prioritized, but still reported -->
 
 ### Expected behavior
 <!-- A clear and concise description of what you expected to happen. -->
 
-<!-- If applicable, add screenshots to help explain your problem -->
+### Logs & StackTrace
+<!-- If applicable, attach the crash report file generated in ${yourGameDirectory}/crash-reports  -->
+<!-- If applicable, paste any kind of log that contains Mysticis references -->
+
+### Images
+<!-- If applicable, attach screenshots to help explain your problem -->
