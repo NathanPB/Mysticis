@@ -7,7 +7,7 @@
     "tag": "mysticis:staff_heads"
   },
   "crystal": {
-    "item": "minecraft:air"
+    "tag": "mysticis:staff_crystals"
   },
   "result": "mysticis:staff"
 }

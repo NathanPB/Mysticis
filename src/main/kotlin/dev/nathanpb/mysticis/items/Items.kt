@@ -4,6 +4,7 @@ import dev.nathanpb.mysticis.items.staff.BoneStaffRod
 import dev.nathanpb.mysticis.items.staff.GoldenStaffHead
 import dev.nathanpb.mysticis.items.staff.IronStaffHead
 import dev.nathanpb.mysticis.items.staff.WoodenStaffRod
+import dev.nathanpb.mysticis.items.staff.crystals.ItemFireStaffCrystal
 import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 import net.minecraft.util.Rarity
@@ -27,6 +28,7 @@ val ITEM_BONE_STAFF_ROD = BoneStaffRod()
 val ITEM_GOLDEN_STAFF_HEAD = GoldenStaffHead()
 val ITEM_IRON_STAFF_HEAD = IronStaffHead()
 val ITEM_STAFF = ItemStaff()
+val ITEM_FIRE_STAFF_CRYSTAL = ItemFireStaffCrystal()
 
 fun registerItems() {
     mapOf(
@@ -40,7 +42,8 @@ fun registerItems() {
         Pair(Identifier("mysticis", "wooden_staff_rod"), ITEM_WOODEN_STAFF_ROD),
         Pair(Identifier("mysticis", "bone_staff_rod"), ITEM_BONE_STAFF_ROD),
         Pair(Identifier("mysticis", "golden_staff_head"), ITEM_GOLDEN_STAFF_HEAD),
-        Pair(Identifier("mysticis", "iron_staff_head"), ITEM_IRON_STAFF_HEAD)
+        Pair(Identifier("mysticis", "iron_staff_head"), ITEM_IRON_STAFF_HEAD),
+        Pair(Identifier("mysticis", "fire_staff_crystal"), ITEM_FIRE_STAFF_CRYSTAL)
     ).forEach { (identifier, item) ->
         Registry.register(Registry.ITEM, identifier, item)
     }
