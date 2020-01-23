@@ -94,7 +94,12 @@
 	"display": {
 		"firstperson_righthand": {
 			"rotation": [-15, 0, 0]
-		}
+        },
+        "gui": {
+          "rotation": [-31, 69, 51],
+          "translation": [1.75, -3, 0],
+          "scale": [0.65, 0.65, 0.65]
+        }
 	},
 	"groups": [0, 1,
 		{
