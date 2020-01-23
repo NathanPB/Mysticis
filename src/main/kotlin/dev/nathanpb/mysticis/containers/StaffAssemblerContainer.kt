@@ -1,6 +1,6 @@
 package dev.nathanpb.mysticis.containers
 
-import dev.nathanpb.mysticis.blocks.entity.WandAssemblerEntity
+import dev.nathanpb.mysticis.blocks.entity.StaffAssemblerEntity
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffHead
 import dev.nathanpb.mysticis.items.staff.IStaffRod
@@ -29,10 +29,10 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class WandAssemblerContainer(
+class StaffAssemblerContainer(
     syncId: Int,
     val playerInventory: PlayerInventory,
-    private val blockEntity: WandAssemblerEntity
+    private val blockEntity: StaffAssemblerEntity
 ) : CraftingContainer<Inventory>(null, syncId) {
 
     init {
@@ -49,7 +49,7 @@ class WandAssemblerContainer(
         addSlot(object: OutputSlot(blockEntity, 3, 116, 26) {
             override fun onTakeItem(playerEntity_1: PlayerEntity?, itemStack_1: ItemStack?): ItemStack? {
                 (0..2).forEach {
-                    this@WandAssemblerContainer.slotList[it]?.let { slot ->
+                    this@StaffAssemblerContainer.slotList[it]?.let { slot ->
                         slot.stack.decrement(1)
                     }
                 }
@@ -81,8 +81,8 @@ class WandAssemblerContainer(
             }
 
             override fun onContainerSlotUpdate(container: Container?, slotId: Int, itemStack: ItemStack?) {
-                if (container == this@WandAssemblerContainer && slotId <= 3) {
-                   this@WandAssemblerContainer.onContentChanged(blockEntity)
+                if (container == this@StaffAssemblerContainer && slotId <= 3) {
+                   this@StaffAssemblerContainer.onContentChanged(blockEntity)
                 }
             }
         })

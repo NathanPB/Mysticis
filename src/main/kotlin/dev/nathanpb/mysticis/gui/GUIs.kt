@@ -1,8 +1,8 @@
 package dev.nathanpb.mysticis.gui
 
-import dev.nathanpb.mysticis.blocks.entity.WandAssemblerEntity
-import dev.nathanpb.mysticis.containers.WAND_ASSEMBLER_CONTAINER_IDENTIFIER
-import dev.nathanpb.mysticis.containers.WandAssemblerContainer
+import dev.nathanpb.mysticis.blocks.entity.StaffAssemblerEntity
+import dev.nathanpb.mysticis.containers.STAFF_ASSEMBLER_CONTAINER_IDENTIFIER
+import dev.nathanpb.mysticis.containers.StaffAssemblerContainer
 import net.fabricmc.fabric.api.client.screen.ScreenProviderRegistry
 
 
@@ -15,10 +15,10 @@ You should have received a copy of the GNU General Public License along with thi
 */
 
 fun registerGuis() {
-    ScreenProviderRegistry.INSTANCE.registerFactory(WAND_ASSEMBLER_CONTAINER_IDENTIFIER) {
+    ScreenProviderRegistry.INSTANCE.registerFactory(STAFF_ASSEMBLER_CONTAINER_IDENTIFIER) {
         syncId, _, player, buf ->
-        val entity = player.world.getBlockEntity(buf.readBlockPos()) as WandAssemblerEntity
-        StaffAssemblerGui(WandAssemblerContainer(syncId, player.inventory, entity))
+        val entity = player.world.getBlockEntity(buf.readBlockPos()) as StaffAssemblerEntity
+        StaffAssemblerGui(StaffAssemblerContainer(syncId, player.inventory, entity))
 
     }
 }

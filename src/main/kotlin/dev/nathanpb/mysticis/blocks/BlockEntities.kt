@@ -1,6 +1,6 @@
 package dev.nathanpb.mysticis.blocks
 
-import dev.nathanpb.mysticis.blocks.entity.WandAssemblerEntity
+import dev.nathanpb.mysticis.blocks.entity.StaffAssemblerEntity
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.BlockEntityType
@@ -18,7 +18,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-lateinit var WAND_ASSEMBLER_BLOCK_ENTITY: BlockEntityType<WandAssemblerEntity>
+lateinit var staffAssemblerBlockEntity: BlockEntityType<StaffAssemblerEntity>
 
 private fun <E: BlockEntity>mkSupplier(clazz: KClass<E>) = Supplier {
     clazz.primaryConstructor!!.call()
@@ -31,5 +31,5 @@ private fun <E: BlockEntity, B: Block>register(block: B, entityClass: KClass<E>)
 )
 
 fun registerBlockEntities() {
-    WAND_ASSEMBLER_BLOCK_ENTITY = register(BLOCK_WAND_ASSEMBLER, WandAssemblerEntity::class)
+    staffAssemblerBlockEntity = register(BLOCK_STAFF_ASSEMBLER, StaffAssemblerEntity::class)
 }

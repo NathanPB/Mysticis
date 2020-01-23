@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.gui
 
 import com.mojang.blaze3d.platform.GlStateManager
-import dev.nathanpb.mysticis.containers.WandAssemblerContainer
+import dev.nathanpb.mysticis.containers.StaffAssemblerContainer
 import net.minecraft.client.gui.screen.ingame.AbstractContainerScreen
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
@@ -15,11 +15,11 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 class StaffAssemblerGui(
-    container: WandAssemblerContainer
-) : AbstractContainerScreen<WandAssemblerContainer>(
+    container: StaffAssemblerContainer
+) : AbstractContainerScreen<StaffAssemblerContainer>(
     container,
     container.playerInventory,
-    TranslatableText("wand_assembler")
+    TranslatableText("staff_assembler")
 ) {
     override fun drawBackground(delta: Float, mouseX: Int, mouseY: Int) {
         GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f)

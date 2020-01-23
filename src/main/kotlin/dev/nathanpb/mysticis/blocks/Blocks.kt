@@ -14,11 +14,11 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-val BLOCK_WAND_ASSEMBLER = BlockWandAssembler()
+val BLOCK_STAFF_ASSEMBLER = BlockStaffAssembler()
 
 fun registerBlocks() {
     hashMapOf(
-        "staff_assembler" to BLOCK_WAND_ASSEMBLER
+        "staff_assembler" to BLOCK_STAFF_ASSEMBLER
     ).forEach { (id, block) ->
         val identifier = Identifier("mysticis", id)
         Registry.register(Registry.BLOCK, identifier, block)

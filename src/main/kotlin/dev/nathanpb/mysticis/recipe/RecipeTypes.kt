@@ -13,7 +13,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-lateinit var STAFF_ASSEMBLER: RecipeType<WandAssemblerRecipe>
+lateinit var STAFF_ASSEMBLER: RecipeType<StaffAssemblerRecipe>
 
 private fun <T : Recipe<*>?> register(id: String) = Registry.register(
     Registry.RECIPE_TYPE,

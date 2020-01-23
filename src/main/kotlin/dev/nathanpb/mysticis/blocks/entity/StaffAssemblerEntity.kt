@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.blocks.entity
 
-import dev.nathanpb.mysticis.blocks.WAND_ASSEMBLER_BLOCK_ENTITY
-import dev.nathanpb.mysticis.containers.WandAssemblerContainer
+import dev.nathanpb.mysticis.blocks.staffAssemblerBlockEntity
+import dev.nathanpb.mysticis.containers.StaffAssemblerContainer
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffHead
 import dev.nathanpb.mysticis.items.staff.IStaffRod
@@ -25,8 +25,8 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class WandAssemblerEntity :
-    LockableContainerBlockEntity(WAND_ASSEMBLER_BLOCK_ENTITY),
+class StaffAssemblerEntity :
+    LockableContainerBlockEntity(staffAssemblerBlockEntity),
     ImplementedInventory,
     RecipeInputProvider
 {
@@ -44,7 +44,7 @@ class WandAssemblerEntity :
         } && items[slot].count < invMaxStackAmount
     }
 
-    override fun getContainerName() = TranslatableText("container.wand_assembler")
+    override fun getContainerName() = TranslatableText("container.staff_assembler")
 
     override fun getInvMaxStackAmount() = 1
 
@@ -69,6 +69,6 @@ class WandAssemblerEntity :
     }
 
     override fun createContainer(syncId: Int, playerInventory: PlayerInventory?): Container {
-       return WandAssemblerContainer(syncId, playerInventory!!, this)
+       return StaffAssemblerContainer(syncId, playerInventory!!, this)
     }
 }

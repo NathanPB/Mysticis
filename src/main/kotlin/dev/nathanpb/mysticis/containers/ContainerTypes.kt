@@ -1,6 +1,6 @@
 package dev.nathanpb.mysticis.containers
 
-import dev.nathanpb.mysticis.blocks.entity.WandAssemblerEntity
+import dev.nathanpb.mysticis.blocks.entity.StaffAssemblerEntity
 import net.fabricmc.fabric.api.container.ContainerFactory
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry
 import net.minecraft.container.Container
@@ -15,18 +15,18 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-val WAND_ASSEMBLER_CONTAINER_IDENTIFIER = Identifier("mysticis", "wand_assembler")
+val STAFF_ASSEMBLER_CONTAINER_IDENTIFIER = Identifier("mysticis", "staff_assembler")
 
 private fun register(id: Identifier, factory: ContainerFactory<Container>) {
     ContainerProviderRegistry.INSTANCE.registerFactory(id, factory)
 }
 
 fun registerContainers() {
-    register(WAND_ASSEMBLER_CONTAINER_IDENTIFIER, ContainerFactory {
+    register(STAFF_ASSEMBLER_CONTAINER_IDENTIFIER, ContainerFactory {
         syncId, _, player, buf ->
-        WandAssemblerContainer(
+        StaffAssemblerContainer(
             syncId, player.inventory,
-            (player.world.getBlockEntity(buf.readBlockPos()) as WandAssemblerEntity)
+            (player.world.getBlockEntity(buf.readBlockPos()) as StaffAssemblerEntity)
         )
     })
 }

@@ -1,6 +1,6 @@
 package dev.nathanpb.mysticis.recipe
 
-import dev.nathanpb.mysticis.recipe.serializers.WandAssemblerRecipeSerializer
+import dev.nathanpb.mysticis.recipe.serializers.StaffAssemblerRecipeSerializer
 import net.minecraft.recipe.Recipe
 import net.minecraft.recipe.RecipeSerializer
 import net.minecraft.util.registry.Registry
@@ -14,7 +14,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-lateinit var STAFF_ASSEMBLER_SERIALIZER: RecipeSerializer<WandAssemblerRecipe>
+lateinit var STAFF_ASSEMBLER_SERIALIZER: RecipeSerializer<StaffAssemblerRecipe>
 
 private fun <S: RecipeSerializer<T>, T: Recipe<*>>register(id: String, serializer: S) = Registry.register(
     Registry.RECIPE_SERIALIZER,
@@ -23,5 +23,5 @@ private fun <S: RecipeSerializer<T>, T: Recipe<*>>register(id: String, serialize
 )
 
 fun registerRecipeSerializers() {
-    STAFF_ASSEMBLER_SERIALIZER = register("staff_assembler", WandAssemblerRecipeSerializer())
+    STAFF_ASSEMBLER_SERIALIZER = register("staff_assembler", StaffAssemblerRecipeSerializer())
 }

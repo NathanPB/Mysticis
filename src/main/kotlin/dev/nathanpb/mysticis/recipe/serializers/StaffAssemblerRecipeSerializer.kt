@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.recipe.serializers
 
 import com.google.gson.JsonObject
-import dev.nathanpb.mysticis.recipe.WandAssemblerRecipe
+import dev.nathanpb.mysticis.recipe.StaffAssemblerRecipe
 import net.minecraft.item.ItemStack
 import net.minecraft.recipe.Ingredient
 import net.minecraft.recipe.RecipeSerializer
@@ -18,8 +18,8 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class WandAssemblerRecipeSerializer : RecipeSerializer<WandAssemblerRecipe> {
-    override fun write(buf: PacketByteBuf?, recipe: WandAssemblerRecipe?) {
+class StaffAssemblerRecipeSerializer : RecipeSerializer<StaffAssemblerRecipe> {
+    override fun write(buf: PacketByteBuf?, recipe: StaffAssemblerRecipe?) {
         if (buf != null && recipe != null) {
             recipe.previewInputs.forEach {
                 it.write(buf)
@@ -28,7 +28,7 @@ class WandAssemblerRecipeSerializer : RecipeSerializer<WandAssemblerRecipe> {
         }
     }
 
-    override fun read(id: Identifier?, json: JsonObject?): WandAssemblerRecipe {
+    override fun read(id: Identifier?, json: JsonObject?): StaffAssemblerRecipe {
         val input = DefaultedList.ofSize(3, Ingredient.EMPTY)
         json?.let {
             arrayOf("rod", "head", "crystal").forEachIndexed { index, key ->
@@ -47,10 +47,10 @@ class WandAssemblerRecipeSerializer : RecipeSerializer<WandAssemblerRecipe> {
         } ?: ItemStack.EMPTY
 
 
-        return WandAssemblerRecipe(id!!, input, output)
+        return StaffAssemblerRecipe(id!!, input, output)
     }
 
-    override fun read(id: Identifier?, buf: PacketByteBuf?): WandAssemblerRecipe {
+    override fun read(id: Identifier?, buf: PacketByteBuf?): StaffAssemblerRecipe {
         val input = DefaultedList.ofSize(3, Ingredient.EMPTY)
         buf?.let {
             0.until(input.size).forEach { index ->
@@ -60,7 +60,7 @@ class WandAssemblerRecipeSerializer : RecipeSerializer<WandAssemblerRecipe> {
 
         val output = buf?.readItemStack()
 
-        return WandAssemblerRecipe(id!!, input, output ?: ItemStack.EMPTY)
+        return StaffAssemblerRecipe(id!!, input, output ?: ItemStack.EMPTY)
     }
 
 }

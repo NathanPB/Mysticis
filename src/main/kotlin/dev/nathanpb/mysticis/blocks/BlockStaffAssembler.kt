@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.blocks
 
-import dev.nathanpb.mysticis.blocks.entity.WandAssemblerEntity
-import dev.nathanpb.mysticis.containers.WAND_ASSEMBLER_CONTAINER_IDENTIFIER
+import dev.nathanpb.mysticis.blocks.entity.StaffAssemblerEntity
+import dev.nathanpb.mysticis.containers.STAFF_ASSEMBLER_CONTAINER_IDENTIFIER
 import net.fabricmc.fabric.api.block.FabricBlockSettings
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry
 import net.minecraft.block.*
@@ -28,7 +28,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-class BlockWandAssembler :
+class BlockStaffAssembler :
     HorizontalFacingBlock(FabricBlockSettings.of(Material.WOOD).nonOpaque().dynamicBounds().build()),
     //BlockWithEntity(FabricBlockSettings.of(Material.WOOD).nonOpaque().dynamicBounds().build()),
     BlockEntityProvider {
@@ -63,9 +63,9 @@ class BlockWandAssembler :
         hit: BlockHitResult?
     ): ActionResult {
         world?.getBlockEntity(pos)?.let { blockEntity ->
-            return if (blockEntity is WandAssemblerEntity) {
+            return if (blockEntity is StaffAssemblerEntity) {
                 if(player is ServerPlayerEntity) {
-                    ContainerProviderRegistry.INSTANCE.openContainer(WAND_ASSEMBLER_CONTAINER_IDENTIFIER, player) {
+                    ContainerProviderRegistry.INSTANCE.openContainer(STAFF_ASSEMBLER_CONTAINER_IDENTIFIER, player) {
                         it.writeBlockPos(pos)
                     }
                 }
@@ -75,5 +75,5 @@ class BlockWandAssembler :
         return ActionResult.PASS
     }
 
-    override fun createBlockEntity(view: BlockView?) = WandAssemblerEntity()
+    override fun createBlockEntity(view: BlockView?) = StaffAssemblerEntity()
 }
