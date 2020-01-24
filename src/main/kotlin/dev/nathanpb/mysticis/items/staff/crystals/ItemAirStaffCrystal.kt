@@ -5,6 +5,9 @@ import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.util.TypedActionResult
+import net.minecraft.util.math.Box
+import kotlin.random.Random
 
 
 /*
@@ -23,5 +26,32 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ItemBase() {
         } else {
             ManaData(air = 1F)
         }
+    }
+
+
+    override fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
+        if(user.isSneaking) {
+            if (!user.world.isClient) {
+                // TODO AoE implementation
+            }
+        } else {
+            if(!user.world.isClient) {
+                // TODO sound and particle effects
+                user.world.getEntities(user, Box(user.blockPos).expand(9.0).offset(user.rotationVector)) {
+                    it is LivingEntity &&
+                            it.posVector
+                                .subtract(user.posVector)
+                                .normalize()
+                                .dotProduct(user.rotationVector) >= 0.85
+                }.forEach {
+                    it.setVelocity(
+                        user.rotationVector.x + ((Random.nextFloat() - .5) / 1.5),
+                        user.rotationVector.y + ((Random.nextFloat() - .5) / 1.5),
+                        user.rotationVector.z + ((Random.nextFloat() - .5) / 1.5)
+                    )
+                }
+            }
+        }
+        return TypedActionResult.consume(stack)
     }
 }
