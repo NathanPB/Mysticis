@@ -32,19 +32,26 @@ val ITEM_FIRE_STAFF_CRYSTAL = ItemFireStaffCrystal()
 
 fun registerItems() {
     mapOf(
-        Pair(dev.nathanpb.mysticis.ITEM_MYSTICIS, ITEM_MYSTICIS),
-        Pair(dev.nathanpb.mysticis.ITEM_AIR_CRYSTAL, ITEM_AIR_CRYSTAL),
-        Pair(dev.nathanpb.mysticis.ITEM_FIRE_CRYSTAL, ITEM_FIRE_CRYSTAL),
-        Pair(dev.nathanpb.mysticis.ITEM_WATER_CRYSTAL, ITEM_WATER_CRYSTAL),
-        Pair(dev.nathanpb.mysticis.ITEM_NATURE_CRYSTAL, ITEM_NATURE_CRYSTAL),
-        Pair(dev.nathanpb.mysticis.ITEM_MYSTICIS, ITEM_MYSTICIS),
-        Pair(Identifier("mysticis", "staff"), ITEM_STAFF),
-        Pair(Identifier("mysticis", "wooden_staff_rod"), ITEM_WOODEN_STAFF_ROD),
-        Pair(Identifier("mysticis", "bone_staff_rod"), ITEM_BONE_STAFF_ROD),
-        Pair(Identifier("mysticis", "golden_staff_head"), ITEM_GOLDEN_STAFF_HEAD),
-        Pair(Identifier("mysticis", "iron_staff_head"), ITEM_IRON_STAFF_HEAD),
-        Pair(Identifier("mysticis", "fire_staff_crystal"), ITEM_FIRE_STAFF_CRYSTAL)
+        "mysticis" to ITEM_MYSTICIS,
+        "staff" to ITEM_STAFF,
+
+        // Generic Crystals
+        "air_crystal" to ITEM_AIR_CRYSTAL,
+        "fire_crystal" to ITEM_FIRE_CRYSTAL,
+        "water_crystal" to ITEM_WATER_CRYSTAL,
+        "nature_crystal" to ITEM_NATURE_CRYSTAL,
+
+        // Staff Rods
+        "wooden_staff_rod" to ITEM_WOODEN_STAFF_ROD,
+        "bone_staff_rod" to ITEM_BONE_STAFF_ROD,
+
+        // Staff Heads
+        "golden_staff_head" to ITEM_GOLDEN_STAFF_HEAD,
+        "iron_staff_head" to ITEM_IRON_STAFF_HEAD,
+
+        // Staff Crystals
+        "fire_staff_crystal" to ITEM_FIRE_STAFF_CRYSTAL
     ).forEach { (identifier, item) ->
-        Registry.register(Registry.ITEM, identifier, item)
+        Registry.register(Registry.ITEM, Identifier("mysticis", identifier), item)
     }
 }
