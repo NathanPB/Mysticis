@@ -1,4 +1,4 @@
-package dev.nathanpb.mysticis.staff
+package dev.nathanpb.mysticis.data
 
 import dev.nathanpb.mysticis.InvalidStaffException
 import dev.nathanpb.mysticis.items.ITEM_GOLDEN_STAFF_HEAD

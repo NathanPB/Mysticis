@@ -2,13 +2,13 @@ package dev.nathanpb.mysticis.items
 
 import dev.nathanpb.mysticis.CREATIVE_TAB
 import dev.nathanpb.mysticis.data.mana
+import dev.nathanpb.mysticis.data.staffData
 import dev.nathanpb.mysticis.enums.ManaChangedCause
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
 import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffAttachment
-import dev.nathanpb.mysticis.staff.staffData
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity

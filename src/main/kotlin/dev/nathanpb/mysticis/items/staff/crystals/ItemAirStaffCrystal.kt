@@ -1,9 +1,9 @@
 package dev.nathanpb.mysticis.items.staff.crystals
 
 import dev.nathanpb.mysticis.data.ManaData
+import dev.nathanpb.mysticis.data.staffData
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
-import dev.nathanpb.mysticis.staff.staffData
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack

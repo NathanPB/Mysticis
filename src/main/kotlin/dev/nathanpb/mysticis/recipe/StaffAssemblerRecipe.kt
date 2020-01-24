@@ -1,8 +1,8 @@
 package dev.nathanpb.mysticis.recipe
 
+import dev.nathanpb.mysticis.data.StaffData
+import dev.nathanpb.mysticis.data.staffData
 import dev.nathanpb.mysticis.items.ITEM_MYSTICIS
-import dev.nathanpb.mysticis.staff.StaffData
-import dev.nathanpb.mysticis.staff.staffData
 import net.minecraft.inventory.Inventory
 import net.minecraft.item.ItemStack
 import net.minecraft.recipe.Ingredient
