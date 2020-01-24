@@ -7,6 +7,8 @@ import dev.nathanpb.mysticis.staff.staffData
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.sound.SoundCategory
+import net.minecraft.sound.SoundEvents
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -36,6 +38,14 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ItemBase() {
         if(user.isSneaking) {
             if(user is PlayerEntity) {
                 if (user.itemCooldownManager.isCoolingDown(stack.staffData.crystal?.item)) {
+                    if(user.world.isClient) {
+                        user.world.playSound(
+                            user, user.x, user.y, user.z,
+                            SoundEvents.BLOCK_LAVA_EXTINGUISH,
+                            SoundCategory.PLAYERS,
+                            1F, 1F
+                        )
+                    }
                     return TypedActionResult.fail(stack)
                 } else {
                     user.itemCooldownManager.set(stack.staffData.crystal?.item, 320)
