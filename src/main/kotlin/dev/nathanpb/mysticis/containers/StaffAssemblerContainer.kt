@@ -36,14 +36,14 @@ class StaffAssemblerContainer(
 ) : CraftingContainer<Inventory>(null, syncId) {
 
     init {
-        addSlot(InputRestrictedSlot(blockEntity, 0, 56, 6) {
-            it?.item is IStaffRod
+        addSlot(InputRestrictedSlot(blockEntity, 2, 56, 6) {
+            it?.item is IStaffCrystal
         })
         addSlot(InputRestrictedSlot(blockEntity, 1, 56, 26) {
             it?.item is IStaffHead
         })
-        addSlot(InputRestrictedSlot(blockEntity, 2, 56, 46) {
-            it?.item is IStaffCrystal
+        addSlot(InputRestrictedSlot(blockEntity, 0, 56, 46) {
+            it?.item is IStaffRod
         })
 
         addSlot(object: OutputSlot(blockEntity, 3, 116, 26) {
