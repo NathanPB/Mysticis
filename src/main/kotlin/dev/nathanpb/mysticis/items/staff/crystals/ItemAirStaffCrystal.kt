@@ -1,7 +1,10 @@
 package dev.nathanpb.mysticis.items.staff.crystals
 
+import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
+import net.minecraft.entity.LivingEntity
+import net.minecraft.item.ItemStack
 
 
 /*
@@ -13,4 +16,12 @@ You should have received a copy of the GNU General Public License along with thi
 */
 class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ItemBase() {
     override val color = 0xFFFA66
+
+    override fun continueUseCost(user: LivingEntity, stack: ItemStack): ManaData {
+        return if(user.isSneaking) {
+            ManaData(air = 1.5F)
+        } else {
+            ManaData(air = 1F)
+        }
+    }
 }
