@@ -135,6 +135,8 @@ class ItemStaff : RangedWeaponItem(Item.Settings().maxCount(1).group(CREATIVE_TA
                             ManaChangedCallback.EVENT
                                 .invoker()
                                 .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
+                        } else if (result == ActionResult.FAIL) {
+                            user.stopUsingItem()
                         }
                     }
                 }
