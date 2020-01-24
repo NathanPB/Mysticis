@@ -3,7 +3,9 @@ package dev.nathanpb.mysticis.items.staff.crystals
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
+import dev.nathanpb.mysticis.staff.staffData
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
@@ -32,6 +34,14 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ItemBase() {
 
     override fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
         if(user.isSneaking) {
+            if(user is PlayerEntity) {
+                if (user.itemCooldownManager.isCoolingDown(stack.staffData.crystal?.item)) {
+                    return TypedActionResult.fail(stack)
+                } else {
+                    user.itemCooldownManager.set(stack.staffData.crystal?.item, 320)
+                }
+            }
+
             if (!user.world.isClient) {
                 // TODO sound and particle effects
                 user.world.getEntities(user, Box(user.blockPos).expand(5.0)) {
