@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
+import net.minecraft.util.math.Vec3d
 import kotlin.random.Random
 
 
@@ -32,7 +33,17 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ItemBase() {
     override fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
         if(user.isSneaking) {
             if (!user.world.isClient) {
-                // TODO AoE implementation
+                // TODO sound and particle effects
+                user.world.getEntities(user, Box(user.blockPos).expand(5.0)) {
+                    it is LivingEntity
+                }.forEach {
+                    val vector = it.posVector.subtract(user.posVector.subtract(Vec3d(0.0, 0.5, 0.0)))
+                    it.setVelocity(
+                        vector.x,
+                        vector.y,
+                        vector.z
+                    )
+                }
             }
         } else {
             if(!user.world.isClient) {
