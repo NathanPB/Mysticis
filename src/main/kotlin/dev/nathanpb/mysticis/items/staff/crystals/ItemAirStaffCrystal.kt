@@ -4,7 +4,10 @@ import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.staffData
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
+import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import net.minecraft.block.Block
+import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
@@ -23,7 +26,7 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class ItemAirStaffCrystal : IContinueUsageStaffCrystal, IStaffCrystal, ItemBase() {
+class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, IStaffCrystal, ItemBase() {
     override val color = 0xFFFA66
 
     override fun continueUseCost(user: LivingEntity, stack: ItemStack): ManaData {
@@ -31,6 +34,14 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, IStaffCrystal, ItemBase(
             ManaData(air = 1.5F)
         } else {
             ManaData(air = 1F)
+        }
+    }
+
+    override fun singleHitCost(user: LivingEntity, stack: ItemStack, block: Block?, entity: Entity?): ManaData {
+        return if (user.isSneaking) {
+            ManaData(air = 5F)
+        } else {
+            super.singleHitCost(user, stack, block, entity)
         }
     }
 
@@ -85,5 +96,21 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, IStaffCrystal, ItemBase(
             }
         }
         return TypedActionResult.consume(stack)
+    }
+
+    override fun onSingleHit(
+        user: LivingEntity,
+        stack: ItemStack,
+        block: Block?,
+        entity: Entity?
+    ): TypedActionResult<ItemStack> {
+        return if (user.isSneaking) {
+            // TODO sound and particle effects
+            // TODO cooldown
+            user.velocity = user.rotationVector.multiply(2.0, 1.0, 2.0)
+            TypedActionResult.consume(stack)
+        } else {
+            super.onSingleHit(user, stack, block, entity)
+        }
     }
 }
