@@ -70,7 +70,9 @@ class ItemStaff : RangedWeaponItem(Item.Settings().maxCount(1).group(CREATIVE_TA
     }
 
     override fun postProcessTag(tag: CompoundTag?): Boolean {
-        tag?.getCompound("tag")?.put("mysticis.staff", CompoundTag())
+        if (tag?.getCompound("tag")?.contains("mysticis.staff", 10) == false) {
+            tag.getCompound("tag").put("mysticis.staff", CompoundTag())
+        }
         return super.postProcessTag(tag)
     }
 
