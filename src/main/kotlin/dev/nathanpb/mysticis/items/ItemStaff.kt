@@ -1,6 +1,7 @@
 package dev.nathanpb.mysticis.items
 
 import dev.nathanpb.mysticis.CREATIVE_TAB
+import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.data.staffData
 import dev.nathanpb.mysticis.enums.ManaChangedCause
@@ -12,7 +13,6 @@ import dev.nathanpb.mysticis.items.staff.IStaffAttachment
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.RangedWeaponItem
 import net.minecraft.nbt.CompoundTag
@@ -31,7 +31,7 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class ItemStaff : RangedWeaponItem(Item.Settings().maxCount(1).group(CREATIVE_TAB)) {
+class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     companion object {
         val COLOR_PROVIDER = ItemColorProvider { stack, tintIndex ->
             val staffData = stack.staffData
@@ -52,7 +52,11 @@ class ItemStaff : RangedWeaponItem(Item.Settings().maxCount(1).group(CREATIVE_TA
             val item = stack.item
 
             if (item is ISingleUseStaffCrystal) {
-                val cost = item.singleUseCost(it, stack, null, null)
+                val cost = if (it is PlayerEntity && it.isCreative) {
+                    ManaData()
+                } else {
+                    item.singleUseCost(it, stack, null, null)
+                }
                 val oldMana = it.mana
                 val newMana = it.mana - cost
 
@@ -99,7 +103,11 @@ class ItemStaff : RangedWeaponItem(Item.Settings().maxCount(1).group(CREATIVE_TA
         user?.let {
             stack?.staffData?.crystal?.item?.let { crystalItem ->
                 if (crystalItem is ISingleUseStaffCrystal) {
-                    val cost = crystalItem.singleUseCost(user, stack, null,target)
+                    val cost = if (user is PlayerEntity && user.isCreative) {
+                        ManaData()
+                    } else {
+                        crystalItem.singleUseCost(user, stack, null,target)
+                    }
                     val oldMana = user.mana
                     val newMana = oldMana - cost
 
@@ -125,7 +133,11 @@ class ItemStaff : RangedWeaponItem(Item.Settings().maxCount(1).group(CREATIVE_TA
         user?.let {
             stack?.staffData?.crystal?.item?.let { crystalItem ->
                 if (crystalItem is IContinueUsageStaffCrystal) {
-                    val cost = crystalItem.continueUseCost(user, stack)
+                    val cost =  if (user is PlayerEntity && user.isCreative) {
+                        ManaData()
+                    } else {
+                        crystalItem.continueUseCost(user, stack)
+                    }
                     val oldMana = user.mana
                     val newMana = oldMana - cost
 
