@@ -11,11 +11,14 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.particle.ParticleTypes
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlin.random.Random
 
 
@@ -76,6 +79,22 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
                         vector.z
                     )
                 }
+            } else {
+                (-180..180)
+                    .map(Int::toDouble)
+                    .forEach { yaw ->
+                        if (user.world.isClient) {
+                            user.apply {
+                                world.addParticle(
+                                    ParticleTypes.CLOUD,
+                                    x, y, z,
+                                    cos(yaw),
+                                    0.05,
+                                    sin(yaw)
+                                )
+                            }
+                        }
+                    }
             }
         } else {
             if(!user.world.isClient) {
