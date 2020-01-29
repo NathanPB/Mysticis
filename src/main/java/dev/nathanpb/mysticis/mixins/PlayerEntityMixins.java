@@ -1,13 +1,13 @@
 package dev.nathanpb.mysticis.mixins;
 
+import dev.nathanpb.mysticis.acessors.IStaffCooldownManager;
+import dev.nathanpb.mysticis.cooldown.StaffCooldownManager;
 import dev.nathanpb.mysticis.event.entity.PlayerTickCallback;
-import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -25,11 +25,16 @@ You should have received a copy of the GNU General Public License along with thi
 */
 
 @Mixin(PlayerEntity.class)
-class PlayerEntityMixins {
-    @Inject(
-        at = @At("HEAD"),
-        method = "tick"
-    )
+class PlayerEntityMixins implements IStaffCooldownManager {
+
+    StaffCooldownManager mysticisStaffCooldownManager = new StaffCooldownManager(((PlayerEntity)(Object) this));
+
+    @Override
+    public StaffCooldownManager getStaffCooldownManager() {
+        return mysticisStaffCooldownManager;
+    }
+
+    @Inject(at = @At("HEAD"), method = "tick")
     public void onTick(CallbackInfo ci) {
         PlayerTickCallback.EVENT.invoker().tick((PlayerEntity) (Object) this);
     }

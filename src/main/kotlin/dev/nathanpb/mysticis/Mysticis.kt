@@ -3,6 +3,7 @@ package dev.nathanpb.mysticis
 import dev.nathanpb.mysticis.blocks.registerBlockEntities
 import dev.nathanpb.mysticis.blocks.registerBlocks
 import dev.nathanpb.mysticis.containers.registerContainers
+import dev.nathanpb.mysticis.cooldown.IPlayerAttachedCooldown
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.data.manaAffinity
@@ -49,6 +50,7 @@ fun init() {
     PlayerConnectCallback.EVENT.register(manaPlayerConnect)
     LootTableLoadingCallback.EVENT.register(CrystalBase.registerLootTables)
     StaffHitCallback.EVENT.register(ItemStaff.staffHit)
+    PlayerTickCallback.EVENT.register(IPlayerAttachedCooldown.onPlayerTick)
 
     ServerSidePacketRegistry.INSTANCE.register(PACKET_STAFF_PROJECTILE_TRIGGERED) { context, _ ->
         context.taskQueue.execute {
