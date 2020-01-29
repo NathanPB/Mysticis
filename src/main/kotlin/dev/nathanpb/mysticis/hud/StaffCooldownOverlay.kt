@@ -34,7 +34,7 @@ class StaffCooldownOverlay {
                         StaffSingleUseType.SELF -> 0x00FF00
                     }
                 }.map {
-                    Pair(it shr 16 and 255, Pair( it shr 8 and 255, it and 255))
+                    Pair(it shr 16 and 255, Pair(it shr 8 and 255, it and 255))
                 }.mapIndexed { index, color ->
                     val red = color.first
                     val green = color.second.first
