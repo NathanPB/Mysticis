@@ -8,7 +8,7 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-enum class StaffUseType {
+enum class StaffSingleUseType {
     HIT_ABSTRACT,
     HIT_BLOCK,
     HIT_ENTITY,
@@ -18,7 +18,7 @@ enum class StaffUseType {
     USE_ENTITY,
     USE_AIR;
 
-    operator fun contains(useType: StaffUseType): Boolean {
+    operator fun contains(useType: StaffSingleUseType): Boolean {
         return when(useType) {
             HIT_ABSTRACT -> this in arrayOf(HIT_ABSTRACT, HIT_BLOCK, HIT_ENTITY, HIT_AIR)
             USE_ABSTRACT -> this in arrayOf(USE_ABSTRACT, USE_BLOCK, USE_ENTITY, USE_AIR)

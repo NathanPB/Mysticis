@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.cooldown
 
 import dev.nathanpb.mysticis.acessors.IStaffCooldownManager
-import dev.nathanpb.mysticis.enums.StaffUseType
+import dev.nathanpb.mysticis.enums.StaffSingleUseType
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import net.minecraft.entity.player.PlayerEntity
 
@@ -15,17 +15,17 @@ You should have received a copy of the GNU General Public License along with thi
 */
 class StaffCooldownManager(override val player: PlayerEntity) : AbstractCooldownManager<StaffCooldownEntry>(), IPlayerAttachedCooldown {
 
-    fun `in`(crystal: IStaffCrystal, use: StaffUseType): Boolean {
+    fun `in`(crystal: IStaffCrystal, use: StaffSingleUseType): Boolean {
         return StaffCooldownEntry(crystal, use) in this
     }
 
-    operator fun set(crystal: IStaffCrystal, use: StaffUseType, duration: Int) {
+    operator fun set(crystal: IStaffCrystal, use: StaffSingleUseType, duration: Int) {
         this[StaffCooldownEntry(crystal, use)] = duration
     }
 
 }
 
-data class StaffCooldownEntry(val crystal: IStaffCrystal, val use: StaffUseType)
+data class StaffCooldownEntry(val crystal: IStaffCrystal, val use: StaffSingleUseType)
 
 val PlayerEntity.staffCooldownManager: StaffCooldownManager
     get() = (this as IStaffCooldownManager).staffCooldownManager
