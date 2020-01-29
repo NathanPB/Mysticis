@@ -33,10 +33,18 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
     override val color = 0xFFFA66
 
     override fun continueUseCost(user: LivingEntity, stack: ItemStack): ManaData {
+        return if(!user.isSneaking) {
+            ManaData(air = 1F)
+        } else {
+            super.continueUseCost(user, stack)
+        }
+    }
+
+    override fun singleUseCost(user: LivingEntity, stack: ItemStack, block: Block?, entity: Entity?): ManaData {
         return if(user.isSneaking) {
             ManaData(air = 1.5F)
         } else {
-            ManaData(air = 1F)
+            super.singleUseCost(user, stack, block, entity)
         }
     }
 
@@ -48,8 +56,7 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
         }
     }
 
-
-    override fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
+    override fun onSingleUse(user: LivingEntity, stack: ItemStack, block: Block?, entity: Entity?): TypedActionResult<ItemStack> {
         if(user.isSneaking) {
             if(user is PlayerEntity) {
                 if (user.itemCooldownManager.isCoolingDown(stack.staffData.crystal?.item)) {
@@ -96,7 +103,13 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
                         }
                     }
             }
-        } else {
+        }
+
+        return TypedActionResult.consume(stack)
+    }
+
+    override fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
+        if(!user.isSneaking)  {
             if(!user.world.isClient) {
                 // TODO sound and particle effects
                 user.world.getEntities(user, Box(user.blockPos).expand(9.0).offset(user.rotationVector)) {
