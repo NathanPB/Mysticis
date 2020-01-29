@@ -9,20 +9,7 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 enum class StaffSingleUseType {
-    HIT_ABSTRACT,
-    HIT_BLOCK,
-    HIT_ENTITY,
-    HIT_AIR,
-    USE_ABSTRACT,
-    USE_BLOCK,
-    USE_ENTITY,
-    USE_AIR;
-
-    operator fun contains(useType: StaffSingleUseType): Boolean {
-        return when(useType) {
-            HIT_ABSTRACT -> this in arrayOf(HIT_ABSTRACT, HIT_BLOCK, HIT_ENTITY, HIT_AIR)
-            USE_ABSTRACT -> this in arrayOf(USE_ABSTRACT, USE_BLOCK, USE_ENTITY, USE_AIR)
-            else ->         this == useType
-        }
-    }
+    PROJECTILE,
+    AEO,
+    SELF
 }
