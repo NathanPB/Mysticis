@@ -135,13 +135,13 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
                     val cost = if (user is PlayerEntity && user.isCreative) {
                         ManaData()
                     } else {
-                        crystalItem.singleUseCost(user, stack, null,target)
+                        crystalItem.singleHitCost(user, stack, null,target)
                     }
                     val oldMana = user.mana
                     val newMana = oldMana - cost
 
                     if (!newMana.hasNegatives()) {
-                        val result = crystalItem.onSingleUse(user, stack, null, target).result
+                        val result = crystalItem.onSingleHit(user, stack, null, target).result
 
                         if (result == ActionResult.CONSUME  && newMana != oldMana) {
                             user.mana = newMana
