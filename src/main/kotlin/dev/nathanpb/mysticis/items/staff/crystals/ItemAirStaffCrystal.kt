@@ -1,7 +1,10 @@
 package dev.nathanpb.mysticis.items.staff.crystals
 
+import dev.nathanpb.mysticis.cooldown.StaffCooldownEntry
+import dev.nathanpb.mysticis.cooldown.staffCooldownManager
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.staffData
+import dev.nathanpb.mysticis.enums.StaffSingleUseType
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
 import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
@@ -59,18 +62,25 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
     override fun onSingleUse(user: LivingEntity, stack: ItemStack, block: Block?, entity: Entity?): TypedActionResult<ItemStack> {
         if(user.isSneaking) {
             if(user is PlayerEntity) {
-                if (user.itemCooldownManager.isCoolingDown(stack.staffData.crystal?.item)) {
-                    if(user.world.isClient) {
-                        user.world.playSound(
-                            user, user.x, user.y, user.z,
-                            SoundEvents.BLOCK_LAVA_EXTINGUISH,
-                            SoundCategory.PLAYERS,
-                            1F, 1F
-                        )
+                stack.staffData.crystal?.item?.let { crystalItem ->
+
+                    // If the staff mode is cooling down then fail the action
+                    // Otherwise send it to the cooldown manager and let the method keep executing
+
+                    val staffCooldownEntry = StaffCooldownEntry(crystalItem as IStaffCrystal, StaffSingleUseType.AEO)
+                    if (staffCooldownEntry in user.staffCooldownManager) {
+                        if(user.world.isClient) {
+                            user.world.playSound(
+                                user, user.x, user.y, user.z,
+                                SoundEvents.BLOCK_LAVA_EXTINGUISH,
+                                SoundCategory.PLAYERS,
+                                1F, 1F
+                            )
+                        }
+                        return TypedActionResult.fail(stack)
+                    } else {
+                        user.staffCooldownManager[staffCooldownEntry] = 320
                     }
-                    return TypedActionResult.fail(stack)
-                } else {
-                    user.itemCooldownManager.set(stack.staffData.crystal?.item, 320)
                 }
             }
 
