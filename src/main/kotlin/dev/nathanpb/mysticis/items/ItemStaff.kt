@@ -99,7 +99,32 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     }
 
     override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> {
-        user?.setCurrentHand(Hand.MAIN_HAND)
+        user?.getStackInHand(hand)?.let { stack ->
+            stack.staffData.crystal?.item?.let { crystalItem ->
+                if (crystalItem is ISingleUseStaffCrystal) {
+                    val cost = if (user.isCreative) {
+                        ManaData()
+                    } else {
+                        crystalItem.singleUseCost(user, stack, null, null)
+                    }
+
+                    val oldMana = user.mana
+                    val newMana = oldMana - cost
+
+                    if (!newMana.hasNegatives()) {
+                        val result = crystalItem.onSingleUse(user, stack, null, null).result
+
+                        if (result == ActionResult.CONSUME  && newMana != oldMana) {
+                            user.mana = newMana
+                            ManaChangedCallback.EVENT
+                                .invoker()
+                                .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
+                        }
+                    }
+                }
+            }
+        }
+
         return super.use(world, user, hand)
     }
 
