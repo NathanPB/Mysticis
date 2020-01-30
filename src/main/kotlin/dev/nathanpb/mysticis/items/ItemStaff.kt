@@ -99,6 +99,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     }
 
     override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> {
+        user?.setCurrentHand(hand)
         user?.getStackInHand(hand)?.let { stack ->
             stack.staffData.crystal?.item?.let { crystalItem ->
                 if (crystalItem is ISingleUseStaffCrystal) {
