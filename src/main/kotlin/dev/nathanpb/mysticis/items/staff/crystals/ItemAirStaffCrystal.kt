@@ -3,25 +3,22 @@ package dev.nathanpb.mysticis.items.staff.crystals
 import dev.nathanpb.mysticis.cooldown.StaffCooldownEntry
 import dev.nathanpb.mysticis.cooldown.staffCooldownManager
 import dev.nathanpb.mysticis.data.ManaData
-import dev.nathanpb.mysticis.data.staffData
 import dev.nathanpb.mysticis.enums.StaffSingleUseType
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
 import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import dev.nathanpb.mysticis.staff.StaffSingleUseAirContext
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
-import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
-import net.minecraft.world.World
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
@@ -45,11 +42,11 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
         }
     }
 
-    override fun singleUseAirCost(stack: ItemStack, world: World, user: PlayerEntity, hand: Hand): ManaData {
-        return if(user.isSneaking) {
+    override fun singleUseAirCost(context: StaffSingleUseAirContext): ManaData {
+        return if(context.user.isSneaking) {
             ManaData(air = 1.5F)
         } else {
-            super.singleUseAirCost(stack, world, user, hand)
+            super.singleUseAirCost(context)
         }
     }
 
@@ -61,19 +58,16 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
         }
     }
 
-    override fun onSingleUseAir(
-        stack: ItemStack,
-        world: World,
-        user: PlayerEntity,
-        hand: Hand
-    ): TypedActionResult<ItemStack> {
-        if(user.isSneaking) {
-            stack.staffData.crystal?.item?.let { crystalItem ->
+    override fun onSingleUseAir(context: StaffSingleUseAirContext): TypedActionResult<ItemStack> {
+        val (user, stack) = context
+        if(context.user.isSneaking) {
+
+            context.crystalItem?.let { crystalItem ->
 
                 // If the staff mode is cooling down then fail the action
                 // Otherwise send it to the cooldown manager and let the method keep executing
 
-                val staffCooldownEntry = StaffCooldownEntry(crystalItem as IStaffCrystal, StaffSingleUseType.AEO)
+                val staffCooldownEntry = StaffCooldownEntry(crystalItem, StaffSingleUseType.AEO)
                 if (staffCooldownEntry in user.staffCooldownManager) {
                     if(user.world.isClient) {
                         user.world.playSound(

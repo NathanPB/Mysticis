@@ -1,15 +1,14 @@
 package dev.nathanpb.mysticis.items.staff
 
 import dev.nathanpb.mysticis.data.ManaData
+import dev.nathanpb.mysticis.staff.StaffSingleUseAirContext
+import dev.nathanpb.mysticis.staff.StaffSingleUseBlockContext
+import dev.nathanpb.mysticis.staff.StaffSingleUseEntityContext
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
 import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
-import net.minecraft.item.ItemUsageContext
-import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
-import net.minecraft.world.World
 
 
 /*
@@ -24,30 +23,30 @@ You should have received a copy of the GNU General Public License along with thi
 // TODO fix single usages triggering on continue usages too
 interface ISingleUseStaffCrystal {
 
-    fun onSingleUseEntity(stack: ItemStack?, user: PlayerEntity, entity: LivingEntity, hand: Hand): TypedActionResult<ItemStack> {
-        return TypedActionResult.pass(stack)
-    }
-
-    fun onSingleUseBlock(context: ItemUsageContext): TypedActionResult<ItemStack> {
+    fun onSingleUseEntity(context: StaffSingleUseEntityContext): TypedActionResult<ItemStack> {
         return TypedActionResult.pass(context.stack)
     }
 
-    fun onSingleUseAir(stack: ItemStack, world: World, user: PlayerEntity, hand: Hand): TypedActionResult<ItemStack> {
-        return TypedActionResult.pass(stack)
+    fun onSingleUseBlock(context: StaffSingleUseBlockContext): TypedActionResult<ItemStack> {
+        return TypedActionResult.pass(context.stack)
+    }
+
+    fun onSingleUseAir(context: StaffSingleUseAirContext): TypedActionResult<ItemStack> {
+        return TypedActionResult.pass(context.stack)
     }
 
     fun onSingleHit(user: LivingEntity, stack: ItemStack, block: Block?, entity: Entity?): TypedActionResult<ItemStack> {
         return TypedActionResult.pass(stack)
     }
 
-    fun singleUseEntityCost(stack: ItemStack?, user: PlayerEntity?, entity: LivingEntity?, hand: Hand?) = ManaData()
+    fun singleUseEntityCost(context: StaffSingleUseEntityContext) = ManaData()
 
-    fun singleUseBlockCost(context: ItemUsageContext) = ManaData()
+    fun singleUseBlockCost(context: StaffSingleUseBlockContext) = ManaData()
 
     /**
      * WARNING: This is actually triggered on entity and block usages too.
      */
-    fun singleUseAirCost(stack: ItemStack, world: World, user: PlayerEntity, hand: Hand) = ManaData()
+    fun singleUseAirCost(context: StaffSingleUseAirContext) = ManaData()
 
     fun singleHitCost(user: LivingEntity, stack: ItemStack, block: Block?, entity: Entity?) = ManaData()
 }

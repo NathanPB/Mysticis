@@ -10,6 +10,9 @@ import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
 import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffAttachment
+import dev.nathanpb.mysticis.staff.StaffSingleUseAirContext
+import dev.nathanpb.mysticis.staff.StaffSingleUseBlockContext
+import dev.nathanpb.mysticis.staff.StaffSingleUseEntityContext
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -101,27 +104,26 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
 
     override fun useOnBlock(context: ItemUsageContext?): ActionResult {
         context?.player?.let { user ->
-            context.player?.getStackInHand(context.hand)?.let { stack ->
-                stack.staffData.crystal?.item?.let { crystalItem ->
-                    if (crystalItem is ISingleUseStaffCrystal) {
-                        val cost = if (user.isCreative) {
-                            ManaData()
-                        } else {
-                            crystalItem.singleUseBlockCost(context)
-                        }
+            val staffContext = StaffSingleUseBlockContext(context)
+            staffContext.crystalItem?.let { crystalItem ->
+                if (crystalItem is ISingleUseStaffCrystal) {
+                    val cost = if (user.isCreative) {
+                        ManaData()
+                    } else {
+                        crystalItem.singleUseBlockCost(staffContext)
+                    }
 
-                        val oldMana = user.mana
-                        val newMana = oldMana - cost
+                    val oldMana = user.mana
+                    val newMana = oldMana - cost
 
-                        if (!newMana.hasNegatives()) {
-                            val result = crystalItem.onSingleUseBlock(context).result
+                    if (!newMana.hasNegatives()) {
+                        val result = crystalItem.onSingleUseBlock(staffContext).result
 
-                            if (result == ActionResult.CONSUME  && newMana != oldMana) {
-                                user.mana = newMana
-                                ManaChangedCallback.EVENT
-                                    .invoker()
-                                    .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
-                            }
+                        if (result == ActionResult.CONSUME  && newMana != oldMana) {
+                            user.mana = newMana
+                            ManaChangedCallback.EVENT
+                                .invoker()
+                                .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
                         }
                     }
                 }
@@ -132,19 +134,20 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
 
     override fun useOnEntity(stack: ItemStack?, user: PlayerEntity?, entity: LivingEntity?, hand: Hand?): Boolean {
         if (user != null && hand != null && entity != null && stack != null) {
-            stack.staffData.crystal?.item?.let { crystalItem ->
+            val context = StaffSingleUseEntityContext(user, stack, entity, hand)
+            context.crystalItem?.let { crystalItem ->
                 if (crystalItem is ISingleUseStaffCrystal) {
                     val cost = if (user.isCreative) {
                         ManaData()
                     } else {
-                        crystalItem.singleUseEntityCost(stack,  user, entity, hand)
+                        crystalItem.singleUseEntityCost(context)
                     }
 
                     val oldMana = user.mana
                     val newMana = oldMana - cost
 
                     if (!newMana.hasNegatives()) {
-                        val result = crystalItem.onSingleUseEntity(stack,  user, entity, hand).result
+                        val result = crystalItem.onSingleUseEntity(context).result
 
                         if (result == ActionResult.CONSUME  && newMana != oldMana) {
                             user.mana = newMana
@@ -161,22 +164,22 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
 
     override fun use(world: World?, user: PlayerEntity?, hand: Hand?): TypedActionResult<ItemStack> {
         user?.setCurrentHand(hand)
-
         if (world != null && user != null && hand != null) {
             user.getStackInHand(hand)?.let { stack ->
-                stack.staffData.crystal?.item?.let { crystalItem ->
+                val context = StaffSingleUseAirContext(user, stack, hand)
+                context.crystalItem?.let { crystalItem ->
                     if (crystalItem is ISingleUseStaffCrystal) {
                         val cost = if (user.isCreative) {
                             ManaData()
                         } else {
-                            crystalItem.singleUseAirCost(stack, world, user, hand)
+                            crystalItem.singleUseAirCost(context)
                         }
 
                         val oldMana = user.mana
                         val newMana = oldMana - cost
 
                         if (!newMana.hasNegatives()) {
-                            val result = crystalItem.onSingleUseAir(stack, world, user, hand).result
+                            val result = crystalItem.onSingleUseAir(context).result
 
                             if (result == ActionResult.CONSUME  && newMana != oldMana) {
                                 user.mana = newMana
