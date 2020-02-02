@@ -6,6 +6,7 @@ import dev.nathanpb.mysticis.items.staff.IronStaffHead
 import dev.nathanpb.mysticis.items.staff.WoodenStaffRod
 import dev.nathanpb.mysticis.items.staff.crystals.ItemAirStaffCrystal
 import dev.nathanpb.mysticis.items.staff.crystals.ItemFireStaffCrystal
+import dev.nathanpb.mysticis.items.staff.crystals.ItemWaterStaffCrystal
 import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 import net.minecraft.util.Rarity
@@ -31,6 +32,7 @@ val ITEM_IRON_STAFF_HEAD = IronStaffHead()
 val ITEM_STAFF = ItemStaff()
 val ITEM_FIRE_STAFF_CRYSTAL = ItemFireStaffCrystal()
 val ITEM_AIR_STAFF_CRYSTAL = ItemAirStaffCrystal()
+val ITEM_WATER_STAFF_CRYSTAL = ItemWaterStaffCrystal()
 
 fun registerItems() {
     mapOf(
@@ -53,7 +55,8 @@ fun registerItems() {
 
         // Staff Crystals
         "air_staff_crystal" to ITEM_AIR_STAFF_CRYSTAL,
-        "fire_staff_crystal" to ITEM_FIRE_STAFF_CRYSTAL
+        "fire_staff_crystal" to ITEM_FIRE_STAFF_CRYSTAL,
+        "water_staff_crystal" to ITEM_WATER_STAFF_CRYSTAL
     ).forEach { (identifier, item) ->
         Registry.register(Registry.ITEM, Identifier("mysticis", identifier), item)
     }

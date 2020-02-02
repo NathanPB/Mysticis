@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "mysticis:air_staff_crystal",
-    "mysticis:fire_staff_crystal"
+    "mysticis:fire_staff_crystal",
+    "mysticis:water_staff_crystal"
   ]
 }
