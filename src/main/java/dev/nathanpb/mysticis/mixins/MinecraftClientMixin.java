@@ -7,6 +7,7 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.PacketByteBuf;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,13 +31,11 @@ public class MinecraftClientMixin {
 
     @Inject(at = @At("RETURN"), method = "doAttack")
     public void doAttack(CallbackInfo ci) {
-        StaffHitCallback.EVENT.invoker().onTriggered(player);
-        if (
-                player.isSneaking() &&
-                player.getStackInHand(Hand.MAIN_HAND).getItem() instanceof ItemStaff
-        ) {
+        ItemStack stack = player.getStackInHand(Hand.MAIN_HAND);
+        if (stack.getItem() instanceof ItemStaff) {
+            StaffHitCallback.EVENT.invoker().onTriggered(player, stack);
             PacketByteBuf packet = new PacketByteBuf(Unpooled.buffer());
-            ClientSidePacketRegistry.INSTANCE.sendToServer(IdentifiersKt.getPACKET_STAFF_PROJECTILE_TRIGGERED(), packet);
+            ClientSidePacketRegistry.INSTANCE.sendToServer(IdentifiersKt.getPACKET_STAFF_HIT(), packet);
         }
     }
 }

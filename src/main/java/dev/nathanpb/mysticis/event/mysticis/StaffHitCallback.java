@@ -3,6 +3,7 @@ package dev.nathanpb.mysticis.event.mysticis;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 
 
 /*
@@ -15,12 +16,12 @@ You should have received a copy of the GNU General Public License along with thi
 public interface StaffHitCallback {
 
     Event<StaffHitCallback> EVENT = EventFactory.createArrayBacked(StaffHitCallback.class,
-        listeners -> entity -> {
+        listeners -> (entity, stack) -> {
             for(StaffHitCallback listener : listeners) {
-                listener.onTriggered(entity);
+                listener.onTriggered(entity, stack);
             }
         }
     );
 
-    void onTriggered(LivingEntity entity);
+    void onTriggered(LivingEntity entity, ItemStack stack);
 }

@@ -15,4 +15,4 @@ private fun identifier(id: String) = Identifier("mysticis", id)
 
 val PACKET_MANA_CHANGED = identifier("manachanged")
 val PACKET_AFFINITY_CHANGED = identifier("affinitychanged")
-val PACKET_STAFF_PROJECTILE_TRIGGERED = identifier("staff_self_triggered")
+val PACKET_STAFF_HIT = identifier("staff_hit_triggered")

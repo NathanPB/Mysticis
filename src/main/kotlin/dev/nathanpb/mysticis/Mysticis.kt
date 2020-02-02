@@ -52,11 +52,12 @@ fun init() {
     StaffHitCallback.EVENT.register(ItemStaff.staffHit)
     PlayerTickCallback.EVENT.register(IPlayerAttachedCooldown.onPlayerTick)
 
-    ServerSidePacketRegistry.INSTANCE.register(PACKET_STAFF_PROJECTILE_TRIGGERED) { context, _ ->
+    ServerSidePacketRegistry.INSTANCE.register(PACKET_STAFF_HIT) { context, _ ->
         context.taskQueue.execute {
-            val item = context.player.getStackInHand(Hand.MAIN_HAND).item
-            if (context.player.isSneaking && item is ItemStaff) {
-                StaffHitCallback.EVENT.invoker().onTriggered(context.player)
+            context.player.getStackInHand(Hand.MAIN_HAND)?.let { stack ->
+                if (stack.item is ItemStaff) {
+                    StaffHitCallback.EVENT.invoker().onTriggered(context.player, stack)
+                }
             }
         }
     }

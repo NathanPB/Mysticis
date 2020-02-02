@@ -52,30 +52,29 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
             }
         }
 
-        val staffHit = StaffHitCallback {
-            val stack = it.getStackInHand(Hand.MAIN_HAND)
+        val staffHit = StaffHitCallback { player, stack ->
 
-            if (stack.item !is ItemStaff) {
+            if (player !is PlayerEntity) {
                 return@StaffHitCallback
             }
 
             val item = stack.staffData.crystal?.item
 
             if (item is ISingleUseStaffCrystal) {
-                val cost = if (it is PlayerEntity && it.isCreative) {
+                val cost = if (player is PlayerEntity && player.isCreative) {
                     ManaData()
                 } else {
-                    item.singleHitCost(it, stack, null, null)
+                    item.singleHitCost(player, stack, null, null)
                 }
-                val oldMana = it.mana
-                val newMana = it.mana - cost
+                val oldMana = player.mana
+                val newMana = player.mana - cost
                 if (!newMana.hasNegatives()) {
-                    val result = item.onSingleHit(it, stack, null, null).result
+                    val result = item.onSingleHit(player, stack, null, null).result
                     if (result != ActionResult.FAIL) {
-                        it.mana = newMana
+                        player.mana = newMana
                         ManaChangedCallback.EVENT
                             .invoker()
-                            .onManaChanged(it, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
+                            .onManaChanged(player, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
                     }
                 }
             }
