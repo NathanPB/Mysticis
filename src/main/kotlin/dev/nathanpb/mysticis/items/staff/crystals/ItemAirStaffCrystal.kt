@@ -17,9 +17,11 @@ import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
+import net.minecraft.util.Hand
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
+import net.minecraft.world.World
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random
@@ -43,11 +45,11 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
         }
     }
 
-    override fun singleUseCost(user: LivingEntity, stack: ItemStack, block: Block?, entity: Entity?): ManaData {
+    override fun singleUseAirCost(stack: ItemStack, world: World, user: PlayerEntity, hand: Hand): ManaData {
         return if(user.isSneaking) {
             ManaData(air = 1.5F)
         } else {
-            super.singleUseCost(user, stack, block, entity)
+            super.singleUseAirCost(stack, world, user, hand)
         }
     }
 
@@ -59,28 +61,31 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
         }
     }
 
-    override fun onSingleUse(user: LivingEntity, stack: ItemStack, block: Block?, entity: Entity?): TypedActionResult<ItemStack> {
+    override fun onSingleUseAir(
+        stack: ItemStack,
+        world: World,
+        user: PlayerEntity,
+        hand: Hand
+    ): TypedActionResult<ItemStack> {
         if(user.isSneaking) {
-            if(user is PlayerEntity) {
-                stack.staffData.crystal?.item?.let { crystalItem ->
+            stack.staffData.crystal?.item?.let { crystalItem ->
 
-                    // If the staff mode is cooling down then fail the action
-                    // Otherwise send it to the cooldown manager and let the method keep executing
+                // If the staff mode is cooling down then fail the action
+                // Otherwise send it to the cooldown manager and let the method keep executing
 
-                    val staffCooldownEntry = StaffCooldownEntry(crystalItem as IStaffCrystal, StaffSingleUseType.AEO)
-                    if (staffCooldownEntry in user.staffCooldownManager) {
-                        if(user.world.isClient) {
-                            user.world.playSound(
-                                user, user.x, user.y, user.z,
-                                SoundEvents.BLOCK_LAVA_EXTINGUISH,
-                                SoundCategory.PLAYERS,
-                                1F, 1F
-                            )
-                        }
-                        return TypedActionResult.fail(stack)
-                    } else {
-                        user.staffCooldownManager[staffCooldownEntry] = 320
+                val staffCooldownEntry = StaffCooldownEntry(crystalItem as IStaffCrystal, StaffSingleUseType.AEO)
+                if (staffCooldownEntry in user.staffCooldownManager) {
+                    if(user.world.isClient) {
+                        user.world.playSound(
+                            user, user.x, user.y, user.z,
+                            SoundEvents.BLOCK_LAVA_EXTINGUISH,
+                            SoundCategory.PLAYERS,
+                            1F, 1F
+                        )
                     }
+                    return TypedActionResult.fail(stack)
+                } else {
+                    user.staffCooldownManager[staffCooldownEntry] = 320
                 }
             }
 
