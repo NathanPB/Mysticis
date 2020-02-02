@@ -2,8 +2,7 @@ package dev.nathanpb.mysticis.items.staff.crystals
 
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
-import dev.nathanpb.mysticis.staff.IStaffUsageContext
-import dev.nathanpb.mysticis.staff.executors.IStaffActionExecutor
+import dev.nathanpb.mysticis.staff.executors.WaterCrystalSingleUseBlock
 
 
 /*
@@ -16,5 +15,5 @@ You should have received a copy of the GNU General Public License along with thi
 class ItemWaterStaffCrystal : ItemBase(), IStaffCrystal {
     override val color = 0x0069FC
 
-    override val executors = listOf<IStaffActionExecutor<out IStaffUsageContext>>()
+    override val executors = listOf(WaterCrystalSingleUseBlock())
 }

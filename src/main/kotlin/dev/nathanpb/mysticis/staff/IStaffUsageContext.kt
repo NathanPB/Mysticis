@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.ItemUsageContext
 import net.minecraft.util.Hand
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 
 
@@ -37,14 +38,18 @@ data class StaffSingleUseBlockContext(
     override val stack: ItemStack,
     val hand: Hand,
     val hitPos: Vec3d,
-    val blockPos: BlockPos
+    val blockPos: BlockPos,
+    val side: Direction,
+    val hitsInsideBlock: Boolean
 ) : IStaffUsageContext {
     constructor(usageContext: ItemUsageContext) : this(
         usageContext.player ?: throw InvalidArgumentException(arrayOf("Player cannot be null")),
         usageContext.stack,
         usageContext.hand,
         usageContext.hitPos,
-        usageContext.blockPos
+        usageContext.blockPos,
+        usageContext.side,
+        usageContext.hitsInsideBlock()
     )
 }
 
