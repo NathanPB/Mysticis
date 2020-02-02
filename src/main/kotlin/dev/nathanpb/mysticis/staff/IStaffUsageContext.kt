@@ -3,6 +3,7 @@ package dev.nathanpb.mysticis.staff
 import com.sun.javaws.exceptions.InvalidArgumentException
 import dev.nathanpb.mysticis.data.staffData
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import dev.nathanpb.mysticis.staff.executors.IStaffActionExecutor
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
@@ -24,6 +25,11 @@ interface IStaffUsageContext {
     val stack: ItemStack
     val crystalItem: IStaffCrystal?
         get() = stack.staffData.crystal?.item as IStaffCrystal
+
+}
+
+inline fun <reified T: IStaffActionExecutor<*>> IStaffUsageContext.findFirstExecutor() : T? {
+    return crystalItem?.executors?.filterIsInstance<T>()?.firstOrNull()
 }
 
 data class StaffSingleUseBlockContext(

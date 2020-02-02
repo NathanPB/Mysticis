@@ -51,11 +51,10 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
                 return@StaffHitCallback
             }
 
-            val context = StaffSingleHitAirContext(player, stack)
-            context.crystalItem?.executors
-                ?.filterIsInstance<IStaffSingleHitAirExecutor>()
-                ?.firstOrNull()
-                ?.tryUsage(context)
+            StaffSingleHitAirContext(player, stack).apply {
+                findFirstExecutor<IStaffSingleHitAirExecutor>()
+                    ?.tryUsage(this)
+            }
         }
     }
 
@@ -73,9 +72,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     }
 
     override fun getUseAction(stack: ItemStack?): UseAction {
-        return if (stack?.staffData?.crystal?.item?.let { crystalItem ->
-             crystalItem is IStaffCrystal && crystalItem.hasContinueExecutor()
-        } == true) {
+        return if((stack?.staffData?.crystal?.item as? IStaffCrystal)?.hasContinueExecutor() == true) {
             UseAction.BOW
         } else {
             UseAction.NONE
@@ -84,13 +81,11 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
 
     override fun useOnBlock(itemUsageContext: ItemUsageContext?): ActionResult {
         itemUsageContext?.let {
-            val context = StaffSingleUseBlockContext(itemUsageContext)
-            return context.crystalItem
-                ?.executors
-                ?.filterIsInstance<IStaffSingleUseBlockExecutor>()
-                ?.firstOrNull()
-                ?.tryUsage(context)
-                ?.result ?: ActionResult.FAIL
+            return StaffSingleUseBlockContext(itemUsageContext).run {
+                findFirstExecutor<IStaffSingleUseBlockExecutor>()
+                    .tryUsageOrPass(this)
+                    .result
+            }
         }
 
         return super.useOnBlock(itemUsageContext)
@@ -98,12 +93,11 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
 
     override fun useOnEntity(stack: ItemStack?, user: PlayerEntity?, entity: LivingEntity?, hand: Hand?): Boolean {
         if (user != null && hand != null && entity != null && stack != null) {
-            val context = StaffSingleUseEntityContext(user, stack, entity, hand)
-            return context.crystalItem?.executors
-                ?.filterIsInstance<IStaffSingleUseEntityExecutor>()
-                ?.firstOrNull()
-                ?.tryUsage(context)
-                ?.result !== ActionResult.FAIL
+            return StaffSingleUseEntityContext(user, stack, entity, hand).run {
+                findFirstExecutor<IStaffSingleUseEntityExecutor>()
+                    .tryUsageOrPass(this)
+                    .result != ActionResult.PASS
+            }
         }
         return super.useOnEntity(stack, user, entity, hand)
     }
@@ -112,11 +106,10 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
         user?.setCurrentHand(hand)
         if (world != null && user != null && hand != null) {
             user.getStackInHand(hand)?.let { stack ->
-                val context = StaffSingleUseAirContext(user, stack, hand)
-                return context.crystalItem?.executors
-                    ?.filterIsInstance<IStaffSingleUseAirExecutor>()
-                    ?.firstOrNull()
-                    ?.tryUsage(context) ?: TypedActionResult.fail(context.stack)
+                return StaffSingleUseAirContext(user, stack, hand).run {
+                    findFirstExecutor<IStaffSingleUseAirExecutor>()
+                        .tryUsageOrPass(this)
+                }
             }
         }
         return super.use(world, user, hand)
@@ -124,12 +117,11 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
 
     override fun postHit(stack: ItemStack?, target: LivingEntity?, user: LivingEntity?): Boolean {
         if (user is PlayerEntity && stack != null && target != null) {
-            val context = StaffSingleHitEntityContext(user, stack, target)
-            return context.crystalItem?.executors
-                ?.filterIsInstance<IStaffSingleHitEntityExecutor>()
-                ?.firstOrNull()
-                ?.tryUsage(context)
-                ?.result !== ActionResult.FAIL
+            return StaffSingleHitEntityContext(user, stack, target).run {
+                findFirstExecutor<IStaffSingleHitEntityExecutor>()
+                    .tryUsageOrPass(this)
+                    .result != ActionResult.PASS
+            }
         }
         return super.postHit(stack, target, user)
     }
@@ -138,11 +130,10 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
 
     override fun usageTick(world: World?, user: LivingEntity?, stack: ItemStack?, remainingUseTicks: Int) {
         if (user is PlayerEntity && stack != null) {
-            val context = StaffContinueUseAirContext(user, stack)
-            context.crystalItem?.executors
-                ?.filterIsInstance<IStaffContinueUseAirExecutor>()
-                ?.firstOrNull()
-                ?.tryUsage(context)
+            StaffContinueUseAirContext(user, stack).run {
+                findFirstExecutor<IStaffContinueUseAirExecutor>()
+                    ?.tryUsage(this)
+            }
         }
     }
 }

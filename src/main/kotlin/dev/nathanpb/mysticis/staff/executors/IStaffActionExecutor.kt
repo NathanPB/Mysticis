@@ -58,6 +58,9 @@ interface IStaffActionExecutor<T : IStaffUsageContext> {
     }
 }
 
+fun <T : IStaffUsageContext> IStaffActionExecutor<T>?.tryUsageOrPass(context: T): TypedActionResult<ItemStack> {
+    return this?.tryUsage(context) ?: TypedActionResult.pass(context.stack)
+}
 
 interface IStaffSingleUseBlockExecutor : IStaffActionExecutor<StaffSingleUseBlockContext>
 interface IStaffSingleUseEntityExecutor : IStaffActionExecutor<StaffSingleUseEntityContext>
