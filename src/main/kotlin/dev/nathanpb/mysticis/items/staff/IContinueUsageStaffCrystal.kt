@@ -1,7 +1,7 @@
 package dev.nathanpb.mysticis.items.staff
 
 import dev.nathanpb.mysticis.data.ManaData
-import net.minecraft.entity.LivingEntity
+import dev.nathanpb.mysticis.staff.StaffContinueUseAirContext
 import net.minecraft.item.ItemStack
 import net.minecraft.util.TypedActionResult
 
@@ -15,9 +15,9 @@ You should have received a copy of the GNU General Public License along with thi
 */
 interface IContinueUsageStaffCrystal {
 
-    fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
-        return TypedActionResult.pass(stack)
+    fun onContinueUseAir(context: StaffContinueUseAirContext): TypedActionResult<ItemStack> {
+        return TypedActionResult.pass(context.stack)
     }
 
-    fun continueUseCost(user: LivingEntity, stack: ItemStack) = ManaData()
+    fun continueUseCostAir(context: StaffContinueUseAirContext) = ManaData()
 }

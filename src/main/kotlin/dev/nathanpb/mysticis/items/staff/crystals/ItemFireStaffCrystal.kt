@@ -4,6 +4,7 @@ import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import dev.nathanpb.mysticis.staff.StaffContinueUseAirContext
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.damage.DamageSource
@@ -40,15 +41,16 @@ class ItemFireStaffCrystal : IContinueUsageStaffCrystal, IStaffCrystal, ItemBase
         tooltip?.add(LiteralText("§1Cause I'm gonna string this motherfucker on §4fire"))
     }
 
-    override fun continueUseCost(user: LivingEntity, stack: ItemStack): ManaData {
-        return if(user.isSneaking) {
+    override fun continueUseCostAir(context: StaffContinueUseAirContext): ManaData {
+        return if (context.user.isSneaking) {
             ManaData(fire = 1.5F)
         } else {
             ManaData(fire = 1F)
         }
     }
 
-    override fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
+    override fun onContinueUseAir(context: StaffContinueUseAirContext): TypedActionResult<ItemStack> {
+        val (user, stack) = context
         if(user.isSneaking) {
             (0..100).forEach { _ ->
                 user.world.addParticle(

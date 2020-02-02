@@ -10,6 +10,7 @@ import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
 import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffAttachment
+import dev.nathanpb.mysticis.staff.StaffContinueUseAirContext
 import dev.nathanpb.mysticis.staff.StaffSingleUseAirContext
 import dev.nathanpb.mysticis.staff.StaffSingleUseBlockContext
 import dev.nathanpb.mysticis.staff.StaffSingleUseEntityContext
@@ -227,19 +228,20 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     // TODO implement the staff hit thing with a preHit method
 
     override fun usageTick(world: World?, user: LivingEntity?, stack: ItemStack?, remainingUseTicks: Int) {
-        user?.let {
-            stack?.staffData?.crystal?.item?.let { crystalItem ->
+        if (user is PlayerEntity && stack != null) {
+            val context = StaffContinueUseAirContext(user, stack)
+            context.crystalItem?.let { crystalItem ->
                 if (crystalItem is IContinueUsageStaffCrystal) {
-                    val cost =  if (user is PlayerEntity && user.isCreative) {
+                    val cost =  if (user.isCreative) {
                         ManaData()
                     } else {
-                        crystalItem.continueUseCost(user, stack)
+                        crystalItem.continueUseCostAir(context)
                     }
                     val oldMana = user.mana
                     val newMana = oldMana - cost
 
                     if (!newMana.hasNegatives()) {
-                        val result = crystalItem.onContinueUse(user, stack).result
+                        val result = crystalItem.onContinueUseAir(context).result
 
                         if (result == ActionResult.CONSUME && newMana != oldMana) {
                             user.mana = newMana

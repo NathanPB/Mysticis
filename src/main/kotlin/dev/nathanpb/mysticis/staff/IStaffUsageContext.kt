@@ -71,3 +71,8 @@ data class StaffSingleHitAirContext(
     override val user: PlayerEntity,
     override val stack: ItemStack
 ) : IStaffUsageContext
+
+data class StaffContinueUseAirContext(
+    override val user: PlayerEntity,
+    override val stack: ItemStack
+) : IStaffUsageContext

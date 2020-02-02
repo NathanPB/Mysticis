@@ -8,6 +8,7 @@ import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
 import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import dev.nathanpb.mysticis.staff.StaffContinueUseAirContext
 import dev.nathanpb.mysticis.staff.StaffSingleUseAirContext
 import net.minecraft.block.Block
 import net.minecraft.entity.Entity
@@ -34,11 +35,11 @@ You should have received a copy of the GNU General Public License along with thi
 class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, IStaffCrystal, ItemBase() {
     override val color = 0xFFFA66
 
-    override fun continueUseCost(user: LivingEntity, stack: ItemStack): ManaData {
-        return if(!user.isSneaking) {
+    override fun continueUseCostAir(context: StaffContinueUseAirContext): ManaData {
+        return if(!context.user.isSneaking) {
             ManaData(air = 1F)
         } else {
-            super.continueUseCost(user, stack)
+            super.continueUseCostAir(context)
         }
     }
 
@@ -117,7 +118,8 @@ class ItemAirStaffCrystal : IContinueUsageStaffCrystal, ISingleUseStaffCrystal, 
         return TypedActionResult.consume(stack)
     }
 
-    override fun onContinueUse(user: LivingEntity, stack: ItemStack): TypedActionResult<ItemStack> {
+    override fun onContinueUseAir(context: StaffContinueUseAirContext): TypedActionResult<ItemStack> {
+        val (user, stack) = context
         if(!user.isSneaking)  {
             if(!user.world.isClient) {
                 // TODO sound and particle effects
