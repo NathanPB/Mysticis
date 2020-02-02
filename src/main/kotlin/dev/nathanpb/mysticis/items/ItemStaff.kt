@@ -1,19 +1,12 @@
 package dev.nathanpb.mysticis.items
 
 import dev.nathanpb.mysticis.CREATIVE_TAB
-import dev.nathanpb.mysticis.data.ManaData
-import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.data.staffData
-import dev.nathanpb.mysticis.enums.ManaChangedCause
-import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback
-import dev.nathanpb.mysticis.items.staff.IContinueUsageStaffCrystal
-import dev.nathanpb.mysticis.items.staff.ISingleUseStaffCrystal
 import dev.nathanpb.mysticis.items.staff.IStaffAttachment
-import dev.nathanpb.mysticis.staff.StaffContinueUseAirContext
-import dev.nathanpb.mysticis.staff.StaffSingleUseAirContext
-import dev.nathanpb.mysticis.staff.StaffSingleUseBlockContext
-import dev.nathanpb.mysticis.staff.StaffSingleUseEntityContext
+import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import dev.nathanpb.mysticis.staff.*
+import dev.nathanpb.mysticis.staff.executors.*
 import net.minecraft.client.color.item.ItemColorProvider
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -58,26 +51,11 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
                 return@StaffHitCallback
             }
 
-            val item = stack.staffData.crystal?.item
-
-            if (item is ISingleUseStaffCrystal) {
-                val cost = if (player is PlayerEntity && player.isCreative) {
-                    ManaData()
-                } else {
-                    item.singleHitCost(player, stack, null, null)
-                }
-                val oldMana = player.mana
-                val newMana = player.mana - cost
-                if (!newMana.hasNegatives()) {
-                    val result = item.onSingleHit(player, stack, null, null).result
-                    if (result != ActionResult.FAIL) {
-                        player.mana = newMana
-                        ManaChangedCallback.EVENT
-                            .invoker()
-                            .onManaChanged(player, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
-                    }
-                }
-            }
+            val context = StaffSingleHitAirContext(player, stack)
+            context.crystalItem?.executors
+                ?.filterIsInstance<IStaffSingleHitAirExecutor>()
+                ?.firstOrNull()
+                ?.tryUsage(context)
         }
     }
 
@@ -95,69 +73,37 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     }
 
     override fun getUseAction(stack: ItemStack?): UseAction {
-        return if (stack?.staffData?.crystal?.item is IContinueUsageStaffCrystal) {
+        return if (stack?.staffData?.crystal?.item?.let { crystalItem ->
+             crystalItem is IStaffCrystal && crystalItem.hasContinueExecutor()
+        } == true) {
             UseAction.BOW
         } else {
             UseAction.NONE
         }
     }
 
-    override fun useOnBlock(context: ItemUsageContext?): ActionResult {
-        context?.player?.let { user ->
-            val staffContext = StaffSingleUseBlockContext(context)
-            staffContext.crystalItem?.let { crystalItem ->
-                if (crystalItem is ISingleUseStaffCrystal) {
-                    val cost = if (user.isCreative) {
-                        ManaData()
-                    } else {
-                        crystalItem.singleUseBlockCost(staffContext)
-                    }
-
-                    val oldMana = user.mana
-                    val newMana = oldMana - cost
-
-                    if (!newMana.hasNegatives()) {
-                        val result = crystalItem.onSingleUseBlock(staffContext).result
-
-                        if (result == ActionResult.CONSUME  && newMana != oldMana) {
-                            user.mana = newMana
-                            ManaChangedCallback.EVENT
-                                .invoker()
-                                .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
-                        }
-                    }
-                }
-            }
+    override fun useOnBlock(itemUsageContext: ItemUsageContext?): ActionResult {
+        itemUsageContext?.let {
+            val context = StaffSingleUseBlockContext(itemUsageContext)
+            return context.crystalItem
+                ?.executors
+                ?.filterIsInstance<IStaffSingleUseBlockExecutor>()
+                ?.firstOrNull()
+                ?.tryUsage(context)
+                ?.result ?: ActionResult.FAIL
         }
-        return super.useOnBlock(context)
+
+        return super.useOnBlock(itemUsageContext)
     }
 
     override fun useOnEntity(stack: ItemStack?, user: PlayerEntity?, entity: LivingEntity?, hand: Hand?): Boolean {
         if (user != null && hand != null && entity != null && stack != null) {
             val context = StaffSingleUseEntityContext(user, stack, entity, hand)
-            context.crystalItem?.let { crystalItem ->
-                if (crystalItem is ISingleUseStaffCrystal) {
-                    val cost = if (user.isCreative) {
-                        ManaData()
-                    } else {
-                        crystalItem.singleUseEntityCost(context)
-                    }
-
-                    val oldMana = user.mana
-                    val newMana = oldMana - cost
-
-                    if (!newMana.hasNegatives()) {
-                        val result = crystalItem.onSingleUseEntity(context).result
-
-                        if (result == ActionResult.CONSUME  && newMana != oldMana) {
-                            user.mana = newMana
-                            ManaChangedCallback.EVENT
-                                .invoker()
-                                .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
-                        }
-                    }
-                }
-            }
+            return context.crystalItem?.executors
+                ?.filterIsInstance<IStaffSingleUseEntityExecutor>()
+                ?.firstOrNull()
+                ?.tryUsage(context)
+                ?.result !== ActionResult.FAIL
         }
         return super.useOnEntity(stack, user, entity, hand)
     }
@@ -167,59 +113,23 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
         if (world != null && user != null && hand != null) {
             user.getStackInHand(hand)?.let { stack ->
                 val context = StaffSingleUseAirContext(user, stack, hand)
-                context.crystalItem?.let { crystalItem ->
-                    if (crystalItem is ISingleUseStaffCrystal) {
-                        val cost = if (user.isCreative) {
-                            ManaData()
-                        } else {
-                            crystalItem.singleUseAirCost(context)
-                        }
-
-                        val oldMana = user.mana
-                        val newMana = oldMana - cost
-
-                        if (!newMana.hasNegatives()) {
-                            val result = crystalItem.onSingleUseAir(context).result
-
-                            if (result == ActionResult.CONSUME  && newMana != oldMana) {
-                                user.mana = newMana
-                                ManaChangedCallback.EVENT
-                                    .invoker()
-                                    .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
-                            }
-                        }
-                    }
-                }
+                return context.crystalItem?.executors
+                    ?.filterIsInstance<IStaffSingleUseAirExecutor>()
+                    ?.firstOrNull()
+                    ?.tryUsage(context) ?: TypedActionResult.fail(context.stack)
             }
         }
-
         return super.use(world, user, hand)
     }
 
     override fun postHit(stack: ItemStack?, target: LivingEntity?, user: LivingEntity?): Boolean {
-        user?.let {
-            stack?.staffData?.crystal?.item?.let { crystalItem ->
-                if (crystalItem is ISingleUseStaffCrystal) {
-                    val cost = if (user is PlayerEntity && user.isCreative) {
-                        ManaData()
-                    } else {
-                        crystalItem.singleHitCost(user, stack, null,target)
-                    }
-                    val oldMana = user.mana
-                    val newMana = oldMana - cost
-
-                    if (!newMana.hasNegatives()) {
-                        val result = crystalItem.onSingleHit(user, stack, null, target).result
-
-                        if (result == ActionResult.CONSUME  && newMana != oldMana) {
-                            user.mana = newMana
-                            ManaChangedCallback.EVENT
-                                .invoker()
-                                .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
-                        }
-                    }
-                }
-            }
+        if (user is PlayerEntity && stack != null && target != null) {
+            val context = StaffSingleHitEntityContext(user, stack, target)
+            return context.crystalItem?.executors
+                ?.filterIsInstance<IStaffSingleHitEntityExecutor>()
+                ?.firstOrNull()
+                ?.tryUsage(context)
+                ?.result !== ActionResult.FAIL
         }
         return super.postHit(stack, target, user)
     }
@@ -229,30 +139,10 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     override fun usageTick(world: World?, user: LivingEntity?, stack: ItemStack?, remainingUseTicks: Int) {
         if (user is PlayerEntity && stack != null) {
             val context = StaffContinueUseAirContext(user, stack)
-            context.crystalItem?.let { crystalItem ->
-                if (crystalItem is IContinueUsageStaffCrystal) {
-                    val cost =  if (user.isCreative) {
-                        ManaData()
-                    } else {
-                        crystalItem.continueUseCostAir(context)
-                    }
-                    val oldMana = user.mana
-                    val newMana = oldMana - cost
-
-                    if (!newMana.hasNegatives()) {
-                        val result = crystalItem.onContinueUseAir(context).result
-
-                        if (result == ActionResult.CONSUME && newMana != oldMana) {
-                            user.mana = newMana
-                            ManaChangedCallback.EVENT
-                                .invoker()
-                                .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
-                        } else if (result == ActionResult.FAIL) {
-                            user.stopUsingItem()
-                        }
-                    }
-                }
-            }
+            context.crystalItem?.executors
+                ?.filterIsInstance<IStaffContinueUseAirExecutor>()
+                ?.firstOrNull()
+                ?.tryUsage(context)
         }
     }
 }
