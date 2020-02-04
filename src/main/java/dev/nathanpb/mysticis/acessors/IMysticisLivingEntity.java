@@ -1,6 +1,7 @@
 package dev.nathanpb.mysticis.acessors;
 
 import dev.nathanpb.mysticis.data.ManaData;
+import dev.nathanpb.mysticis.staff.StaffMode;
 
 /*
 Copyright (C) 2019 Nathan P. Bombana
@@ -16,4 +17,7 @@ public interface IMysticisLivingEntity {
 
     ManaData getMysticisAffinity();
     void setMysticisAffinity(ManaData data);
+
+    StaffMode getMysticisStaffMode();
+    void setMysticisStaffMode(StaffMode mode);
 }

@@ -2,6 +2,7 @@ package dev.nathanpb.mysticis.mixins;
 
 import dev.nathanpb.mysticis.acessors.IMysticisLivingEntity;
 import dev.nathanpb.mysticis.data.ManaData;
+import dev.nathanpb.mysticis.staff.StaffMode;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,6 +22,7 @@ public class ManaPersistenceMixin implements IMysticisLivingEntity {
 
     public ManaData mysticisMana = new ManaData();
     public ManaData mysticisAffinity = new ManaData();
+    public StaffMode mysticisStaffMode = StaffMode.COMBAT;
 
     @Inject(at = @At("HEAD"), method = "readCustomDataFromTag")
     public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
@@ -30,12 +32,16 @@ public class ManaPersistenceMixin implements IMysticisLivingEntity {
         setMysticisAffinity(
             ManaData.Companion.loadFromTag(tag.getCompound("mysticis.affinity"))
         );
+        setMysticisStaffMode(
+                StaffMode.Companion.fromOrDefault(tag.getInt("mysticis.staffmode"))
+        );
     }
 
     @Inject(at = @At("HEAD"), method = "writeCustomDataToTag")
     public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
         tag.put("mysticis.mana", getMysticisAffinity().mkCompoundTag());
         tag.put("mysticis.affinity", getMysticisAffinity().mkCompoundTag());
+        tag.putInt("mysticis.staffmode", getMysticisStaffMode().getId());
     }
 
     @Override
@@ -51,6 +57,16 @@ public class ManaPersistenceMixin implements IMysticisLivingEntity {
     @Override
     public void setMysticisAffinity(ManaData data) {
         this.mysticisAffinity = data.limitMin(-100).limitMax(100);
+    }
+
+    @Override
+    public StaffMode getMysticisStaffMode() {
+        return mysticisStaffMode;
+    }
+
+    @Override
+    public void setMysticisStaffMode(StaffMode mode) {
+        mysticisStaffMode = mode;
     }
 
     @Override
