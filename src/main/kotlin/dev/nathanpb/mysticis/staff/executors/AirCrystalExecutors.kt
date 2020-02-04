@@ -1,17 +1,13 @@
 package dev.nathanpb.mysticis.staff.executors
 
-import dev.nathanpb.mysticis.cooldown.StaffCooldownEntry
-import dev.nathanpb.mysticis.cooldown.staffCooldownManager
 import dev.nathanpb.mysticis.data.ManaData
-import dev.nathanpb.mysticis.enums.StaffSingleUseType
 import dev.nathanpb.mysticis.staff.StaffContinueUseAirContext
 import dev.nathanpb.mysticis.staff.StaffSingleHitAirContext
 import dev.nathanpb.mysticis.staff.StaffSingleUseAirContext
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.particle.ParticleTypes
-import net.minecraft.sound.SoundCategory
-import net.minecraft.sound.SoundEvents
+import net.minecraft.util.Identifier
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
 import net.minecraft.util.math.Vec3d
@@ -29,6 +25,10 @@ You should have received a copy of the GNU General Public License along with thi
 */
 
 class AirCrystalContinueAirUseExecutor : IStaffContinueUseAirExecutor {
+
+    override val effectId = Identifier("mysticis", "air_wave")
+    override val representationColor = 0xFF0000
+
     override fun cost(context: StaffContinueUseAirContext): ManaData {
         return if(!context.user.isSneaking) {
             ManaData(air = 1F)
@@ -62,6 +62,11 @@ class AirCrystalContinueAirUseExecutor : IStaffContinueUseAirExecutor {
 }
 
 class AirCrystalSingleAirUseExecutor : IStaffSingleUseAirExecutor {
+
+    override val effectId = Identifier("mysticis", "air_wave_aeo")
+    override val representationColor = 0x0000FF
+    override val cooldownOnConsume = 320
+
     override fun cost(context: StaffSingleUseAirContext): ManaData {
         return if(context.user.isSneaking) {
             ManaData(air = 1.5F)
@@ -73,27 +78,6 @@ class AirCrystalSingleAirUseExecutor : IStaffSingleUseAirExecutor {
     override fun invoke(context: StaffSingleUseAirContext): TypedActionResult<ItemStack> {
         val (user, stack) = context
         if(context.user.isSneaking) {
-
-            context.crystalItem?.let { crystalItem ->
-
-                // If the staff mode is cooling down then fail the action
-                // Otherwise send it to the cooldown manager and let the method keep executing
-
-                val staffCooldownEntry = StaffCooldownEntry(crystalItem, StaffSingleUseType.AEO)
-                if (staffCooldownEntry in user.staffCooldownManager) {
-                    if(user.world.isClient) {
-                        user.world.playSound(
-                            user, user.x, user.y, user.z,
-                            SoundEvents.BLOCK_LAVA_EXTINGUISH,
-                            SoundCategory.PLAYERS,
-                            1F, 1F
-                        )
-                    }
-                    return TypedActionResult.fail(stack)
-                } else {
-                    user.staffCooldownManager[staffCooldownEntry] = 320
-                }
-            }
 
             if (!user.world.isClient) {
                 // TODO sound and particle effects
@@ -131,6 +115,10 @@ class AirCrystalSingleAirUseExecutor : IStaffSingleUseAirExecutor {
 }
 
 class AirCrystalSingleAirHitExecutor : IStaffSingleHitAirExecutor {
+
+    override val effectId = Identifier("mysticis", "air_push_self")
+    override val representationColor = 0x00FF00
+
     override fun cost(context: StaffSingleHitAirContext): ManaData {
         return if (context.user.isSneaking) {
             ManaData(air = 5F)

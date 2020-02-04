@@ -13,6 +13,7 @@ import net.minecraft.particle.ParticleTypes
 import net.minecraft.recipe.RecipeType
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
+import net.minecraft.util.Identifier
 import net.minecraft.util.TypedActionResult
 import net.minecraft.util.math.Box
 import kotlin.random.Random
@@ -27,6 +28,10 @@ You should have received a copy of the GNU General Public License along with thi
 */
 
 class FireCrystalContinueUseAir : IStaffContinueUseAirExecutor {
+
+    override val effectId = Identifier("mysticis", "fire_wave")
+    override val representationColor = 0xFF0000
+
     override fun cost(context: StaffContinueUseAirContext): ManaData {
         return if (context.user.isSneaking) {
             ManaData(fire = 1.5F)

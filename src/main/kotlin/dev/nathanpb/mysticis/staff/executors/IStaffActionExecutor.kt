@@ -1,5 +1,6 @@
 package dev.nathanpb.mysticis.staff.executors
 
+import dev.nathanpb.mysticis.cooldown.staffCooldownManager
 import dev.nathanpb.mysticis.data.ManaData
 import dev.nathanpb.mysticis.data.mana
 import dev.nathanpb.mysticis.enums.ManaChangedCause
@@ -7,6 +8,7 @@ import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.staff.*
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ActionResult
+import net.minecraft.util.Identifier
 import net.minecraft.util.TypedActionResult
 
 
@@ -19,6 +21,11 @@ You should have received a copy of the GNU General Public License along with thi
 */
 interface IStaffActionExecutor<T : IStaffUsageContext> {
 
+    val representationColor: Int
+    val effectId: Identifier
+    val cooldownOnConsume: Int
+        get() = 0
+
     val isContinue: Boolean
         get() = false
 
@@ -27,6 +34,11 @@ interface IStaffActionExecutor<T : IStaffUsageContext> {
     operator fun invoke(context: T): TypedActionResult<ItemStack>
 
     fun tryUsage(context: T): TypedActionResult<ItemStack> {
+
+        if (effectId in context.user.staffCooldownManager) {
+            return TypedActionResult.fail(context.stack)
+        }
+
         context.crystalItem?.let {
             val user = context.user
             val cost = if (user.isCreative) {
@@ -41,11 +53,14 @@ interface IStaffActionExecutor<T : IStaffUsageContext> {
             return if (!newMana.hasNegatives()) {
                 val result = this(context)
 
-                if (result.result == ActionResult.CONSUME  && newMana != oldMana) {
-                    user.mana = newMana
-                    ManaChangedCallback.EVENT
-                        .invoker()
-                        .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
+                if (result.result == ActionResult.CONSUME) {
+                    user.staffCooldownManager[effectId] = cooldownOnConsume
+                    if (newMana != oldMana) {
+                        user.mana = newMana
+                        ManaChangedCallback.EVENT
+                            .invoker()
+                            .onManaChanged(user, newMana, oldMana, ManaChangedCause.USED_BY_STAFF)
+                    }
                 }
 
                 result

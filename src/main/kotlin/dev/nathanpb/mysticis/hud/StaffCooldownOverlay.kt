@@ -1,10 +1,8 @@
 package dev.nathanpb.mysticis.hud
 
 import com.mojang.blaze3d.systems.RenderSystem
-import dev.nathanpb.mysticis.cooldown.StaffCooldownEntry
 import dev.nathanpb.mysticis.cooldown.staffCooldownManager
 import dev.nathanpb.mysticis.data.staffData
-import dev.nathanpb.mysticis.enums.StaffSingleUseType
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.client.render.Tessellator
@@ -23,43 +21,40 @@ class StaffCooldownOverlay {
     companion object {
         fun render(x: Float, y: Float, itemStack: ItemStack, player: ClientPlayerEntity) {
             itemStack.staffData.crystal?.item?.let { crystalItem ->
-                StaffSingleUseType.values().map { useType ->
-                    StaffCooldownEntry(crystalItem as IStaffCrystal, useType)
-                }.filter {
-                    it in player.staffCooldownManager
-                }.map {
-                    when (it.use) {
-                        StaffSingleUseType.AEO -> 0x0000FF
-                        StaffSingleUseType.PROJECTILE -> 0xFF0000
-                        StaffSingleUseType.SELF -> 0x00FF00
+                if (crystalItem is IStaffCrystal) {
+                    crystalItem.executors.values.flatten()
+                    .filter {
+                        it.effectId in player.staffCooldownManager
+                    }.map {
+                        it.representationColor
+                    }.map {
+                        Pair(it shr 16 and 255, Pair(it shr 8 and 255, it and 255))
+                    }.forEachIndexed { index, color ->
+                        val red = color.first
+                        val green = color.second.first
+                        val blue = color.second.second
+                        val i = index * 2
+
+                        RenderSystem.disableDepthTest()
+                        RenderSystem.disableTexture()
+                        RenderSystem.disableAlphaTest()
+                        RenderSystem.disableBlend()
+                        val tessellator = Tessellator.getInstance()
+                        val buffer = tessellator.buffer
+
+                        // Thank you for being private, ItemRenderer#renderGuiQuad
+                        buffer.begin(7, VertexFormats.POSITION_COLOR)
+                        buffer.vertex((x + 13.0), (y + i + 1.0), 0.0).color(red, green, blue, 255).next()
+                        buffer.vertex((x + 13.0), (y + i + 3.0), 0.0).color(red, green, blue, 255).next()
+                        buffer.vertex((x + 15.0), (y + i + 3.0), 0.0).color(red, green, blue, 255).next()
+                        buffer.vertex((x + 15.0), (y + i + 1.0), 0.0).color(red, green, blue, 255).next()
+                        Tessellator.getInstance().draw()
+
+                        RenderSystem.enableBlend()
+                        RenderSystem.enableAlphaTest()
+                        RenderSystem.enableTexture()
+                        RenderSystem.enableDepthTest()
                     }
-                }.map {
-                    Pair(it shr 16 and 255, Pair(it shr 8 and 255, it and 255))
-                }.mapIndexed { index, color ->
-                    val red = color.first
-                    val green = color.second.first
-                    val blue = color.second.second
-                    val i = index * 2
-
-                    RenderSystem.disableDepthTest()
-                    RenderSystem.disableTexture()
-                    RenderSystem.disableAlphaTest()
-                    RenderSystem.disableBlend()
-                    val tessellator = Tessellator.getInstance()
-                    val buffer = tessellator.buffer
-
-                    // Thank you for being private, ItemRenderer#renderGuiQuad
-                    buffer.begin(7, VertexFormats.POSITION_COLOR)
-                    buffer.vertex((x + 13.0), (y + i + 1.0), 0.0).color(red, green, blue, 255).next()
-                    buffer.vertex((x + 13.0), (y + i + 3.0), 0.0).color(red, green, blue, 255).next()
-                    buffer.vertex((x + 15.0), (y + i + 3.0), 0.0).color(red, green, blue, 255).next()
-                    buffer.vertex((x + 15.0), (y + i + 1.0), 0.0).color(red, green, blue, 255).next()
-                    Tessellator.getInstance().draw()
-
-                    RenderSystem.enableBlend()
-                    RenderSystem.enableAlphaTest()
-                    RenderSystem.enableTexture()
-                    RenderSystem.enableDepthTest()
                 }
             }
         }

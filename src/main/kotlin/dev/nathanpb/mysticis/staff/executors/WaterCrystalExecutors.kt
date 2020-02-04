@@ -6,6 +6,7 @@ import dev.nathanpb.mysticis.utils.placeFluid
 import net.minecraft.block.FluidFillable
 import net.minecraft.fluid.Fluids
 import net.minecraft.item.ItemStack
+import net.minecraft.util.Identifier
 import net.minecraft.util.TypedActionResult
 
 
@@ -17,6 +18,10 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 class WaterCrystalSingleUseBlock : IStaffSingleUseBlockExecutor {
+
+    override val effectId = Identifier("mysticis", "water_gen_source")
+    override val representationColor = 0x0000FF
+    override val cooldownOnConsume = 40
 
     override fun cost(context: StaffSingleUseBlockContext): ManaData {
         return ManaData(water = 4F)
