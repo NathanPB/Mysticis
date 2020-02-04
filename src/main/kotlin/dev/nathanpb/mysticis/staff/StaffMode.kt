@@ -2,6 +2,7 @@ package dev.nathanpb.mysticis.staff
 
 import dev.nathanpb.mysticis.InvalidStaffModeException
 import dev.nathanpb.mysticis.acessors.IMysticisLivingEntity
+import dev.nathanpb.mysticis.event.mysticis.StaffModeChangedCallback
 import net.minecraft.entity.LivingEntity
 
 
@@ -38,5 +39,8 @@ enum class StaffMode(val id: Int) {
 var LivingEntity.staffMode: StaffMode
     get() = (this as IMysticisLivingEntity).mysticisStaffMode
     set(mode) {
-        (this as IMysticisLivingEntity).mysticisStaffMode = mode
+        (this as IMysticisLivingEntity).also {
+            StaffModeChangedCallback.EVENT.invoker().onStaffModeChanged(this, mode, it.mysticisStaffMode)
+        }.mysticisStaffMode = mode
+
     }
