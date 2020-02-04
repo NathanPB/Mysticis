@@ -31,6 +31,8 @@ interface IStaffActionExecutor<T : IStaffUsageContext> {
 
     fun cost(context: T) = ManaData()
 
+    fun accept(context: T): Boolean
+
     operator fun invoke(context: T): TypedActionResult<ItemStack>
 
     fun tryUsage(context: T): TypedActionResult<ItemStack> {

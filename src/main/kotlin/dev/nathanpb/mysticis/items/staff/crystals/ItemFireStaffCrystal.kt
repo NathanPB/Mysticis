@@ -3,8 +3,9 @@ package dev.nathanpb.mysticis.items.staff.crystals
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import dev.nathanpb.mysticis.staff.StaffMode
-import dev.nathanpb.mysticis.staff.executors.FireCrystalBlockSmelt
-import dev.nathanpb.mysticis.staff.executors.FireCrystalContinueUseAir
+import dev.nathanpb.mysticis.staff.executors.fire.FireAeOExecutor
+import dev.nathanpb.mysticis.staff.executors.fire.FireBlockSmeltExecutor
+import dev.nathanpb.mysticis.staff.executors.fire.FireWaveExecutor
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.item.ItemStack
 import net.minecraft.text.LiteralText
@@ -24,8 +25,13 @@ class ItemFireStaffCrystal : IStaffCrystal, ItemBase() {
     override val color = 0xFF8000
 
     override val executors = mapOf(
-        StaffMode.COMBAT to listOf(FireCrystalContinueUseAir()),
-        StaffMode.UTILITY to listOf(FireCrystalBlockSmelt())
+        StaffMode.COMBAT to listOf(
+            FireAeOExecutor(),
+            FireWaveExecutor()
+        ),
+        StaffMode.UTILITY to listOf(
+            FireBlockSmeltExecutor()
+        )
     )
 
     override fun appendTooltip(

@@ -52,7 +52,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
             }
 
             StaffSingleHitAirContext(player, stack).apply {
-                findFirstExecutor<IStaffSingleHitAirExecutor>()
+                findFirstExecutor<IStaffSingleHitAirExecutor, StaffSingleHitAirContext>(this)
                     ?.tryUsage(this)
             }
         }
@@ -82,7 +82,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     override fun useOnBlock(itemUsageContext: ItemUsageContext?): ActionResult {
         itemUsageContext?.let {
             return StaffSingleUseBlockContext(itemUsageContext).run {
-                findFirstExecutor<IStaffSingleUseBlockExecutor>()
+                findFirstExecutor<IStaffSingleUseBlockExecutor, StaffSingleUseBlockContext>(this)
                     .tryUsageOrPass(this)
                     .result
             }
@@ -94,7 +94,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     override fun useOnEntity(stack: ItemStack?, user: PlayerEntity?, entity: LivingEntity?, hand: Hand?): Boolean {
         if (user != null && hand != null && entity != null && stack != null) {
             return StaffSingleUseEntityContext(user, stack, entity, hand).run {
-                findFirstExecutor<IStaffSingleUseEntityExecutor>()
+                findFirstExecutor<IStaffSingleUseEntityExecutor, StaffSingleUseEntityContext>(this)
                     .tryUsageOrPass(this)
                     .result != ActionResult.PASS
             }
@@ -107,7 +107,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
         if (world != null && user != null && hand != null) {
             user.getStackInHand(hand)?.let { stack ->
                 return StaffSingleUseAirContext(user, stack, hand).run {
-                    findFirstExecutor<IStaffSingleUseAirExecutor>()
+                    findFirstExecutor<IStaffSingleUseAirExecutor, StaffSingleUseAirContext>(this)
                         .tryUsageOrPass(this)
                 }
             }
@@ -118,7 +118,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     override fun postHit(stack: ItemStack?, target: LivingEntity?, user: LivingEntity?): Boolean {
         if (user is PlayerEntity && stack != null && target != null) {
             return StaffSingleHitEntityContext(user, stack, target).run {
-                findFirstExecutor<IStaffSingleHitEntityExecutor>()
+                findFirstExecutor<IStaffSingleHitEntityExecutor, StaffSingleHitEntityContext>(this)
                     .tryUsageOrPass(this)
                     .result != ActionResult.PASS
             }
@@ -131,7 +131,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     override fun usageTick(world: World?, user: LivingEntity?, stack: ItemStack?, remainingUseTicks: Int) {
         if (user is PlayerEntity && stack != null) {
             StaffContinueUseAirContext(user, stack).run {
-                findFirstExecutor<IStaffContinueUseAirExecutor>()
+                findFirstExecutor<IStaffContinueUseAirExecutor, StaffContinueUseAirContext>(this)
                     ?.tryUsage(this)
             }
         }

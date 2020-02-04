@@ -3,9 +3,9 @@ package dev.nathanpb.mysticis.items.staff.crystals
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import dev.nathanpb.mysticis.staff.StaffMode
-import dev.nathanpb.mysticis.staff.executors.AirCrystalContinueAirUseExecutor
-import dev.nathanpb.mysticis.staff.executors.AirCrystalSingleAirHitExecutor
-import dev.nathanpb.mysticis.staff.executors.AirCrystalSingleAirUseExecutor
+import dev.nathanpb.mysticis.staff.executors.air.AirAeOWaveExecutor
+import dev.nathanpb.mysticis.staff.executors.air.AirSelfPushExecutor
+import dev.nathanpb.mysticis.staff.executors.air.AirWindWaveExecutor
 
 
 /*
@@ -21,9 +21,9 @@ class ItemAirStaffCrystal : IStaffCrystal, ItemBase() {
 
     override val executors = mapOf(
         StaffMode.COMBAT to listOf(
-            AirCrystalContinueAirUseExecutor(),
-            AirCrystalSingleAirHitExecutor(),
-            AirCrystalSingleAirUseExecutor()
+            AirAeOWaveExecutor(),
+            AirSelfPushExecutor(),
+            AirWindWaveExecutor()
         )
     )
 }
