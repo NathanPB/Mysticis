@@ -12,6 +12,7 @@ import dev.nathanpb.mysticis.event.gui.CrosshairRenderedCallback
 import dev.nathanpb.mysticis.event.mysticis.AffinityChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.ManaChangedCallback
 import dev.nathanpb.mysticis.event.mysticis.StaffHitCallback
+import dev.nathanpb.mysticis.event.mysticis.StaffModeChangedCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.gui.registerGuis
 import dev.nathanpb.mysticis.hud.AffinityHud
@@ -22,6 +23,8 @@ import dev.nathanpb.mysticis.items.registerItems
 import dev.nathanpb.mysticis.listener.*
 import dev.nathanpb.mysticis.recipe.registerRecipeSerializers
 import dev.nathanpb.mysticis.recipe.registerRecipeTypes
+import dev.nathanpb.mysticis.staff.StaffMode
+import dev.nathanpb.mysticis.staff.staffMode
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback
@@ -51,6 +54,8 @@ fun init() {
     LootTableLoadingCallback.EVENT.register(CrystalBase.registerLootTables)
     StaffHitCallback.EVENT.register(ItemStaff.staffHit)
     PlayerTickCallback.EVENT.register(IPlayerAttachedCooldown.onPlayerTick)
+    StaffModeChangedCallback.EVENT.register(onStaffModeChanged)
+    PlayerConnectCallback.EVENT.register(onStaffModeChangedPlayerConnect)
 
     ServerSidePacketRegistry.INSTANCE.register(PACKET_STAFF_HIT) { context, _ ->
         context.taskQueue.execute {
@@ -88,6 +93,14 @@ fun initClient() {
                 context.taskQueue.execute {
                     MinecraftClient.getInstance().player?.mana = ManaData.loadFromTag(tag)
                 }
+            }
+        }
+    }
+
+    ClientSidePacketRegistry.INSTANCE.register(PACKET_STAFF_MODE_CHANGED) { context, buf ->
+        buf.readInt().let { modeId ->
+            context.taskQueue.execute {
+                MinecraftClient.getInstance().player?.staffMode = StaffMode.fromOrDefault(modeId)
             }
         }
     }
