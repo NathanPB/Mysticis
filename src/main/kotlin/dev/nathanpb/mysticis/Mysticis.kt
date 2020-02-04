@@ -110,6 +110,7 @@ fun initClient() {
     ColorProviderRegistry.ITEM.register(ItemStaff.COLOR_PROVIDER, ITEM_STAFF)
 
     registerGuis()
+    registerKeybindings()
 }
 
 val CREATIVE_TAB = FabricItemGroupBuilder.build(Identifier("mysticis", "tab_mysticis")) {

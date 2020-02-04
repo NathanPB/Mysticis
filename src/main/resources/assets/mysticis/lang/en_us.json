@@ -15,5 +15,6 @@
   "item.mysticis.staff": "Staff",
   "block.mysticis.staff_assembler": "Staff Assembler Table",
   "mysticis_staff_mode.mysticis.combat": "§4Combat",
-  "mysticis_staff_mode.mysticis.utility": "§2Utility"
+  "mysticis_staff_mode.mysticis.utility": "§2Utility",
+  "key.mysticis.switch_staff_mode": "Switch Staff Mode"
 }
