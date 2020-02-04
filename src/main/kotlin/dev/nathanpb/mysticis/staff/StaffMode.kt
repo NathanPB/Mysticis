@@ -4,6 +4,7 @@ import dev.nathanpb.mysticis.InvalidStaffModeException
 import dev.nathanpb.mysticis.acessors.IMysticisLivingEntity
 import dev.nathanpb.mysticis.event.mysticis.StaffModeChangedCallback
 import net.minecraft.entity.LivingEntity
+import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 
 
@@ -17,6 +18,8 @@ You should have received a copy of the GNU General Public License along with thi
 enum class StaffMode(val id: Identifier) {
     COMBAT(Identifier("mysticis", "combat")),
     UTILITY(Identifier("mysticis", "utility"));
+
+    fun text() = TranslatableText("mysticis_staff_mode.${id.namespace}.${id.path}")
 
     companion object {
         /**

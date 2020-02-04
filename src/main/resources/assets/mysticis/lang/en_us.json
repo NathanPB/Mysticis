@@ -13,5 +13,7 @@
   "item.mysticis.air_staff_crystal": "Air Staff Crystal",
   "item.mysticis.water_staff_crystal": "Water Staff Crystal",
   "item.mysticis.staff": "Staff",
-  "block.mysticis.staff_assembler": "Staff Assembler Table"
+  "block.mysticis.staff_assembler": "Staff Assembler Table",
+  "mysticis_staff_mode.mysticis.combat": "Combat",
+  "mysticis_staff_mode.mysticis.utility": "Utility"
 }
