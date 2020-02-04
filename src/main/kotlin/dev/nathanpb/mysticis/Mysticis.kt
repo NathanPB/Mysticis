@@ -16,6 +16,7 @@ import dev.nathanpb.mysticis.event.mysticis.StaffModeChangedCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
 import dev.nathanpb.mysticis.gui.registerGuis
 import dev.nathanpb.mysticis.hud.AffinityHud
+import dev.nathanpb.mysticis.hud.StaffModeHud
 import dev.nathanpb.mysticis.items.CrystalBase
 import dev.nathanpb.mysticis.items.ITEM_STAFF
 import dev.nathanpb.mysticis.items.ItemStaff
@@ -77,6 +78,7 @@ fun init() {
 
 @Suppress("unused")
 fun initClient() {
+    CrosshairRenderedCallback.EVENT.register(StaffModeHud())
     ClientSidePacketRegistry.INSTANCE.register(PACKET_AFFINITY_CHANGED) { context, buf ->
         buf.readCompoundTag()?.let { tag ->
             if (ManaData.isValidTag(tag)) {
