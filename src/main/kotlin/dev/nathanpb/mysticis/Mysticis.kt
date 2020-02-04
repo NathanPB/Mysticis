@@ -98,7 +98,7 @@ fun initClient() {
     }
 
     ClientSidePacketRegistry.INSTANCE.register(PACKET_STAFF_MODE_CHANGED) { context, buf ->
-        buf.readInt().let { modeId ->
+        buf.readIdentifier().let { modeId ->
             context.taskQueue.execute {
                 MinecraftClient.getInstance().player?.staffMode = StaffMode.fromOrDefault(modeId)
             }

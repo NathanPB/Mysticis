@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License along with thi
 val onStaffModeChanged = StaffModeChangedCallback { entity, mode, _ ->
     if (entity is ServerPlayerEntity) {
         val packet = PacketByteBuf(Unpooled.buffer()).apply {
-            writeInt(mode.id)
+            writeIdentifier(mode.id)
         }
         ServerSidePacketRegistry.INSTANCE.sendToPlayer(entity, PACKET_STAFF_MODE_CHANGED, packet)
     }
@@ -29,7 +29,7 @@ val onStaffModeChanged = StaffModeChangedCallback { entity, mode, _ ->
 
 val onStaffModeChangedPlayerConnect = PlayerConnectCallback { _, player ->
     val packet = PacketByteBuf(Unpooled.buffer()).apply {
-        writeInt(player.staffMode.id)
+        writeIdentifier(player.staffMode.id)
     }
     ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, PACKET_STAFF_MODE_CHANGED, packet)
 }

@@ -4,8 +4,11 @@ import dev.nathanpb.mysticis.acessors.IMysticisLivingEntity;
 import dev.nathanpb.mysticis.data.ManaData;
 import dev.nathanpb.mysticis.staff.StaffMode;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,7 +21,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 @Mixin(LivingEntity.class)
-public class ManaPersistenceMixin implements IMysticisLivingEntity {
+public abstract class ManaPersistenceMixin implements IMysticisLivingEntity {
+
+    @Shadow public abstract void onDeath(DamageSource source);
 
     public ManaData mysticisMana = new ManaData();
     public ManaData mysticisAffinity = new ManaData();
@@ -33,7 +38,7 @@ public class ManaPersistenceMixin implements IMysticisLivingEntity {
             ManaData.Companion.loadFromTag(tag.getCompound("mysticis.affinity"))
         );
         setMysticisStaffMode(
-                StaffMode.Companion.fromOrDefault(tag.getInt("mysticis.staffmode"))
+                StaffMode.Companion.fromOrDefault(new Identifier(tag.getString("mysticis.staffmode")))
         );
     }
 
@@ -41,7 +46,7 @@ public class ManaPersistenceMixin implements IMysticisLivingEntity {
     public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
         tag.put("mysticis.mana", getMysticisAffinity().mkCompoundTag());
         tag.put("mysticis.affinity", getMysticisAffinity().mkCompoundTag());
-        tag.putInt("mysticis.staffmode", getMysticisStaffMode().getId());
+        tag.putString("mysticis.staffmode", getMysticisStaffMode().getId().toString());
     }
 
     @Override

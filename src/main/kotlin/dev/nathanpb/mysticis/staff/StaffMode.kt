@@ -4,6 +4,7 @@ import dev.nathanpb.mysticis.InvalidStaffModeException
 import dev.nathanpb.mysticis.acessors.IMysticisLivingEntity
 import dev.nathanpb.mysticis.event.mysticis.StaffModeChangedCallback
 import net.minecraft.entity.LivingEntity
+import net.minecraft.util.Identifier
 
 
 /*
@@ -13,9 +14,9 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-enum class StaffMode(val id: Int) {
-    COMBAT(0),
-    UTILITY(1);
+enum class StaffMode(val id: Identifier) {
+    COMBAT(Identifier("mysticis", "combat")),
+    UTILITY(Identifier("mysticis", "utility"));
 
     companion object {
         /**
@@ -25,14 +26,14 @@ enum class StaffMode(val id: Int) {
          * @return the StaffMode found
          * @throws InvalidStaffModeException if the provided [id] is invalid
          */
-        fun from(id: Int) = values().firstOrNull(id::equals) ?: throw InvalidStaffModeException(id)
+        fun from(id: Identifier) = values().firstOrNull(id::equals) ?: throw InvalidStaffModeException(id)
 
         /**
          * Searches for a [StaffMode] based on its ID. Returns [COMBAT] if the ID is invalid
          *
          * @see from
          */
-        fun fromOrDefault(id: Int) = id.runCatching(Companion::from).getOrDefault(COMBAT)
+        fun fromOrDefault(id: Identifier) = id.runCatching(Companion::from).getOrDefault(COMBAT)
     }
 }
 

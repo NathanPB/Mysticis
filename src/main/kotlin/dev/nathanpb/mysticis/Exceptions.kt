@@ -1,6 +1,7 @@
 package dev.nathanpb.mysticis
 
 import net.minecraft.item.ItemStack
+import net.minecraft.util.Identifier
 
 
 /*
@@ -11,4 +12,4 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 class InvalidStaffException(val stack: ItemStack) : Exception("The stack provided is not a valid Mysticis staff")
-class InvalidStaffModeException(val id: Int) : Exception("The ID $id is not a valid staff mode identifier")
+class InvalidStaffModeException(val id: Identifier) : Exception("The ID $id is not a valid staff mode identifier")
