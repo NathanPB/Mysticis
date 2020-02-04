@@ -22,8 +22,10 @@ class ItemAirStaffCrystal : IStaffCrystal, ItemBase() {
     override val executors = mapOf(
         StaffMode.COMBAT to listOf(
             AirAeOWaveExecutor(),
-            AirSelfPushExecutor(),
             AirWindWaveExecutor()
+        ),
+        StaffMode.UTILITY to listOf(
+            AirSelfPushExecutor()
         )
     )
 }
