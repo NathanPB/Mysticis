@@ -28,6 +28,7 @@ import dev.nathanpb.mysticis.staff.StaffMode
 import dev.nathanpb.mysticis.staff.staffMode
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry
+import net.fabricmc.fabric.api.event.client.ClientTickCallback
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry
@@ -68,6 +69,14 @@ fun init() {
         }
     }
 
+    ServerSidePacketRegistry.INSTANCE.register(PACKET_STAFF_MODE_CHANGED) { context, data ->
+        data.readIdentifier().let { modeId ->
+            context.taskQueue.execute {
+                context.player?.staffMode = StaffMode.fromOrDefault(modeId)
+            }
+        }
+    }
+
     registerItems()
     registerBlocks()
     registerBlockEntities()
@@ -79,6 +88,7 @@ fun init() {
 @Suppress("unused")
 fun initClient() {
     CrosshairRenderedCallback.EVENT.register(StaffModeHud())
+    ClientTickCallback.EVENT.register(onRequestStaffModeChange)
     ClientSidePacketRegistry.INSTANCE.register(PACKET_AFFINITY_CHANGED) { context, buf ->
         buf.readCompoundTag()?.let { tag ->
             if (ManaData.isValidTag(tag)) {

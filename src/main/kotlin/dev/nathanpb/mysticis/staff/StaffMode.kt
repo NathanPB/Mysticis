@@ -29,7 +29,9 @@ enum class StaffMode(val id: Identifier) {
          * @return the StaffMode found
          * @throws InvalidStaffModeException if the provided [id] is invalid
          */
-        fun from(id: Identifier) = values().firstOrNull(id::equals) ?: throw InvalidStaffModeException(id)
+        fun from(id: Identifier) = values().firstOrNull {
+            it.id == id
+        } ?: throw InvalidStaffModeException(id)
 
         /**
          * Searches for a [StaffMode] based on its ID. Returns [COMBAT] if the ID is invalid

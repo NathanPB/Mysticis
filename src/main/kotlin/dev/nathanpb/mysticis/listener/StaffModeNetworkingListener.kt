@@ -3,10 +3,17 @@ package dev.nathanpb.mysticis.listener
 import dev.nathanpb.mysticis.PACKET_STAFF_MODE_CHANGED
 import dev.nathanpb.mysticis.event.mysticis.StaffModeChangedCallback
 import dev.nathanpb.mysticis.event.server.PlayerConnectCallback
+import dev.nathanpb.mysticis.items.ItemStaff
+import dev.nathanpb.mysticis.staff.StaffMode
 import dev.nathanpb.mysticis.staff.staffMode
+import dev.nathanpb.mysticis.switchStaffMode
 import io.netty.buffer.Unpooled
+import net.fabricmc.fabric.api.event.client.ClientTickCallback
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry
+import net.minecraft.client.MinecraftClient
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.util.Hand
 import net.minecraft.util.PacketByteBuf
 
 
@@ -17,6 +24,29 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
+
+val onRequestStaffModeChange = ClientTickCallback {
+    if (
+        switchStaffMode.isPressed
+        && MinecraftClient.getInstance()?.player?.getStackInHand(Hand.MAIN_HAND)?.item is ItemStaff
+    ) {
+        switchStaffMode.isPressed = false
+        MinecraftClient.getInstance().player?.let { player ->
+            val packet = PacketByteBuf(Unpooled.buffer()).apply {
+                val currentModeIndex = StaffMode.values().indexOf(player.staffMode)
+                val nextMode = StaffMode.values()[
+                    if (currentModeIndex == StaffMode.values().size-1) {
+                        0
+                    } else {
+                        currentModeIndex + 1
+                    }
+                ]
+                writeIdentifier(nextMode.id)
+            }
+            ClientSidePacketRegistry.INSTANCE.sendToServer(PACKET_STAFF_MODE_CHANGED, packet)
+        }
+    }
+}
 
 val onStaffModeChanged = StaffModeChangedCallback { entity, mode, _ ->
     if (entity is ServerPlayerEntity) {
