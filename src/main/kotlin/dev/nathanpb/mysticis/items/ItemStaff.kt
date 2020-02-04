@@ -72,7 +72,7 @@ class ItemStaff : RangedWeaponItem(Settings().maxCount(1).group(CREATIVE_TAB)) {
     }
 
     override fun getUseAction(stack: ItemStack?): UseAction {
-        return if((stack?.staffData?.crystal?.item as? IStaffCrystal)?.hasContinueExecutor() == true) {
+        return if((stack?.staffData?.crystal?.item as? IStaffCrystal)?.hasContinueExecutor(StaffMode.COMBAT) == true) {
             UseAction.BOW
         } else {
             UseAction.NONE

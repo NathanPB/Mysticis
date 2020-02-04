@@ -1,6 +1,7 @@
 package dev.nathanpb.mysticis.items.staff
 
 import dev.nathanpb.mysticis.staff.IStaffUsageContext
+import dev.nathanpb.mysticis.staff.StaffMode
 import dev.nathanpb.mysticis.staff.executors.IStaffActionExecutor
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.item.ItemStack
@@ -24,7 +25,7 @@ interface IStaffAttachment {
 interface IStaffRod : IStaffAttachment
 interface IStaffHead : IStaffAttachment
 interface IStaffCrystal: IStaffAttachment {
-    val executors: List<IStaffActionExecutor<out IStaffUsageContext>>
+    val executors: Map<StaffMode, List<IStaffActionExecutor<out IStaffUsageContext>>>
 
-    fun hasContinueExecutor() = executors.any { it.isContinue }
+    fun hasContinueExecutor(mode: StaffMode) = executors[mode]?.any { it.isContinue }
 }

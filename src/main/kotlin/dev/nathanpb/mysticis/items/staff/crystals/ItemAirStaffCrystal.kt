@@ -2,6 +2,7 @@ package dev.nathanpb.mysticis.items.staff.crystals
 
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import dev.nathanpb.mysticis.staff.StaffMode
 import dev.nathanpb.mysticis.staff.executors.AirCrystalContinueAirUseExecutor
 import dev.nathanpb.mysticis.staff.executors.AirCrystalSingleAirHitExecutor
 import dev.nathanpb.mysticis.staff.executors.AirCrystalSingleAirUseExecutor
@@ -18,9 +19,11 @@ You should have received a copy of the GNU General Public License along with thi
 class ItemAirStaffCrystal : IStaffCrystal, ItemBase() {
     override val color = 0xFFFA66
 
-    override val executors = listOf(
-        AirCrystalContinueAirUseExecutor(),
-        AirCrystalSingleAirHitExecutor(),
-        AirCrystalSingleAirUseExecutor()
+    override val executors = mapOf(
+        StaffMode.COMBAT to listOf(
+            AirCrystalContinueAirUseExecutor(),
+            AirCrystalSingleAirHitExecutor(),
+            AirCrystalSingleAirUseExecutor()
+        )
     )
 }

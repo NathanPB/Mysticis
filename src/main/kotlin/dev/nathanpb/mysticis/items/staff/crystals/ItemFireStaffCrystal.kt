@@ -2,6 +2,7 @@ package dev.nathanpb.mysticis.items.staff.crystals
 
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
+import dev.nathanpb.mysticis.staff.StaffMode
 import dev.nathanpb.mysticis.staff.executors.FireCrystalContinueUseAir
 import net.minecraft.client.item.TooltipContext
 import net.minecraft.item.ItemStack
@@ -21,8 +22,10 @@ You should have received a copy of the GNU General Public License along with thi
 class ItemFireStaffCrystal : IStaffCrystal, ItemBase() {
     override val color = 0xFF8000
 
-    override val executors = listOf(
-        FireCrystalContinueUseAir()
+    override val executors = mapOf(
+        StaffMode.COMBAT to listOf(
+            FireCrystalContinueUseAir()
+        )
     )
 
     override fun appendTooltip(

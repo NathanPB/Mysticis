@@ -29,8 +29,8 @@ interface IStaffUsageContext {
 
 }
 
-inline fun <reified T: IStaffActionExecutor<*>> IStaffUsageContext.findFirstExecutor() : T? {
-    return crystalItem?.executors?.filterIsInstance<T>()?.firstOrNull()
+inline fun <reified T: IStaffActionExecutor<*>> IStaffUsageContext.findFirstExecutor(mode: StaffMode = this.user.staffMode) : T? {
+    return crystalItem?.executors?.get(mode)?.filterIsInstance<T>()?.firstOrNull()
 }
 
 data class StaffSingleUseBlockContext(
