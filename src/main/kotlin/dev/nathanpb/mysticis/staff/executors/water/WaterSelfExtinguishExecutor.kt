@@ -21,9 +21,9 @@ You should have received a copy of the GNU General Public License along with thi
 class WaterSelfExtinguishExecutor : IStaffSingleHitAirExecutor {
 
     override fun accept(context: StaffSingleHitAirContext): Boolean {
-        return context.user.isSneaking && (context.user.world.isClient || context.user.fireTicks > 0)
+        return context.user.isSneaking && context.user.isOnFire
     }
-    override fun cost(context: StaffSingleHitAirContext) = ManaData(water = (context.user.fireTicks / 5).toFloat())
+    override fun cost(context: StaffSingleHitAirContext) = ManaData(water = 15F)
     override val representationColor = 0x00E1FF
     override val effectId = Identifier("mysticis", "water_self_stinguish")
     override val cooldownOnConsume = 100
