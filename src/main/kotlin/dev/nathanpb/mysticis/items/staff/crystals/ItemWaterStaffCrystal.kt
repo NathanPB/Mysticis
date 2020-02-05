@@ -3,6 +3,7 @@ package dev.nathanpb.mysticis.items.staff.crystals
 import dev.nathanpb.mysticis.items.ItemBase
 import dev.nathanpb.mysticis.items.staff.IStaffCrystal
 import dev.nathanpb.mysticis.staff.StaffMode
+import dev.nathanpb.mysticis.staff.executors.water.WaterSelfExtinguishExecutor
 import dev.nathanpb.mysticis.staff.executors.water.WaterSourceGeneratorExecutor
 
 
@@ -17,6 +18,9 @@ class ItemWaterStaffCrystal : ItemBase(), IStaffCrystal {
     override val color = 0x0069FC
 
     override val executors = mapOf(
-        StaffMode.UTILITY to listOf(WaterSourceGeneratorExecutor())
+        StaffMode.UTILITY to listOf(
+            WaterSourceGeneratorExecutor(),
+            WaterSelfExtinguishExecutor()
+        )
     )
 }
