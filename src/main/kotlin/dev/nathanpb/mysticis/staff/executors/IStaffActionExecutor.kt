@@ -29,7 +29,7 @@ interface IStaffActionExecutor<T : IStaffUsageContext> {
     val isContinue: Boolean
         get() = false
 
-    fun cost(context: T) = ManaData()
+    fun cost(context: T): ManaData
 
     fun accept(context: T): Boolean
 
