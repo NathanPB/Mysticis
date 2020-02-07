@@ -16,14 +16,23 @@ You should have received a copy of the GNU General Public License along with thi
 */
 val BLOCK_STAFF_ASSEMBLER = BlockStaffAssembler()
 val BLOCK_INFUSOR_PEDESTAL = BlockInfusorPedestal()
+val BLOCK_INFUSOR_PEDESTAL_BASE = BlockInfusorPedestalBase()
+
+private val groupHiddenBlocks = arrayOf(BLOCK_INFUSOR_PEDESTAL_BASE)
 
 fun registerBlocks() {
     hashMapOf(
         "staff_assembler" to BLOCK_STAFF_ASSEMBLER,
-        "infusor_pedestal" to BLOCK_INFUSOR_PEDESTAL
+        "infusor_pedestal" to BLOCK_INFUSOR_PEDESTAL,
+        "infusor_pedestal_base" to BLOCK_INFUSOR_PEDESTAL_BASE
     ).forEach { (id, block) ->
         val identifier = Identifier("mysticis", id)
+        val settings = Item.Settings().apply {
+            if (block !in groupHiddenBlocks) {
+                group(CREATIVE_TAB)
+            }
+        }
         Registry.register(Registry.BLOCK, identifier, block)
-        Registry.register(Registry.ITEM, identifier, BlockItem(block, Item.Settings().group(CREATIVE_TAB)))
+        Registry.register(Registry.ITEM, identifier, BlockItem(block, settings))
     }
 }
