@@ -4,7 +4,6 @@ import net.fabricmc.fabric.api.block.FabricBlockSettings
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Material
-import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.EntityContext
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -41,14 +40,7 @@ class BlockInfusorPedestal : Block(FabricBlockSettings.of(Material.STONE).nonOpa
         super.onPlaced(world, pos, state, placer, itemStack)
     }
 
-    override fun afterBreak(
-        world: World?,
-        player: PlayerEntity?,
-        pos: BlockPos?,
-        state: BlockState?,
-        blockEntity: BlockEntity?,
-        stack: ItemStack?
-    ) {
+    override fun onBreak(world: World?, pos: BlockPos?, state: BlockState?, player: PlayerEntity?) {
         if (world != null && pos != null) {
             val bottomPos = pos.offset(Direction.DOWN)
             val bottomState = world.getBlockState(bottomPos)
