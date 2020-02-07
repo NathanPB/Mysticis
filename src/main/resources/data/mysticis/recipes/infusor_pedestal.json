@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "CSC",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:smooth_stone"
+    },
+    "C": {
+      "tag": "mysticis:primary_crystals"
+    }
+  },
+  "result": {
+    "item": "mysticis:infusor_pedestal",
+    "count": 2
+  }
+}
