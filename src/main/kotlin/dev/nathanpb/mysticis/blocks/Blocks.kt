@@ -15,10 +15,12 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
 val BLOCK_STAFF_ASSEMBLER = BlockStaffAssembler()
+val BLOCK_INFUSOR_PEDESTAL = BlockInfusorPedestal()
 
 fun registerBlocks() {
     hashMapOf(
-        "staff_assembler" to BLOCK_STAFF_ASSEMBLER
+        "staff_assembler" to BLOCK_STAFF_ASSEMBLER,
+        "infusor_pedestal" to BLOCK_INFUSOR_PEDESTAL
     ).forEach { (id, block) ->
         val identifier = Identifier("mysticis", id)
         Registry.register(Registry.BLOCK, identifier, block)
