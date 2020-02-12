@@ -60,6 +60,16 @@ class BlockInfusorPedestal :
             if (bottomState.block is BlockInfusorPedestalBase) {
                 world.breakBlock(bottomPos, false, player)
             }
+
+            (world.getBlockEntity(pos) as? InfusorPedestalEntity)?.let { entity ->
+                if (!world.isClient && !entity.isInvEmpty) {
+                    world.spawnEntity(ItemEntity(
+                        world,
+                        pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(),
+                        entity.pop()
+                    ))
+                }
+            }
         }
         super.onBreak(world, pos, state, player)
     }
