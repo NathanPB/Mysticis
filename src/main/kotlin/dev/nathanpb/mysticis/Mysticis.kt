@@ -1,5 +1,7 @@
 package dev.nathanpb.mysticis
 
+import dev.nathanpb.mysticis.blocks.entity.renderers.InfusorPedestalEntityRenderer
+import dev.nathanpb.mysticis.blocks.infusorPedestalBlockEntity
 import dev.nathanpb.mysticis.blocks.registerBlockEntities
 import dev.nathanpb.mysticis.blocks.registerBlocks
 import dev.nathanpb.mysticis.containers.registerContainers
@@ -28,6 +30,7 @@ import dev.nathanpb.mysticis.staff.StaffMode
 import dev.nathanpb.mysticis.staff.staffMode
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry
 import net.fabricmc.fabric.api.event.client.ClientTickCallback
 import net.fabricmc.fabric.api.loot.v1.event.LootTableLoadingCallback
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry
@@ -118,6 +121,7 @@ fun initClient() {
     }
 
     ColorProviderRegistry.ITEM.register(ItemStaff.COLOR_PROVIDER, ITEM_STAFF)
+    BlockEntityRendererRegistry.INSTANCE.register(infusorPedestalBlockEntity, ::InfusorPedestalEntityRenderer)
 
     registerGuis()
     registerKeybindings()
