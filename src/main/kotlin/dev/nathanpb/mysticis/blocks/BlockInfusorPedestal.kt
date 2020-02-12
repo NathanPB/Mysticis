@@ -78,8 +78,10 @@ class BlockInfusorPedestal :
                     if (blockEntity.isInvEmpty) {
                         player.getStackInHand(hand)?.let { stack ->
                             blockEntity.offer(stack.copy().also { it.count = 1 })
-                            stack.decrement(1)
                             playPopSound(world, pos)
+                            if (!player.isCreative) {
+                                stack.decrement(1)
+                            }
                             return ActionResult.SUCCESS
                         }
                     } else {
