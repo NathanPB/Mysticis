@@ -1,15 +1,24 @@
 package dev.nathanpb.mysticis.blocks
 
+import dev.nathanpb.mysticis.blocks.entity.InfusorPedestalEntity
 import net.fabricmc.fabric.api.block.FabricBlockSettings
 import net.minecraft.block.Block
+import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.BlockState
 import net.minecraft.block.Material
 import net.minecraft.entity.EntityContext
+import net.minecraft.entity.ItemEntity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
+import net.minecraft.sound.SoundCategory
+import net.minecraft.sound.SoundEvents
+import net.minecraft.util.ActionResult
+import net.minecraft.util.Hand
+import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.world.BlockView
 import net.minecraft.world.World
 
 
@@ -20,7 +29,10 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 */
-class BlockInfusorPedestal : Block(FabricBlockSettings.of(Material.STONE).nonOpaque().dynamicBounds().strength(1.5F, 6F).build()) {
+class BlockInfusorPedestal :
+    Block(FabricBlockSettings.of(Material.STONE).nonOpaque().dynamicBounds().strength(1.5F, 6F).build()),
+    BlockEntityProvider {
+
     override fun onPlaced(
         world: World?,
         pos: BlockPos?,
@@ -51,4 +63,51 @@ class BlockInfusorPedestal : Block(FabricBlockSettings.of(Material.STONE).nonOpa
         }
         super.onBreak(world, pos, state, player)
     }
+
+    override fun onUse(
+        state: BlockState?,
+        world: World?,
+        pos: BlockPos?,
+        player: PlayerEntity?,
+        hand: Hand?,
+        hit: BlockHitResult?
+    ): ActionResult {
+        if (world != null && pos != null && player != null && hand != null) {
+            world.getBlockEntity(pos)?.let { blockEntity ->
+                if (blockEntity is InfusorPedestalEntity) {
+                    if (blockEntity.isInvEmpty) {
+                        player.getStackInHand(hand)?.let { stack ->
+                            blockEntity.offer(stack.copy().also { it.count = 1 })
+                            stack.decrement(1)
+                            playPopSound(world, pos)
+                            return ActionResult.SUCCESS
+                        }
+                    } else {
+                        pos.apply {
+                            world.spawnEntity(ItemEntity(world, x.toDouble(), y.toDouble(), z.toDouble(), blockEntity.pop()))
+                        }
+                        playPopSound(world, pos)
+                        return ActionResult.SUCCESS
+                    }
+                }
+            }
+        }
+        return super.onUse(state, world, pos, player, hand, hit)
+    }
+
+    private fun playPopSound(world: World, pos: BlockPos) {
+        if (!world.isClient) {
+            pos.apply {
+                world.playSound(
+                    null,
+                    x.toDouble(), y.toDouble(), z.toDouble(),
+                    SoundEvents.ENTITY_ITEM_PICKUP,
+                    SoundCategory.BLOCKS,
+                    1F, 2.5F
+                )
+            }
+        }
+    }
+
+    override fun createBlockEntity(view: BlockView?) = InfusorPedestalEntity()
 }

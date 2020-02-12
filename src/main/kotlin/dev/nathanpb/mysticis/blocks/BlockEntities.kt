@@ -1,5 +1,6 @@
 package dev.nathanpb.mysticis.blocks
 
+import dev.nathanpb.mysticis.blocks.entity.InfusorPedestalEntity
 import dev.nathanpb.mysticis.blocks.entity.StaffAssemblerEntity
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntity
@@ -19,6 +20,7 @@ You should have received a copy of the GNU General Public License along with thi
 */
 
 lateinit var staffAssemblerBlockEntity: BlockEntityType<StaffAssemblerEntity>
+lateinit var infusorPedestalBlockEntity: BlockEntityType<InfusorPedestalEntity>
 
 private fun <E: BlockEntity>mkSupplier(clazz: KClass<E>) = Supplier {
     clazz.primaryConstructor!!.call()
@@ -32,4 +34,5 @@ private fun <E: BlockEntity, B: Block>register(block: B, entityClass: KClass<E>)
 
 fun registerBlockEntities() {
     staffAssemblerBlockEntity = register(BLOCK_STAFF_ASSEMBLER, StaffAssemblerEntity::class)
+    infusorPedestalBlockEntity = register(BLOCK_INFUSOR_PEDESTAL, InfusorPedestalEntity::class)
 }
